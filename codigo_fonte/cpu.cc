@@ -21,7 +21,7 @@ CPU::Context::~Context()
 {
     //adicionar implementação
     // pilha de processo vai a zero
-    _stack = 0; 
+    _stack = 0;
 }
 
 int CPU::switch_context(Context *from, Context *to)

@@ -5,27 +5,26 @@ __BEGIN_API
 
 void CPU::Context::save()
 {
-    //adicionar implementação
+    // Saves the current context
+    getcontext(&_context);
 }
 
 void CPU::Context::load()
 {
-    //adicionar implementação
-}
-
-template<typename ... Tn>
-CPU::Context::Context(void (* func)(Tn ...), Tn ... an){
-    // adicionar implementação
+    // Loads the context for the caller (that will take on the execution)
+    setcontext(&_context);
 }
 
 CPU::Context::~Context()
 {
-    //adicionar implementação
+    // Deletes stack to liberate the memory
+    delete _stack;
 }
 
 int CPU::switch_context(Context *from, Context *to)
 {
-     //implementação do método
+    // Switches context
+    return swapcontext(&from->_context, &to->_context);
 }
 
 __END_API

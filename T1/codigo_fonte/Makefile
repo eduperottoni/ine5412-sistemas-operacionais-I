@@ -1,23 +1,43 @@
-OBJS	= cpu.o main_class.o main.o
-SOURCE	= cpu.cc main_class.cc main.cc
-HEADER	= cpu.h main_class.h traits.h
-OUT	= out
-CC	 = g++
-FLAGS	 = -g -c -Wall
-LFLAGS	 = 
+CC = g++
+CFLAGS = -g -Wall -W -ansi -pedantic -std=c++17
+INCLUDES = ${wildcard *.cc}
+OUT = ${DIR}/main
+RM= rm -rf
+DIR=build
 
-all: $(OBJS)
-	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
+# Checking using valgrind
+# --leak-check=<no|yes|summary|full>
+# --show-leak-kinds=all
+check:
+	valgrind  --leak-check=summary --show-leak-kinds=all${OUT}
 
-cpu.o: cpu.cc
-	$(CC) $(FLAGS) cpu.cc 
-
-main_class.o: main_class.cc
-	$(CC) $(FLAGS) main_class.cc 
-
-main.o: main.cc
-	$(CC) $(FLAGS) main.cc 
+# Compiling
+compile: clean mk_dir
+	@ echo 'Building executable file ${OUT}'
+	@ ${CC} ${CFLAGS} ${INCLUDES} -o ${OUT}
+	@ echo 'Executable file ${OUT} created!'
 
 
+# Removing build directory
 clean:
-	rm -f $(OBJS) $(OUT)
+	@ echo ''${DIR}' dir deleted!'
+	@ ${RM} ${DIR}
+
+# Running program
+run:
+	@ ./${OUT}
+
+# Making dir
+mk_dir:
+	@ mkdir -p ${DIR}
+	@ echo ''${DIR}' dir created!'
+
+#This submission command was copied from INE5410 exercises
+submission: clean
+	@SUBNAME=$$(basename "$$(pwd)"); \
+		echo cd ..\; tar zcf "$$SUBNAME.tar.gz" "$$SUBNAME"
+	@SUBNAME=$$(basename "$$(pwd)"); \
+		cd ..; \
+		rm -fr "$$SUBNAME.tar.gz"; \
+		tar zcf "$$SUBNAME.tar.gz" "$$SUBNAME"
+	@echo "Criado pacote \"$$(pwd).tar.gz\" para submissão"
