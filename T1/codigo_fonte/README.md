@@ -1,9 +1,9 @@
 ### COMANDOS PARA COMPILAR, EXECUTAR E TESTAR O PROGRAMA
 
-Para utilização desses comandos é necessário instalar o make na máquina. Para isso, execute o comando:
+Para utilização dos comandos abaixo, é indicada a instalação do pacote ```build-essential``` no sistema. Ele já incorpora a instalação do make (para execução do MakeFile) e do g++ (compilador utilizado):
 
 ```
-    sudo apt install make
+    sudo apt install build-essential
 ```
 
  - Para compilar, basta digitar:
