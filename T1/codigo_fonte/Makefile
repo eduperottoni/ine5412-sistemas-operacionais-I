@@ -9,7 +9,7 @@ DIR=build
 # --leak-check=<no|yes|summary|full>
 # --show-leak-kinds=all
 check:
-	valgrind  --leak-check=summary --show-leak-kinds=all${OUT}
+	valgrind  --leak-check=summary --show-leak-kinds=all ${OUT}
 
 # Compiling
 compile: clean mk_dir
