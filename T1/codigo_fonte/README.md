@@ -24,7 +24,7 @@ Para utilização dos comandos abaixo, é indicada a instalação do pacote ```b
     make check
  ```
  
- **OBS.:** Para executar o comando acima, o valgrind deve estar instalado na máquina. Veja como instalar o valgrind [aqui](https://wiki.ubuntu.com/Valgrind)
+ **OBS.:** Para executar o comando acima, o ```valgrind``` deve estar instalado na máquina. Veja como instalar o ```valgrind``` [aqui](https://wiki.ubuntu.com/Valgrind)
 
  - Para gerar o arquivo tar.gz:
 
