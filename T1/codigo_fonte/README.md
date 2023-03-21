@@ -1,5 +1,11 @@
 ### COMANDOS PARA COMPILAR, EXECUTAR E TESTAR O PROGRAMA
 
+Para utilização desses comandos é necessário instalar o make na máquina. Para isso, execute o comando:
+
+```
+    sudo apt install make
+```
+
  - Para compilar, basta digitar:
 
 ```
