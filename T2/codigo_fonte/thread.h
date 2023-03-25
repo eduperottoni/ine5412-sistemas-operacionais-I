@@ -67,11 +67,11 @@ public:
     /*
     * Decrementa _thread_counter (quando a thread é destruída)
     */
-    void decrement_thread_counter() { --_thread_counter; }
+    // void decrement_thread_counter() { --_thread_counter; }
 
-    void increment_thread_counter() { ++_thread_counter; }
+    // void increment_thread_counter() { ++_thread_counter; }
 
-    int thread_counter() { return _thread_counter; }
+    // int thread_counter() { return _thread_counter; }
 
 private:
     int _id;
@@ -81,14 +81,14 @@ private:
     /*
      * Qualquer outro atributo que você achar necessário para a solução.
      */ 
-    int static _thread_counter;
+    // int static _thread_counter;
 };
 
 template<typename ... Tn>
 Thread::Thread(void (* entry)(Tn ...), Tn ... an) {
     _context = new CPU::Context(entry, (char *) an...);
-    set_id(thread_counter());
-    increment_thread_counter();
+    // set_id(thread_counter());
+    // increment_thread_counter();
 }
 
 __END_API
