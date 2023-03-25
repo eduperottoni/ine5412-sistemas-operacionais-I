@@ -38,20 +38,24 @@ class CPU
 
 };
 
+// Instanciação de classe Context
 template<typename ... Tn>
-CPU::Context::Context(void (* func)(Tn ...),Tn ... an) {
-    // Initializes the context with getcontext()
-    save();
-    // Allocates the Context's stack
+CPU::Context::Context(void (* func)(Tn ...), Tn ... an)
+{
+    // obtenção do contexto atual
+    getcontext(&_context);
+    // criação da pilha do contexto, alocando de acordo com o tamanho alocado para a pilha fo contexto em Traits.h 
     _stack = new char[STACK_SIZE];
-    // Sets the stack's stack pointer
-    _context.uc_stack.ss_sp = (void *) _stack;
-    // Sets the Context's stack size
+    // ponteiro _context aponta para o topo da pilha, tipo um stack pointer de SO
+    _context.uc_stack.ss_sp = _stack;
+    // ponteiro _context obtém o tamanho da pilha utilizando stack
     _context.uc_stack.ss_size = STACK_SIZE;
-    // Provides a function for the Context to run
-    makecontext(&_context, (void (*) ()) func, sizeof...(Tn), an...);
+    
+    // Cria contexto com o ponteiro _context
+    makecontext(&_context, (void (*) ()) func, 1,an ...);
 }
 
 __END_API
 
 #endif
+
