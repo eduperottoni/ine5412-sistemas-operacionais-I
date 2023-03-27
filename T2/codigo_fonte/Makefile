@@ -1,6 +1,7 @@
 CC = g++
 CFLAGS = -g -Wall -W -ansi -pedantic -std=c++17
-INCLUDES = ${wildcard *.cc}
+INCLUDES_CC = ${wildcard *.cc}
+# INCLUDES_H = ${wildcard *.h}
 OUT = ${DIR}/main
 RM= rm -rf
 DIR=build
@@ -8,7 +9,7 @@ DIR=build
 # Compiling
 all: clean mk_dir
 	@ echo 'Building executable file ${OUT}'
-	@ ${CC} ${CFLAGS} ${INCLUDES} -o ${OUT}
+	@ ${CC} ${CFLAGS} ${INCLUDES_CC} -o ${OUT}
 	@ echo 'Executable file ${OUT} created!'
 
 # Checking using valgrind

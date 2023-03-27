@@ -59,14 +59,16 @@ private:
     static Thread * _running;
 
     /*
-     * Qualquer outro atributo que você achar necessário para a solução.
+     * Conta quantas threads foram criadas
+     * Usado para determinar o ID das threads
      */ 
     int static _thread_counter;
 };
 
 template<typename ... Tn>
 Thread::Thread(void (* entry)(Tn ...), Tn ... an) {
-    _context = new CPU::Context(entry, (char *) an...);
+    db<Thread>(TRC) << "Thread " + std::to_string(_thread_counter) + " criada\n";
+    _context = new CPU::Context(entry, an...);
     _id = _thread_counter++;
 }
 
