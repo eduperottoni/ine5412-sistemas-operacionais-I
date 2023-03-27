@@ -12,7 +12,7 @@ check:
 	valgrind  --leak-check=summary --show-leak-kinds=all ${OUT}
 
 # Compiling
-compile: clean mk_dir
+all: clean mk_dir
 	@ echo 'Building executable file ${OUT}'
 	@ ${CC} ${CFLAGS} ${INCLUDES} -o ${OUT}
 	@ echo 'Executable file ${OUT} created!'
