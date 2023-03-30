@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -g -Wall -W -ansi -pedantic -std=c++17
+CFLAGS = -g -Wall -ansi -pedantic -std=c++17
 INCLUDES_CC = ${wildcard *.cc}
 # INCLUDES_H = ${wildcard *.h}
 OUT = ${DIR}/main

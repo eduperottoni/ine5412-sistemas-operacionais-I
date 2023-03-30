@@ -17,9 +17,11 @@ class System;
 //declaração da classe Traits
 template<typename T>
 struct Traits {
+    static const bool debugged = false;
 };
 
-template<> struct Traits<CPU>: public Traits<void>
+template<>
+struct Traits<CPU>: public Traits<void>
 {
     //Adicionar aqui a declaração do tamanho da Pilha
     static const unsigned int STACK_SIZE = 8 * 1024; // 1Kb
@@ -27,7 +29,8 @@ template<> struct Traits<CPU>: public Traits<void>
 };
 
 // Gerencia os 4 níveis gerais de debug
-template<> struct Traits<Debug>: public Traits<void>
+template<>
+struct Traits<Debug>: public Traits<void>
 {
     static const bool error = false;
     static const bool warning = false;
@@ -39,12 +42,14 @@ template<> struct Traits<Debug>: public Traits<void>
 
 // Ativa ou desativa o debug para cada classe
 
-template<> struct Traits<System> : public Traits<void>
+template<>
+struct Traits<System> : public Traits<void>
 {
     static const bool debugged = true;
 };
 
-template<> struct Traits<Thread> : public Traits<void>
+template<>
+struct Traits<Thread> : public Traits<void>
 {
     static const bool debugged = true;
 };
