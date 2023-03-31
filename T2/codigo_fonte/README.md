@@ -9,7 +9,7 @@ Para utilização dos comandos abaixo, é indicada a instalação do pacote ```b
  - Para compilar, basta digitar:
 
 ```
-    make compile
+    make
 ```
 
  - Para executar o código:

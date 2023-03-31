@@ -7,7 +7,7 @@ __USING_API
 int main(void)
 {
     System::init();
-    db<System>(TRC) << "System::init() chamado\n";
+    db<System>(INF) << "[Debug] System::init() chamado\n";
     Main *m = new Main();
     delete m;
 }

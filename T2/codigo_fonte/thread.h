@@ -59,17 +59,22 @@ private:
     static Thread * _running;
 
     /*
-     * Conta quantas threads foram criadas
-     * Usado para determinar o ID das threads
+     * Conta quantas threads estão ativas
      */ 
-    int static _thread_counter;
+    static int _active_threads;
+
+    /*
+    * Faz o incremento de ID's para atribuição de IDs únicos para as threads
+    */
+    static int _threads_identifier;
 };
 
 template<typename ... Tn>
 Thread::Thread(void (* entry)(Tn ...), Tn ... an) {
-    db<Thread>(TRC) << "Thread " + std::to_string(_thread_counter) + " criada\n";
+    db<Thread>(TRC) << "[Debug] Thread " + std::to_string(_threads_identifier) + " criada\n";
     _context = new CPU::Context(entry, an...);
-    _id = _thread_counter++;
+    _id = _threads_identifier++;
+    _active_threads++;
 }
 
 __END_API
