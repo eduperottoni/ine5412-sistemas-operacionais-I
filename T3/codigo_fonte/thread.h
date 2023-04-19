@@ -111,7 +111,7 @@ private:
     /*
      * Conta quantas threads estão ativas
      */ 
-    // static int _active_threads;
+    static int _active_threads;
 
     /*
     * Faz o incremento de ID's para atribuição de IDs únicos para as threads
@@ -127,15 +127,18 @@ inline Thread::Thread(void (* entry)(Tn ...), Tn ... an)
     db<Thread>(TRC) << "[Debug] Thread " + std::to_string(_threads_identifier) + " criada\n";
     // atribui id para as threads
     _id = _threads_identifier++;
+    // incrementa contador de threads ativas
+    _active_threads++;
     // cria o contexto para a thread
     _context = new CPU::Context(entry, an...);
     // cria o elemento compatível com a lista
     _link = Ready_Queue::Element(this, (std::chrono::high_resolution_clock::now().time_since_epoch()).count());
     // seta estado inicial da thread
     _state = State::READY;
-    // insere thread na fila de prontos
-    _ready.insert(&_link);
+    // insere thread na fila de prontos (exceto main e dispatcher)
+    if (_id != 0 && _id != 1) _ready.insert(&_link);
 }
+
 
 __END_API
 
