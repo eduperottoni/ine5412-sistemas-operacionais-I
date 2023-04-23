@@ -136,7 +136,10 @@ inline Thread::Thread(void (* entry)(Tn ...), Tn ... an)
     // seta estado inicial da thread
     _state = State::READY;
     // insere thread na fila de prontos (exceto main e dispatcher)
-    if (_id != 0 && _id != 1) _ready.insert(&_link);
+    if (_id != 0 && _id != 1) {
+        // std::cout << "Inserindo thread " << _id << "na fila"; 
+        _ready.insert(&_link);
+    }
 }
 
 
