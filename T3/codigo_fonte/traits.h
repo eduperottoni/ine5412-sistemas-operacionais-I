@@ -50,7 +50,7 @@ struct Traits<System> : public Traits<void>
 template<>
 struct Traits<Thread> : public Traits<void>
 {
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 

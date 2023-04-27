@@ -79,7 +79,6 @@ public:
      */ 
     static void init(void (*main)(void *));
 
-
     /*
      * Devolve o processador para a thread dispatcher que irá escolher outra thread pronta
      * para ser executada.
@@ -107,6 +106,11 @@ private:
     static Ready_Queue _ready;
     Ready_Queue::Element _link;
     volatile State _state;
+    
+    /*
+    Usada para Thread::init() -> guardada para free
+     */
+    static Thread* _empty_thread;
 
     /*
      * Conta quantas threads estão ativas
@@ -132,7 +136,7 @@ inline Thread::Thread(void (* entry)(Tn ...), Tn ... an)
     // cria o contexto para a thread
     _context = new CPU::Context(entry, an...);
     // cria o elemento compatível com a lista
-    _link = Ready_Queue::Element(this, (std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+    _link = Ready_Queue::Element(this, std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
     // seta estado inicial da thread
     _state = State::READY;
     // insere thread na fila de prontos (exceto main e dispatcher)

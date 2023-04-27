@@ -10,28 +10,28 @@ Thread::Ready_Queue Thread::_ready;
 Thread Thread::_dispatcher;
 Thread Thread::_main;
 CPU::Context _main_context;
+Thread* Thread::_empty_thread = new Thread();
 
 Thread::~Thread(){
-
+    --_active_threads;
+    delete _context;
 }
 
 void Thread::init(void (*main)(void *)) {
     db<Thread>(INF) << "[Debug] Thread::init() chamado\n";
-    Thread *main_thread = new Thread((void (*) (void*)) main, (void*)"main");
-    Thread *dispatcher = new Thread((void (*) (void *)) &Thread::dispatcher, (void*) NULL);
-    _main = *main_thread;
-    _dispatcher = *dispatcher;
+    // Thread *main_thread = new Thread((void (*) (void*)) main, (void*)"main");
+    new (&_main) Thread(main, (void *) "main");
+    // Thread *dispatcher = new Thread((void (*) (void *)) &Thread::dispatcher, (void*) NULL);
+    new (&_dispatcher) Thread((void (*) (void*)) &Thread::dispatcher, (void*) NULL);
 
-    Thread *empty_thread = new Thread();
-    empty_thread -> _context = new CPU::Context();
+    _empty_thread -> _context = new CPU::Context();
 
     _running = &_main;
-    switch_context(empty_thread , &_main);
-    delete empty_thread -> _context;
+    switch_context(_empty_thread , &_main);
 }
 
 void Thread::dispatcher(){
-    while(_active_threads > 2){
+    while(!_ready.empty()){
         db<Thread>(TRC) << "[Debug] Executando dispatcher\n";
         // Seleciona a próxima Thread a ser executada
         Thread* next_thread = _ready.remove()->object();
@@ -44,6 +44,7 @@ void Thread::dispatcher(){
         _running = next_thread;
         switch_context(&_dispatcher, next_thread);
     }
+    delete _empty_thread;
     _dispatcher._state = State::FINISHING;
     switch_context(&_dispatcher, &_main);
 }
@@ -61,16 +62,12 @@ int Thread::switch_context(Thread * prev, Thread * next) {
 }
 
 void Thread::thread_exit (int exit_code) {
-    delete _context;
     db<Thread>(INF) << "[Debug] Finalizando Thread " << _id << "\n";
-    --_active_threads;
-    Thread *empty_thread = new Thread();
-    empty_thread -> _context = new CPU::Context();
-
-    _running = &_dispatcher;
-    switch_context(empty_thread , &_dispatcher);
+    
+    _state = State::FINISHING;
+    
+    yield();
 }
-
 
 void Thread::yield() {
     db<Thread>(TRC) << "[Debug] Execução de yield iniciada\n";
@@ -80,7 +77,9 @@ void Thread::yield() {
     if (current_thread -> id() != _main.id() && current_thread -> _state != State::FINISHING) {
         db<Thread>(TRC) << "[Debug] Atualizando prioridade da thread " << current_thread -> id() << "\n";
         // Atualiza prioridade da thread que chamou
-        int new_priority = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+        // int new_priority = ++_tempo;
+        unsigned int new_priority = static_cast<unsigned int>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+        db<Thread>(TRC) << "Prioridade: " << new_priority << "\n";
         current_thread -> _link.rank(new_priority);
         // Muda o estado da thread atual
         current_thread -> _state = State::READY;
