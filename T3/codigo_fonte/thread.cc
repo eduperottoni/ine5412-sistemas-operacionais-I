@@ -76,10 +76,9 @@ void Thread::yield() {
     // Atualizar prioridade da thread atual (se não for main e se não estiver finalizando)
     if (current_thread -> id() != _main.id() && current_thread -> _state != State::FINISHING) {
         db<Thread>(TRC) << "[Debug] Atualizando prioridade da thread " << current_thread -> id() << "\n";
-        // Atualiza prioridade da thread que chamou
+        // Atualiza prioridade da threead que chamou
         // int new_priority = ++_tempo;
         unsigned int new_priority = static_cast<unsigned int>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
-        db<Thread>(TRC) << "Prioridade: " << new_priority << "\n";
         current_thread -> _link.rank(new_priority);
         // Muda o estado da thread atual
         current_thread -> _state = State::READY;
