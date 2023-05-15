@@ -17,14 +17,14 @@ protected:
 public:
 
     typedef Ordered_List<Thread> Ready_Queue;
-    typedef List<Thread, Thread> Blocked_List;
+    typedef Ordered_List<Thread> Blocked_List;
 
     // Thread State
     enum State {
         RUNNING,
         READY,
         FINISHING,
-        // Estado criado para o trabalho
+        // Estado criado para o T4
         BLOCKED
     };
 
@@ -105,6 +105,9 @@ public:
 
     void resume();
 
+    /*
+    * 
+    */
     void suspend();
 
 private:
@@ -116,20 +119,11 @@ private:
     static CPU::Context _main_context;
     static Thread _dispatcher;
     static Ready_Queue _ready;
-    static Blocked_List _blocked;
     Ready_Queue::Element _link;
-
+    Blocked_List::Element _blocked_link;
+    Blocked_List _blocked;
     volatile State _state;
-
-    /*
-    Usada para Thread::init() -> guardada para free
-     */
-    static Thread* _empty_thread;
-
-    /*
-     * Conta quantas threads estão ativas
-     */ 
-    static int _active_threads;
+    int _exit_code;
 
     /*
     * Faz o incremento de ID's para atribuição de IDs únicos para as threads
@@ -145,12 +139,11 @@ inline Thread::Thread(void (* entry)(Tn ...), Tn ... an)
     db<Thread>(TRC) << "[Debug] Thread " + std::to_string(_threads_identifier) + " criada\n";
     // atribui id para as threads
     _id = _threads_identifier++;
-    // incrementa contador de threads ativas
-    _active_threads++;
     // cria o contexto para a thread
     _context = new CPU::Context(entry, an...);
     // cria o elemento compatível com a lista
     _link = Ready_Queue::Element(this, std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+    _blocked_link = Blocked_List::Element(this, std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
     // seta estado inicial da thread
     _state = State::READY;
     // insere thread na fila de prontos (exceto main e dispatcher)
