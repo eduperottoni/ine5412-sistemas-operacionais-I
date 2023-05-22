@@ -103,10 +103,13 @@ public:
      */
     int join();
 
+    /*
+     * Retorna a trhead para a fila de prontos
+    */
     void resume();
 
     /*
-    * 
+     *  Suspende a thread
     */
     void suspend();
 

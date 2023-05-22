@@ -63,7 +63,7 @@ public:
         ec = ping_pong_threads[3]->join();
         std::cout << "main: Pong acabou com exit code " << ec << "\n";
 
-        std::cout << "main: esperando Pung...\n";
+        std::cout << "mFaz o incremento de ain: esperando Pung...\n";
         ec = ping_pong_threads[4]->join();
         std::cout << "main: Pung acabou com exit code " << ec << "\n";
 

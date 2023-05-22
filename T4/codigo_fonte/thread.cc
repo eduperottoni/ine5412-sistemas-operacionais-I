@@ -63,11 +63,11 @@ int Thread::switch_context(Thread * prev, Thread * next) {
 }
 
 void Thread::thread_exit (int exit_code) {
-    db<Thread>(INF) << "[Debug] Finalizando Thread " << _id << "\n";
-    
     _exit_code = _id;
     _state = State::FINISHING;
     // Inicializa o exit_code
+
+    db<Thread>(INF) << "[Debug] Finalizando Thread " << _id << "com exit_code = " << _exit_code << "\n";
     while (!_blocked.empty()) {
         _blocked.remove() -> object() -> resume();
     }
@@ -81,8 +81,7 @@ void Thread::yield() {
     // Atualizar prioridade da thread atual (se não for main e se não estiver finalizando)
     if (current_thread -> id() != _main.id() && current_thread -> _state != State::FINISHING && current_thread -> _state != State::BLOCKED) {
         db<Thread>(TRC) << "[Debug] Atualizando prioridade da thread " << current_thread -> id() << "\n";
-        // Atualiza prioridade da threead que chamou
-        // int new_priority = ++_tempo;
+        // Atualiza prioridade da thread que chamou
         unsigned int new_priority = static_cast<unsigned int>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
         current_thread -> _link.rank(new_priority);
         // Muda o estado da thread atual
@@ -111,9 +110,9 @@ void Thread::suspend() {
     // coloca thread na fila de bloqueadas (running)
     unsigned int new_priority = static_cast<unsigned int>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
     _running -> _blocked_link.rank(new_priority);
-    _blocked.insert(&_running -> _blocked_link);
     // seta estado da thread como blocked (running)
     _running -> _state = State::BLOCKED;
+    _blocked.insert(&_running -> _blocked_link);
 }
 
 void Thread::resume() {
