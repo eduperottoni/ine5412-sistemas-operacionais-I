@@ -139,7 +139,7 @@ private:
     Ready_Queue::Element _ready_link;
     Blocked_List::Element _blocked_link;
     // Semaphore::Sleeping_Queue::Element _sleeping_link;
-    Blocked_List _blocked;
+    static Blocked_List _blocked;
     volatile State _state;
     int _exit_code;
 
@@ -167,8 +167,9 @@ inline Thread::Thread(void (* entry)(Tn ...), Tn ... an)
     // seta estado inicial da thread
     _state = State::READY;
     // insere thread na fila de prontos (exceto main e dispatcher)
-    if (_id != 0 && _id != 1) {
-        // std::cout << "Inserindo thread " << _id << "na fila"; 
+    if (_id > 0) {
+        // std::cout << "Inserindo thread " << _id << "na fila";
+        db<Thread>(TRC) << "[Debug] Thread " + std::to_string(_id) + " sendo inserida na fila de prontos\n";
         _ready.insert(&_ready_link);
     }
 }

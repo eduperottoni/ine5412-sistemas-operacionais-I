@@ -13,27 +13,27 @@ Semaphore::~Semaphore(){
 
 void Semaphore::p() {
     db<Semaphore>(TRC) << "Semaphore counter on P() = " << _counter << "\n";
-    if (fdec(_counter) < 0){
-        sleep();
-    }
-    
-    // if (_counter > 0) {
-    //     fdec(_counter);
-    // } else {
+    // if (fdec(_counter) < 0){
     //     sleep();
     // }
+    
+    if (_counter > 0) {
+        fdec(_counter);
+    } else {
+        sleep();
+    }
 }
 
 void Semaphore::v() {
-    if(finc(_counter) < 1){
-        wakeup();
-    }
-    
-    // if (_sleeping.empty()) {
-    //     finc(_counter);
-    // } else {
+    // if(finc(_counter) < 1){
     //     wakeup();
     // }
+    
+    if (_sleeping.empty()) {
+        finc(_counter);
+    } else {
+        wakeup();
+    }
     db<Semaphore>(TRC) << "Semaphore counter on V() = " << _counter << "\n";
 }
 

@@ -64,7 +64,7 @@ struct Traits<Lists> : public Traits<void>
 template<>
 struct Traits<Semaphore> : public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 
