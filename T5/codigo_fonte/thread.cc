@@ -24,11 +24,10 @@ void Thread::init(void (*main)(void *)) {
     db<Thread>(INF) << "[Debug] Thread::init() chamado\n";
     new (&_main) Thread(main, (void *) "main");
     new (&_dispatcher) Thread((void (*) (void*)) &Thread::dispatcher, (void*) NULL);
-
     // Using main_context to switch_context()
     new (&_main_context) CPU::Context();
 
-    _main._state = State::RUNNING;
+    _main._state = RUNNING;
     _running = &_main;
 
     CPU::switch_context(&_main_context, _main._context);
@@ -40,16 +39,16 @@ void Thread::dispatcher(){
         // Seleciona a próxima Thread a ser executada
         Thread* next_thread = _ready.remove()->object();
         // Muda estado da próxima Thread
-        next_thread -> _state = State::RUNNING;
+        next_thread -> _state = RUNNING;
         // Troca estado de dispatcher
-        _dispatcher._state = State::READY;
+        _dispatcher._state = READY;
         // Troca contexto do dispatcher para a próxima thread
         _running = next_thread;
         switch_context(&_dispatcher, next_thread);
     }
     // delete _empty_thread;
-    _dispatcher._state = State::FINISHING;
-    _main._state = State::RUNNING;
+    _dispatcher._state = FINISHING;
+    _main._state = RUNNING;
     switch_context(&_dispatcher, &_main);
 }
 
@@ -83,18 +82,19 @@ void Thread::yield() {
     // Acessar thread atual
     Thread *current_thread = _running;
     // Atualizar prioridade da thread atual (se não for main e se não estiver finalizando)
-    if (current_thread -> id() != _main.id() && current_thread -> _state != State::FINISHING && current_thread -> _state != State::BLOCKED && current_thread -> _state != State::WAITING) {
+    if (current_thread -> id() != _main.id() && current_thread -> _state != FINISHING && current_thread -> _state != BLOCKED && current_thread -> _state != WAITING) {
         db<Thread>(TRC) << "[Debug] Atualizando prioridade da thread " << current_thread -> id() << "\n";
         // Atualiza prioridade da thread que chamou
         unsigned int new_priority = get_time();
         current_thread -> _link.rank(new_priority);
         // Muda o estado da thread atual
-        current_thread -> _state = State::READY;
+        current_thread -> _state = READY;
         // Reinsere a Thread  atual na fila
         _ready.insert(&current_thread->_link);
     }
     // Chama o dispatcher -> selecionará uma thread para execução
-    _dispatcher._state = State::RUNNING;
+    db<Thread>(TRC) << "[Debug] Thread que está chamando a dispatcher " << current_thread -> id() << "\n";
+    _dispatcher._state = RUNNING;
     _running = &_dispatcher;
     switch_context(current_thread, &_dispatcher);
 }
@@ -155,7 +155,6 @@ void Thread::wakeup() {
     _state = State::READY;
     _ready.insert(&_link);
     yield();
-
 }
 
 __END_API
