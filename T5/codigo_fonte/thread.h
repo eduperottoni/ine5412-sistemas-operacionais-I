@@ -128,8 +128,6 @@ public:
     */
     void wakeup();
 
-
-
 private:
     int _id;
     Context * volatile _context;
@@ -142,8 +140,6 @@ private:
 
     Thread * _blocked_thread;
     Ready_Queue::Element _link;
-    // Blocked_List::Element _blocked_link;
-
 
     volatile State _state;
     int _exit_code;
@@ -169,7 +165,6 @@ inline Thread::Thread(void (* entry)(Tn ...), Tn ... an)
     _link = Ready_Queue::Element(this, priority);
     // _blocked_link = Blocked_List::Element(this, priority);
     _blocked_thread = nullptr;
-    // _sleeping_link = Semaphore::Sleeping_Queue::Element(this, priority);
     // seta estado inicial da thread
     _state = State::READY;
     // insere thread na fila de prontos (exceto main e dispatcher)
