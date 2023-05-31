@@ -94,6 +94,11 @@ public:
     ~Thread();
 
     /*
+     * Retorna o tempo atual 
+    */
+    static unsigned int get_time();
+
+    /*
      * Qualquer outro método que você achar necessário para a solução.
      */
     Context* context() { return _context; }
@@ -123,23 +128,23 @@ public:
     */
     void wakeup();
 
-    // Thread* running();
 
-    // Semaphore::Sleeping_Queue::Element sleeping_link();
 
 private:
     int _id;
     Context * volatile _context;
     static Thread * _running;
-
     static Thread _main;
     static CPU::Context _main_context;
     static Thread _dispatcher;
     static Ready_Queue _ready;
-    Ready_Queue::Element _ready_link;
-    Blocked_List::Element _blocked_link;
-    // Semaphore::Sleeping_Queue::Element _sleeping_link;
-    Blocked_List _blocked;
+    static Blocked_List _blocked_list;
+
+    Thread * _blocked_thread;
+    Ready_Queue::Element _link;
+    // Blocked_List::Element _blocked_link;
+
+
     volatile State _state;
     int _exit_code;
 
@@ -160,16 +165,17 @@ inline Thread::Thread(void (* entry)(Tn ...), Tn ... an)
     // cria o contexto para a thread
     _context = new CPU::Context(entry, an...);
     // cria o elemento compatível com a lista
-    unsigned int priority = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
-    _ready_link = Ready_Queue::Element(this, priority);
-    _blocked_link = Blocked_List::Element(this, priority);
+    unsigned int priority = get_time();
+    _link = Ready_Queue::Element(this, priority);
+    // _blocked_link = Blocked_List::Element(this, priority);
+    _blocked_thread = nullptr;
     // _sleeping_link = Semaphore::Sleeping_Queue::Element(this, priority);
     // seta estado inicial da thread
     _state = State::READY;
     // insere thread na fila de prontos (exceto main e dispatcher)
     if (_id != 0 && _id != 1) {
         // std::cout << "Inserindo thread " << _id << "na fila"; 
-        _ready.insert(&_ready_link);
+        _ready.insert(&_link);
     }
 }
 

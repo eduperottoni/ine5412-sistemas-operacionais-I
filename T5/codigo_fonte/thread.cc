@@ -6,6 +6,7 @@ __BEGIN_API
 int Thread::_threads_identifier = 0;
 Thread* Thread::_running = nullptr;
 Thread::Ready_Queue Thread::_ready;
+Thread::Blocked_List Thread::_blocked_list;
 Thread Thread::_dispatcher;
 Thread Thread::_main;
 CPU::Context Thread::_main_context;
@@ -14,11 +15,14 @@ Thread::~Thread(){
     delete _context;
 }
 
+unsigned int Thread::get_time(){
+    unsigned int time = static_cast<unsigned int>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+    return time;
+}
+
 void Thread::init(void (*main)(void *)) {
     db<Thread>(INF) << "[Debug] Thread::init() chamado\n";
-    // Thread *main_thread = new Thread((void (*) (void*)) main, (void*)"main");
     new (&_main) Thread(main, (void *) "main");
-    // Thread *dispatcher = new Thread((void (*) (void *)) &Thread::dispatcher, (void*) NULL);
     new (&_dispatcher) Thread((void (*) (void*)) &Thread::dispatcher, (void*) NULL);
 
     // Using main_context to switch_context()
@@ -35,7 +39,6 @@ void Thread::dispatcher(){
     while(!_ready.empty()){
         // Seleciona a próxima Thread a ser executada
         Thread* next_thread = _ready.remove()->object();
-        // std::cout << "Thread" << next_thread -> _id << "selecionada da fila \n";
         // Muda estado da próxima Thread
         next_thread -> _state = State::RUNNING;
         // Troca estado de dispatcher
@@ -63,31 +66,32 @@ int Thread::switch_context(Thread * prev, Thread * next) {
 }
 
 void Thread::thread_exit (int exit_code) {
-    _exit_code = _id;
-    _state = State::FINISHING;
     // Inicializa o exit_code
+    _exit_code = _id;
+    // Seta estado como finalizando
+    _state = State::FINISHING;
+    // Chama resume da thread que está esperando por seu final
+    if (_blocked_thread != nullptr) _blocked_thread -> resume();
 
     db<Thread>(INF) << "[Debug] Finalizando Thread " << _id << "com exit_code = " << _exit_code << "\n";
-    while (!_blocked.empty()) {
-        _blocked.remove() -> object() -> resume();
-    }
+    // Sede o processador
     yield();
 }
 
 void Thread::yield() {
-    db<Thread>(TRC) << "[Debug] Execução de yield iniciada para a Thread\n";
+    db<Thread>(TRC) << "[Debug] Execução de yield iniciada para a Thread " << _running -> id() << "\n";
     // Acessar thread atual
     Thread *current_thread = _running;
     // Atualizar prioridade da thread atual (se não for main e se não estiver finalizando)
     if (current_thread -> id() != _main.id() && current_thread -> _state != State::FINISHING && current_thread -> _state != State::BLOCKED && current_thread -> _state != State::WAITING) {
         db<Thread>(TRC) << "[Debug] Atualizando prioridade da thread " << current_thread -> id() << "\n";
         // Atualiza prioridade da thread que chamou
-        unsigned int new_priority = static_cast<unsigned int>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
-        current_thread -> _ready_link.rank(new_priority);
+        unsigned int new_priority = get_time();
+        current_thread -> _link.rank(new_priority);
         // Muda o estado da thread atual
         current_thread -> _state = State::READY;
         // Reinsere a Thread  atual na fila
-        _ready.insert(&current_thread->_ready_link);
+        _ready.insert(&current_thread->_link);
     }
     // Chama o dispatcher -> selecionará uma thread para execução
     _dispatcher._state = State::RUNNING;
@@ -96,43 +100,62 @@ void Thread::yield() {
 }
 
 int Thread::join() {
-    // Chamar o suspend() da thread atual (running)
+    db<Thread>(TRC) << "[DEBUG] Join called to Thread " << _id << "\n";
+
     if (_state != State::FINISHING){
-        suspend();
-        // Thread que está rodando chama yield() running -> yield | yield()
-        yield();
-        // Retorna o atributo _exit_code da thread chamadora do join
+        _blocked_thread = _running;
+        _running -> suspend();
     }
+    // Retorna o atributo _exit_code da thread chamadora do join
     return _exit_code;
 }
 
 void Thread::suspend() {
-    // coloca thread na fila de bloqueadas (running)
-    unsigned int new_priority = static_cast<unsigned int>(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
-    _running -> _blocked_link.rank(new_priority);
-    // seta estado da thread como blocked (running)
-    _running -> _state = State::BLOCKED;
-    _blocked.insert(&_running -> _blocked_link);
+    db<Thread>(TRC) << "[DEBUG] Suspending thread " << _id << "\n";
+
+    // Se a thread a ser suspensa não está em execução
+    if (_running != this){
+        // Tira da fila global de prontos
+        _ready.remove(&_link);
+    }
+
+    // Seta estado da thread como blocked
+    _state = State::BLOCKED;
+    // Coloca na fila global de bloqueados
+    unsigned int new_priority = get_time();
+    _link.rank(new_priority);
+    _blocked_list.insert(&_link);
+    
+    // Join foi chamado
+    if(_running == this){
+        yield();
+    }
 }
 
 void Thread::resume() {
-    // Setar estado para pronto
+    db<Thread>(TRC) << "[DEBUG] Resuming thread " << _id << "\n";
+    // Tira da fila global de bloqueados
+    _blocked_list.remove(&_link);
+    // Seta estado para pronto
     _state = State::READY;
-    // Iserir na fila de prontos
-    _ready.insert(&_ready_link);
+    // Insere na fila de prontos
+    _ready.insert(&_link);
 }
 
 void Thread::sleep() {
+    db<Thread>(TRC) << "[DEBUG] Thread " << _id << " sleeping" << "\n";
+    // Seta estado como WAITING e sede o processador
     _state = State::WAITING;
     yield();
 }
 
 void Thread::wakeup() {
+    // Seta estado como READY e insere na lista de prontos
+    db<Thread>(TRC) << "[DEBUG] Waking up Thread " << _id << "\n";
     _state = State::READY;
-    _ready.insert(&_ready_link);
+    _ready.insert(&_link);
+    yield();
+
 }
 
-// Semaphore::Sleeping_Queue::Element Thread::sleeping_link(){
-//     return _sleeping_link;
-// }
 __END_API
