@@ -18,9 +18,7 @@ class Semaphore;
 
 //declaração da classe Traits
 template<typename T>
-struct Traits {
-    static const bool debugged = false;
-};
+struct Traits {};
 
 template<>
 struct Traits<CPU>: public Traits<void>
@@ -64,7 +62,7 @@ struct Traits<Lists> : public Traits<void>
 template<>
 struct Traits<Semaphore> : public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 

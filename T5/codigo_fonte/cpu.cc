@@ -28,28 +28,19 @@ int CPU::switch_context(Context *from, Context *to)
 }
 
 int CPU::finc(volatile int &number){
-    int val = 1;
-    int r;
-    asm("lock \n \t"
-        "xadd %1, %0":
-        "+m"(number), "=r"(r):
-        "1"(val):
-        "memory","cc");
-    
-    return number;
+    // Returns the number intital value and saves incremented value in number
+    int inc_value = 1;
+    asm("lock xadd %0, %2" : "=a" (inc_value) : "a" (inc_value), "m" (number));
+
+    return inc_value;
 }
 
 int CPU::fdec(volatile int &number){
-    int val = -1;
-    int r;
-    asm("lock \n \t"
-        "xadd %1, %0":
-        "+m"( number), "=r"(r):
-        "1"(val):
-        "memory","cc");
+    // Return the number's initial value and saves decremented value in number
+    int dec_value = -1;
+    asm("lock xadd %0, %2" : "=a" (dec_value) : "a" (dec_value), "m" (number));
     
-    return number;
+    return dec_value;
 }
-
 
 __END_API
