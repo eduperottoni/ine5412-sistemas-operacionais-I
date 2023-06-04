@@ -13,7 +13,6 @@ CPU::Context Thread::_main_context;
 
 Thread::~Thread(){
     delete _context;
-    _context = nullptr;
 }
 
 unsigned int Thread::get_time(){
@@ -67,7 +66,7 @@ int Thread::switch_context(Thread * prev, Thread * next) {
 
 void Thread::thread_exit (int exit_code) {
     // Inicializa o exit_code
-    _exit_code = _id;
+    Thread::_exit_code = exit_code;
     // Seta estado como finalizando
     _state = State::FINISHING;
     // Chama resume da thread que está esperando por seu final

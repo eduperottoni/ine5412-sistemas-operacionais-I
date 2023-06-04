@@ -25,6 +25,7 @@ void Semaphore::v() {
 }
 
 void Semaphore::sleep() {
+
     Thread* _current = Thread::running();
     db<Semaphore>(TRC) << "[DEBUG] Putting running to sleep " << _current -> id() << "\n";
     unsigned int priority = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
@@ -35,8 +36,7 @@ void Semaphore::sleep() {
 
 void Semaphore::wakeup() {
     // Chama wakeup da thread que deve ser acordada
-    Thread* thread = _sleeping.remove() -> object();
-    if (thread -> context()) thread -> wakeup();
+    _sleeping.remove() -> object() -> wakeup();
 }
 
 void Semaphore::wakeup_all() {
