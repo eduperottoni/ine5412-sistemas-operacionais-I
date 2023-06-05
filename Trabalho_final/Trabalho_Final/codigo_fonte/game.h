@@ -56,6 +56,8 @@ __BEGIN_API
 
 class Game
 {
+protected:
+    typedef CPU::Context Context;
 
 public:
     // Inicializiando as threads
@@ -65,13 +67,9 @@ public:
     ~Game();
 
     // Elementos do mapa
-    typedef enum {W,a,E,P};
+    // typedef enum elements {W,a,E,P};
 
-    // Estados da Thread game
-    typedef enum {READY,RUNNING, FINISHING, BLOCKED} state;
-
-
-    // // 
+    //
     // inline static window[30][45] = 
     // {
     //     {W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W},
@@ -110,19 +108,22 @@ public:
     // Objeto de Janela
     static Window *_window;
 
+    // Método de inicialização do jogo
+    static void init();
+
+    private:
+        Context * volatile game_context;
+        // // Eixos x e y da tela
+        // int sizex;
+        // int sizey;
+
 };
 
 
-
-
-
-
-
-
-
-
-
-
+Game::Game(){
+    // Inicialização da Thread de jogo, criação do contexto
+    game_context = new CPU::Context();
+}
 
 __END_API
 
