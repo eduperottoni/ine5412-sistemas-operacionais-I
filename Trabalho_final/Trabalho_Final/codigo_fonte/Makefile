@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -g -Wall -ansi -pedantic -std=c++17
+CFLAGS = -g -Wall -ansi -pedantic -std=c++17 -lsfml-graphics -lsfml-window -lsfml-system
 INCLUDES_CC = ${wildcard *.cc}
 # INCLUDES_H = ${wildcard *.h}
 OUT = ${DIR}/main
@@ -9,7 +9,7 @@ DIR=build
 # Compiling
 all: clean mk_dir
 	@ echo 'Building executable file ${OUT}'
-	@ ${CC} ${CFLAGS} ${INCLUDES_CC} -o ${OUT}
+	@ ${CC} ${CFLAGS} ${INCLUDES_CC} -o ${OUT} -lsfml-graphics -lsfml-window -lsfml-system
 	@ echo 'Executable file ${OUT} created!'
 
 # Checking using valgrind
@@ -31,6 +31,7 @@ run:
 mk_dir:
 	@ mkdir -p ${DIR}
 	@ echo ''${DIR}' dir created!'
+
 
 #This submission command was copied from INE5410 exercises
 submission: clean

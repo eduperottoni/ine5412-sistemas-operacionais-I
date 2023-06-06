@@ -4,6 +4,9 @@
 #include <iostream>
 #include <png.h>
 #include <SFML/Graphics.hpp>
+#include "traits.h"
+
+__BEGIN_API
 
 class Window
 {
@@ -35,6 +38,14 @@ private:
     //Enemy space ship texture
     sf::Texture enemy_ship_tex;
     sf::Sprite enemy_ship_sprite;
+
+    // // Chamada do construtor
+    // Window::Window()
+    // {
+    //     load_and_bind_textures();
+    // }
 };
+
+__END_API
 
 #endif

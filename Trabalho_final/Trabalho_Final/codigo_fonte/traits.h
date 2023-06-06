@@ -16,6 +16,7 @@ class System;
 class Lists;
 class Semaphore;
 class Game;
+// class Window;
 
 //declaração da classe Traits
 template<typename T>
@@ -69,9 +70,14 @@ struct Traits<Semaphore> : public Traits<void>
 template<>
 struct Traits<Game> : public Traits<void>
 {
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
+// template<>
+// struct Traits<Window> : public Traits<void>
+// {
+//     static const bool debugged = true;
+// };
 
 __END_API
 

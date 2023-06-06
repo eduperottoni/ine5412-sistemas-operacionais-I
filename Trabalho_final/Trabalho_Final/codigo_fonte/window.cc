@@ -1,5 +1,6 @@
 #include "window.h"
 
+__BEGIN_API
 
 Window::Window()
 {
@@ -12,7 +13,9 @@ void Window::draw_texture(unsigned int texture, int length, int height, float an
 
 void Window::run()
 {
-    sf::RenderWindow window(sf::VideoMode(900, 560), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(900, 560), "Brick Game");
+
+
 
     //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
     //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
@@ -23,11 +26,11 @@ void Window::run()
         sf::Event event;
         while (window.pollEvent(event))
         {
-            switch (event.type) {
+            switch(event.type) {
             case sf::Event::Closed:
-                 window.close();
-                 break;
-            
+                window.close();
+                break;
+
             // key pressed
             case sf::Event::KeyPressed:
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
@@ -41,7 +44,9 @@ void Window::run()
                 } else
                     std::cout << "Keyboard pressed = " << event.key.code << std::endl;
                 break;
-            
+
+            default:
+                break;
             }
         }
 
@@ -80,3 +85,5 @@ void Window::load_and_bind_textures()
     enemy_ship_sprite.setTexture(enemy_ship_tex);
     enemy_ship_sprite.scale(-0.5, -0.5);
 }
+
+__END_API

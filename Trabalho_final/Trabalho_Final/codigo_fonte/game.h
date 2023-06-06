@@ -7,6 +7,7 @@
 #include "semaphore.h"
 #include "traits.h"
 #include "window.h"
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 
@@ -56,9 +57,6 @@ __BEGIN_API
 
 class Game
 {
-protected:
-    typedef CPU::Context Context;
-
 public:
     // Inicializiando as threads
     Game();
@@ -67,63 +65,64 @@ public:
     ~Game();
 
     // Elementos do mapa
-    // typedef enum elements {W,a,E,P};
-
-    //
-    // inline static window[30][45] = 
-    // {
-    //     {W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W},
-    //     {W,a,a,E,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,E,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,P,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,a,a,E,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,E,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
-    //     {W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W}
-    // };
-
-    // Objeto de Janela
-    static Window *_window;
+    // W: wall
+    // a: arena
+    // E: enemy
+    // P: player
+    // S: score
+    // L: Life
+    // Lv: Level
+    typedef enum {W,a,E,P,S,L,Lv} tile;
 
     // Método de inicialização do jogo
     static void init();
 
+    protected:
+    // Matriz de elementos da arena
+    inline static tile window[31][45] = 
+    {
+        {W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W},
+        {W,a,a,E,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,E,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,S,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,L,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,P,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,a,a,E,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,a,E,a,a,W,a,a,a,a,a,a,a,a,a,a,a,a,W},
+        {W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W}
+    };
+
+    // Chamada de Context
+    typedef CPU::Context Context;
+
     private:
         Context * volatile game_context;
-        // // Eixos x e y da tela
-        // int sizex;
-        // int sizey;
+        // Objeto de Janela
+        Window * _window;
 
 };
-
-
-Game::Game(){
-    // Inicialização da Thread de jogo, criação do contexto
-    game_context = new CPU::Context();
-}
 
 __END_API
 
