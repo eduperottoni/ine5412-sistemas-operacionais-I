@@ -1,4 +1,8 @@
 #include "window.h"
+#include "keyboard.h"
+#include "src/lib/thread.h"
+
+__USING_GAME
 
 int main(void)
 {
@@ -6,5 +10,10 @@ int main(void)
 
     window.run();
 
+    //window_thread = new Thread(window.run());
+
+    //Keyboard keyboard;
+
+    //keyboard_thread = Thread(keyboard.run());
     return 0;
 }

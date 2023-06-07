@@ -4,6 +4,9 @@
 #include <iostream>
 #include <png.h>
 #include <SFML/Graphics.hpp>
+#include "traits.h"
+
+__BEGIN_GAME
 
 class Window
 {
@@ -29,7 +32,10 @@ private:
     sf::Sprite shot_sprite;
     
     //Space ship texture
-    sf::Texture space_ship_tex;
+    sf::Texture space_ship_up;
+    sf::Texture space_ship_down;
+    sf::Texture space_ship_right;
+    sf::Texture space_ship_left;
     sf::Sprite space_ship_sprite;
 
     //Enemy space ship texture
@@ -38,3 +44,5 @@ private:
 };
 
 #endif
+
+__END_GAME
