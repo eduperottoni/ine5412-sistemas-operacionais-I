@@ -1,4 +1,4 @@
-#include "cpu.h"
+#include "src/lib/cpu.h"
 #include <iostream>
 
 __BEGIN_API

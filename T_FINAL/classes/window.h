@@ -4,16 +4,16 @@
 #include <iostream>
 #include <png.h>
 #include <SFML/Graphics.hpp>
-#include "traits.h"
+#include "../src/lib/traits.h"
 
-__BEGIN_GAME
+__BEGIN_API
 
 class Window
 {
 public:
-    Window();
-
-    void run();
+    Window() {std::cout << "Construindo Window" << std::endl; };
+    ~Window() {};
+    static void run();
 
     void draw_texture(unsigned int texture, int length, int height, float angle);
 
@@ -43,6 +43,7 @@ private:
     sf::Sprite enemy_ship_sprite;
 };
 
-#endif
+__END_API
 
-__END_GAME
+
+#endif

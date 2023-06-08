@@ -1,5 +1,5 @@
-#include "semaphore.h"
-#include "thread.h"
+#include "src/lib/semaphore.h"
+#include "src/lib/thread.h"
 
 __BEGIN_API
 

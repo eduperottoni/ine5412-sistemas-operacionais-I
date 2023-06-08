@@ -1,8 +1,8 @@
-#include "classes/debug.h"
+#include "src/lib/debug.h"
 
-__BEGIN_GAME
+__BEGIN_API
 
 Debug::Begl Debug::begl;
 Debug::Err Debug::error;
 
-__END_GAME
+__END_API

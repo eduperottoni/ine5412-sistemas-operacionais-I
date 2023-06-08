@@ -1,4 +1,4 @@
-#include "thread.h"
+#include "src/lib/thread.h"
 
 __BEGIN_API
 

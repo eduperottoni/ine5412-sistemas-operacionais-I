@@ -2,11 +2,11 @@
 #define MOVING_SPRITE_H
 
 
-#include "traits.h"
+#include "../src/lib/traits.h"
 #include "sprite.h"
 #include <tuple>
 
-__BEGIN_GAME
+__BEGIN_API
 
 class MovingSprite : public Sprite {
     public:
@@ -15,6 +15,6 @@ class MovingSprite : public Sprite {
         int speed;
 };
 
-__END_GAME
+__END_API
 
 #endif

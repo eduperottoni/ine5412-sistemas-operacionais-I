@@ -1,12 +1,12 @@
 #ifndef SPACESHIP_H
 #define SPACESHIP_H
 
-#include "traits.h"
-#include "debug.h"
+#include "../src/lib/traits.h"
+#include "../src/lib/debug.h"
 #include "moving_sprite.h"
 #include <tuple>
 
-__BEGIN_GAME
+__BEGIN_API
 
 class Spaceship : public MovingSprite {
     public:
@@ -15,6 +15,6 @@ class Spaceship : public MovingSprite {
     private:
 };
 
-__END_GAME
+__END_API
 
 #endif

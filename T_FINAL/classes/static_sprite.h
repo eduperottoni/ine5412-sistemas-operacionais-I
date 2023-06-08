@@ -1,17 +1,17 @@
 #ifndef STATIC_SPRITE_H
 #define STATIC_SPRITE_H
 
-#include "traits.h"
-#include "debug.h"
+#include "../src/lib/traits.h"
+#include "../src/lib/debug.h"
 #include <tuple>
 
-__BEGIN_GAME
+__BEGIN_API
 
 class StaticSprite {
     public:
     private:
 };
 
-__END_GAME
+__END_API
 
 #endif

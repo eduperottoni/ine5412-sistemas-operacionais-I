@@ -9,24 +9,19 @@
 
 __BEGIN_API
 
-class CPU; //declaração das classes criadas nos trabalhos devem ser colocadas aqui
-class Thread;
+//Declaração das classes criadas no jogo devem ser colocadas aqui
 class Debug;
+class Sprite;
+class CPU;
+class Thread;
 class System;
 class Lists;
+class Game;
 class Semaphore;
 
 //declaração da classe Traits
 template<typename T>
 struct Traits {};
-
-template<>
-struct Traits<CPU>: public Traits<void>
-{
-    //Adicionar aqui a declaração do tamanho da Pilha
-    static const unsigned int STACK_SIZE = 8 * 1024; // 1Kb
-    static const bool debugged = true;
-};
 
 // Gerencia os 4 níveis gerais de debug
 template<>
@@ -38,31 +33,44 @@ struct Traits<Debug>: public Traits<void>
     static const bool trace = true;
 };
 
+template<>
+struct Traits<CPU>: public Traits<void>
+{
+    //Adicionar aqui a declaração do tamanho da Pilha
+    static const unsigned int STACK_SIZE = 8 * 1024; // 1Kb
+    static const bool debugged = true;
+};
+
 // Ativa ou desativa o debug para cada classe
+template<>
+struct Traits<Sprite>: public Traits<void>
+{
+    static const bool debugged = true;
+};
 
 template<>
-struct Traits<System> : public Traits<void>
+struct Traits<Lists>: public Traits<void>
 {
     static const bool debugged = false;
 };
 
 template<>
-struct Traits<Thread> : public Traits<void>
+struct Traits<System>: public Traits<void>
 {
-    static const bool debugged = false;
+    static const bool debugged = true;
+};
+
+template<>
+struct Traits<Thread>: public Traits<void>
+{
+    static const bool debugged = true;
 };
 
 
 template<>
-struct Traits<Lists> : public Traits<void>
+struct Traits<Semaphore>: public Traits<void>
 {
-    static const bool debugged = false;
-};
-
-template<>
-struct Traits<Semaphore> : public Traits<void>
-{
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 

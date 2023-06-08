@@ -1,14 +1,20 @@
-#include "window.h"
+#include "classes/window.h"
 #include "keyboard.h"
+#include "src/lib/system.h"
 #include "src/lib/thread.h"
+#include "classes/game.h"
 
-__USING_GAME
+__USING_API
+
 
 int main(void)
 {
-    Window window;
+    System::init(&Game::run);
+    return 0;
 
-    window.run();
+    // Keyboard keyboard;
+
+    // keyboard.run();
 
     //window_thread = new Thread(window.run());
 

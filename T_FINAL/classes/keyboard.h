@@ -2,18 +2,24 @@
 #define KEYBOARD_H
 
 
-#include "traits.h"
+#include "../src/lib/traits.h"
 #include "sprite.h"
 #include <tuple>
 
-__BEGIN_GAME
+__BEGIN_API
 
 
 class Keyboard {
+public:
+    Keyboard();
+
+    void run();
+
+private:
+    void read_key();
 
 };
 
-
-__END_GAME
+__END_API
 
 #endif

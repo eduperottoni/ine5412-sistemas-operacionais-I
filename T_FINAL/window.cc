@@ -1,76 +1,82 @@
+#include "classes/window.h"
+#include "classes/player.h"
 #include "window.h"
-#include "player.h"
-#include <list>
 
-__BEGIN_GAME
+__BEGIN_API
 
-Window::Window()
-{
-    load_and_bind_textures();
-}
+// Window::Window()
+// {
+//     std::cout << "Construindo Window" << std::endl;
+//     load_and_bind_textures();
+// }
 
 void Window::draw_texture(unsigned int texture, int length, int height, float angle)
 {
 }
 
+// Window::Window()
+// {
+//     std::cout << "Construindo Window" << std::endl;
+// }
 void Window::run()
 {
-    sf::RenderWindow window(sf::VideoMode(900, 560), "SFML works!");
+    std::cout << "Run iniciado!" << std::endl;
+    // sf::RenderWindow window(sf::VideoMode(900, 560), "SFML works!");
 
-    window.setFramerateLimit(60);
+    // window.setFramerateLimit(60);
     
-    //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
-    //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
-    window.setKeyRepeatEnabled(false);
+    // //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
+    // //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
+    // window.setKeyRepeatEnabled(false);
 
-    space_ship_sprite.setPosition(220, 365);
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            switch (event.type) {
-            case sf::Event::Closed:
-                 window.close();
-                 break;
+    // space_ship_sprite.setPosition(220, 365);
+    // while (window.isOpen())
+    // {
+    //     sf::Event event;
+    //     while (window.pollEvent(event))
+    //     {
+    //         switch (event.type) {
+    //         case sf::Event::Closed:
+    //              window.close();
+    //              break;
             
-            // key pressed
-            case sf::Event::KeyPressed:
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-                    space_ship_sprite.setTexture(space_ship_left);
-                    std::cout << "Keyboard esquerda!" << std::endl;
-                } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-                    space_ship_sprite.setTexture(space_ship_right);
-                    std::cout << "Keyboard direita!" << std::endl;
-                } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-                    space_ship_sprite.setTexture(space_ship_down);
-                    std::cout << "Keyboard para baixo!" << std::endl;
-                } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-                    space_ship_sprite.setTexture(space_ship_up);
-                    std::cout << "Keyboard para cima!" << std::endl;
-                } else
-                    std::cout << "Keyboard pressed = " << event.key.code << std::endl;
-                break;
-            default:
-                break;
-            }    
-        }
+    //         // key pressed
+    //         case sf::Event::KeyPressed:
+    //             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    //                 space_ship_sprite.setTexture(space_ship_left);
+    //                 std::cout << "Keyboard esquerda!" << std::endl;
+    //             } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+    //                 space_ship_sprite.setTexture(space_ship_right);
+    //                 std::cout << "Keyboard direita!" << std::endl;
+    //             } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    //                 space_ship_sprite.setTexture(space_ship_down);
+    //                 std::cout << "Keyboard para baixo!" << std::endl;
+    //             } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+    //                 space_ship_sprite.setTexture(space_ship_up);
+    //                 std::cout << "Keyboard para cima!" << std::endl;
+    //             } else
+    //                 std::cout << "Keyboard pressed = " << event.key.code << std::endl;
+    //             break;
+    //         default:
+    //             break;
+    //         }    
+    //     }
 
-        window.clear();
-        window.draw(maze_sprite);
+    //     window.clear();
+    //     window.draw(maze_sprite);
         
         
-        window.draw(space_ship_sprite);
-        space_ship_sprite.setPosition(space_ship_sprite.getPosition().x - 1, space_ship_sprite.getPosition().y - 1);
+    //     window.draw(space_ship_sprite);
+    //     space_ship_sprite.setPosition(space_ship_sprite.getPosition().x - 1, space_ship_sprite.getPosition().y - 1);
         
-        enemy_ship_sprite.setPosition(245, 150);
-        window.draw(enemy_ship_sprite);
+    //     enemy_ship_sprite.setPosition(245, 150);
+    //     window.draw(enemy_ship_sprite);
 
-        shot_sprite.setPosition(204, 400);
-        window.draw(shot_sprite);
+    //     shot_sprite.setPosition(204, 400);
+    //     window.draw(shot_sprite);
         
-        window.display();
-    }
+    //     window.display();
+    // }
 }
 
 void Window::load_and_bind_textures()
@@ -101,4 +107,4 @@ void Window::load_and_bind_textures()
     // Player* player = new Player()
 }
 
-__END_GAME
+__END_API
