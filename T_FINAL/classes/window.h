@@ -13,7 +13,7 @@ class Window
 public:
     Window() {std::cout << "Construindo Window" << std::endl; };
     ~Window() {};
-    static void run();
+    void run();
 
     void draw_texture(unsigned int texture, int length, int height, float angle);
 
