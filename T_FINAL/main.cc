@@ -1,5 +1,5 @@
 #include "classes/window.h"
-#include "keyboard.h"
+#include "classes/keyboard.h"
 #include "src/lib/system.h"
 #include "src/lib/thread.h"
 #include "classes/game.h"

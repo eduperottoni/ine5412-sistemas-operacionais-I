@@ -16,8 +16,7 @@ private:
         std::cout << "Aqui 4" << std::endl;
         _window_obj = new Window();
         std::cout << "Aqui 5" << std::endl;
-        _window_obj->run();
-        std::cout << "Aqui 6" << std::endl;
+        _window_obj -> run();   
     }
 public:
     Game() {}

@@ -11,7 +11,7 @@ __BEGIN_API
 class Window
 {
 public:
-    Window() {std::cout << "Construindo Window" << std::endl; };
+    Window();
     ~Window() {};
     void run();
 
