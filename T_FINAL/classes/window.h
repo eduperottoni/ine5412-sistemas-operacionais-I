@@ -20,9 +20,6 @@ public:
 private:
     void load_and_bind_textures();
 
-
-private:
-
     // Maze Texture
     sf::Texture maze_tex;
     sf::Sprite maze_sprite;

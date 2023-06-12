@@ -7,22 +7,18 @@ __BEGIN_API
 Window::Window()
 {
     std::cout << "Construindo Window" << std::endl;
-    // load_and_bind_textures();
+    load_and_bind_textures();
 }
 
 void Window::draw_texture(unsigned int texture, int length, int height, float angle)
-{;
+{
 }
 
-// Window::Window()
-// {
-//     std::cout << "Construindo Window" << std::endl;
-// }
 void Window::run()
 {
 
     sf::RenderWindow window(sf::VideoMode(900, 560), "SFML works!");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(10);
 
     //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
     //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
@@ -31,7 +27,12 @@ void Window::run()
     space_ship_sprite.setPosition(220, 365);
     while (window.isOpen())
     {
-        std::cout << "loop aberto" << std::endl;
+        std::cout << "antes maze " << std::endl;
+        window.clear();
+        window.draw(maze_sprite);
+        std::cout << "dps maze " << std::endl;
+        
+        
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -59,30 +60,33 @@ void Window::run()
             
             }
         }
-        std::cout << "antes maze " << std::endl;
-        window.clear();
-        window.draw(maze_sprite);
-        std::cout << "dps maze " << std::endl;
-        
-        
+    
         space_ship_sprite.setPosition(space_ship_sprite.getPosition().x - 1, space_ship_sprite.getPosition().y - 1);
         window.draw(space_ship_sprite);
-        std::cout << space_ship_sprite.getPosition().x << std::endl;
-        // enemy_ship_sprite.setPosition(245, 150);
-        // window.draw(enemy_ship_sprite);
 
-        // shot_sprite.setPosition(204, 400);
-        // window.draw(shot_sprite);
+        std::cout << space_ship_sprite.getPosition().x << std::endl;
+        
+        enemy_ship_sprite.setPosition(245, 150);
+        window.draw(enemy_ship_sprite);
+
+        shot_sprite.setPosition(204, 400);
+        window.draw(shot_sprite);
         
         window.display();
         std::cout << "end loop" << std::endl;
     }
+    
 }
 
 void Window::load_and_bind_textures()
 {
-    // Bind map textures    
-    maze_tex.loadFromFile("sprites/maze/screen.png");
+    // Bind map textures
+    if(!maze_tex.loadFromFile("sprites/maze/screen.png")){
+        db<Window>(INF) << "[Debug] Não foi possível obter o arquivo\n";
+    }else{
+        db<Window>(INF) << "[Debug] Desenhando a Arena\n";
+    }
+
     maze_sprite.setTexture(maze_tex);
     maze_sprite.scale(1.5, 1.5);
 
