@@ -24,7 +24,7 @@ class Player : public Spaceship {
         static bool _ready;
     public:
         // Construtor de Classe
-        Player(){ }
+        Player();
         // Destrutor da classe
         ~Player();
         // Método para movimentar o personagem
@@ -33,8 +33,14 @@ class Player : public Spaceship {
         void rotate(const std::string direction);
         // Método para inciar o jogador
         void init();
-        // Método para pintar o jogador
-        static void spawn();
+        // Método para desenhar o jogador em uma determinada posição da tela
+        static void spawn(int x, int y);
+        // Obtendo a posição do jogador
+        int getposition(int x, int y);
+        // Seta a posição do jogador
+        void setposition(int x, int y);
+        // chamda de window
+        Window* _window_obj;
 };
 
 

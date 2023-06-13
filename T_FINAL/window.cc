@@ -12,7 +12,6 @@ Window::Window()
 
 void Window::draw_texture(unsigned int texture, int length, int height, float angle)
 {
-    texture;
 }
 
 void Window::run()
@@ -43,22 +42,30 @@ void Window::run()
             
             // key pressed
             case sf::Event::KeyPressed:
+                // // Player será movido para cima ou para baixo
+                // _player->move();
+                // // PLayer será movido para a esquerda ou para a direita
+                // _player->rotate();
+                
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
                     db<Window>(TRC) <<"[Debug] Tecla a esquerda \n";
-                    // Trocar a textura aqui
+                    space_ship_sprite.setTexture(space_ship_left);
                     space_ship_sprite.setPosition(space_ship_sprite.getPosition().x - 10, space_ship_sprite.getPosition().y);
                 
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-                    db<Window>(TRC) <<"[Debug] Tecla a direita \n";    
+                    db<Window>(TRC) <<"[Debug] Tecla a direita \n";
+                    space_ship_sprite.setTexture(space_ship_right);    
                     space_ship_sprite.setPosition(space_ship_sprite.getPosition().x + 10, space_ship_sprite.getPosition().y);
                 
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
                     db<Window>(TRC) <<"[Debug] Tecla para baixo \n";
-                    space_ship_sprite.setPosition(space_ship_sprite.getPosition().x, space_ship_sprite.getPosition().y - 10);
+                    space_ship_sprite.setTexture(space_ship_down);
+                    space_ship_sprite.setPosition(space_ship_sprite.getPosition().x, space_ship_sprite.getPosition().y + 10);
                 
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
                     db<Window>(TRC) <<"[Debug] Tecla para cima \n";
-                    space_ship_sprite.setPosition(space_ship_sprite.getPosition().x, space_ship_sprite.getPosition().y + 10);
+                    space_ship_sprite.setTexture(space_ship_up);
+                    space_ship_sprite.setPosition(space_ship_sprite.getPosition().x, space_ship_sprite.getPosition().y - 10);
 
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
                     db<Window>(TRC) <<"[Debug] Tiro orientado \n";
@@ -67,7 +74,7 @@ void Window::run()
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                     db<Window>(TRC) <<"[Debug] Jogo pausado !\n";
                     // Chamada de Pause
-                    
+
                 }
                 else
                     std::cout << "Keyboard pressed = " << event.key.code << std::endl;
@@ -81,11 +88,11 @@ void Window::run()
     
         window.draw(space_ship_sprite);
         
-        enemy_ship_sprite.setPosition(245, 150);
-        window.draw(enemy_ship_sprite);
+        // enemy_ship_sprite.setPosition(245, 150);
+        // window.draw(enemy_ship_sprite);
 
-        shot_sprite.setPosition(204, 400);
-        window.draw(shot_sprite);
+        // shot_sprite.setPosition(204, 400);
+        // window.draw(shot_sprite);
         
         window.display();
     }
@@ -117,7 +124,31 @@ void Window::load_and_bind_textures()
         db<Window>(INF) << "[Debug] Desenhando a nave\n";
     };
     space_ship_sprite.setTexture(space_ship_up);
-    space_ship_sprite.scale(-0.5, -0.5);
+    space_ship_sprite.scale(0.85, 0.85);
+
+    if(!space_ship_left.loadFromFile("sprites/space_ships/space_ship2.png")){
+        db<Window>(INF) << "[Debug] Não foi possível obter o arquivo\n";
+    }else {
+        db<Window>(INF) << "[Debug] Desenhando a nave\n";
+    };
+    space_ship_sprite.setTexture(space_ship_up);
+    space_ship_sprite.scale(0.85, 0.85);
+
+    if(!space_ship_down.loadFromFile("sprites/space_ships/space_ship3.png")){
+        db<Window>(INF) << "[Debug] Não foi possível obter o arquivo\n";
+    }else {
+        db<Window>(INF) << "[Debug] Desenhando a nave\n";
+    };
+    space_ship_sprite.setTexture(space_ship_up);
+    space_ship_sprite.scale(0.85, 0.85);
+
+    if(!space_ship_right.loadFromFile("sprites/space_ships/space_ship4.png")){
+        db<Window>(INF) << "[Debug] Não foi possível obter o arquivo\n";
+    }else {
+        db<Window>(INF) << "[Debug] Desenhando a nave\n";
+    };
+    space_ship_sprite.setTexture(space_ship_up);
+    space_ship_sprite.scale(0.85, 0.85);
 
     if(!enemy_ship_tex.loadFromFile("sprites/space_ships/enemy_space_ship1.png")){
         db<Window>(INF) << "[Debug] Não foi possível obter o arquivo\n";
@@ -125,7 +156,7 @@ void Window::load_and_bind_textures()
         db<Window>(INF) << "[Debug] Desenhando um inimigo\n";
     };
     enemy_ship_sprite.setTexture(enemy_ship_tex);
-    enemy_ship_sprite.scale(-0.5, -0.5);
+    enemy_ship_sprite.scale(0.85,0.85);
 }
 
 __END_API

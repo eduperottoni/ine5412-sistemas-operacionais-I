@@ -20,12 +20,11 @@ public:
 
     void pause();
 
-private:
+protected:
     void load_and_bind_textures();
 
-    // Método para pintar o jogador
-    void DrawPlayer();
-
+private:
+    Player * _player;
     // Maze Texture
     sf::Texture maze_tex;
     sf::Sprite maze_sprite;

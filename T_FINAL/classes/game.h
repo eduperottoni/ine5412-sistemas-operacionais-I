@@ -22,7 +22,7 @@ private:
     }
 public:
     Game() {}
-    ~Game() {}
+    ~Game();
     
     static void run(void* name) {
         db<Game>(INF) << "[Debug] Inciando a thread da janela\n";
@@ -30,7 +30,7 @@ public:
         db<Game>(INF) << "[Debug] Chamando join\n";
         _window_thread -> join();
         // realizar chamada da Thread Player
-    }  
+    };
 };
 
 
