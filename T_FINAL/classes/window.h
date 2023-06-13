@@ -5,6 +5,7 @@
 #include <png.h>
 #include <SFML/Graphics.hpp>
 #include "../src/lib/traits.h"
+#include "player.h"
 
 __BEGIN_API
 
@@ -19,6 +20,9 @@ public:
 
 private:
     void load_and_bind_textures();
+
+    // Método para pintar o jogador
+    void DrawPlayer();
 
     // Maze Texture
     sf::Texture maze_tex;
