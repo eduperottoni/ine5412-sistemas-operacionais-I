@@ -18,6 +18,8 @@ public:
 
     void draw_texture(unsigned int texture, int length, int height, float angle);
 
+    void pause();
+
 private:
     void load_and_bind_textures();
 

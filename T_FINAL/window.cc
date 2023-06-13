@@ -6,37 +6,36 @@ __BEGIN_API
 
 Window::Window()
 {
-    std::cout << "Construindo Window" << std::endl;
+    db<Window>(TRC) << "[Debug] Construindo a janela e carregando as texturas \n";
     load_and_bind_textures();
 }
 
 void Window::draw_texture(unsigned int texture, int length, int height, float angle)
 {
+    texture;
 }
 
 void Window::run()
 {
-
-    sf::RenderWindow window(sf::VideoMode(900, 560), "SFML works!");
-    window.setFramerateLimit(10);
+    db<Window>(TRC) << "[Debug] Rodando a janela !\n";
+    sf::RenderWindow window(sf::VideoMode(900, 560), "Brick Game");
+    window.setFramerateLimit(30);
 
     //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
     //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
     window.setKeyRepeatEnabled(false);
 
     space_ship_sprite.setPosition(220, 365);
+
     while (window.isOpen())
     {
-        std::cout << "antes maze " << std::endl;
         window.clear();
         window.draw(maze_sprite);
-        std::cout << "dps maze " << std::endl;
         
         
         sf::Event event;
         while (window.pollEvent(event))
         {
-            std::cout << "loop evento" << std::endl;
             switch (event.type) {
             case sf::Event::Closed:
                  window.close();
@@ -45,26 +44,42 @@ void Window::run()
             // key pressed
             case sf::Event::KeyPressed:
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-                    std::cout << "Keyboard esquerda!" << std::endl;
+                    db<Window>(TRC) <<"[Debug] Tecla a esquerda \n";
+                    // Trocar a textura aqui
+                    space_ship_sprite.setPosition(space_ship_sprite.getPosition().x - 10, space_ship_sprite.getPosition().y);
+                
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-                    std::cout << "Keyboard direita!" << std::endl;
+                    db<Window>(TRC) <<"[Debug] Tecla a direita \n";    
+                    space_ship_sprite.setPosition(space_ship_sprite.getPosition().x + 10, space_ship_sprite.getPosition().y);
+                
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-                    std::cout << "Keyboard para baixo!" << std::endl;
+                    db<Window>(TRC) <<"[Debug] Tecla para baixo \n";
+                    space_ship_sprite.setPosition(space_ship_sprite.getPosition().x, space_ship_sprite.getPosition().y - 10);
+                
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-                    std::cout << "Keyboard para cima!" << std::endl;
-                } else
+                    db<Window>(TRC) <<"[Debug] Tecla para cima \n";
+                    space_ship_sprite.setPosition(space_ship_sprite.getPosition().x, space_ship_sprite.getPosition().y + 10);
+
+                } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
+                    db<Window>(TRC) <<"[Debug] Tiro orientado \n";
+                    // Chamda de método para direcionar o tiro
+                
+                } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+                    db<Window>(TRC) <<"[Debug] Jogo pausado !\n";
+                    // Chamada de Pause
+                    
+                }
+                else
                     std::cout << "Keyboard pressed = " << event.key.code << std::endl;
                 break;
+
                 default:
                     break;
             
             }
         }
     
-        space_ship_sprite.setPosition(space_ship_sprite.getPosition().x - 1, space_ship_sprite.getPosition().y - 1);
         window.draw(space_ship_sprite);
-
-        std::cout << space_ship_sprite.getPosition().x << std::endl;
         
         enemy_ship_sprite.setPosition(245, 150);
         window.draw(enemy_ship_sprite);
@@ -73,7 +88,6 @@ void Window::run()
         window.draw(shot_sprite);
         
         window.display();
-        std::cout << "end loop" << std::endl;
     }
     
 }
@@ -86,19 +100,30 @@ void Window::load_and_bind_textures()
     }else{
         db<Window>(INF) << "[Debug] Desenhando a Arena\n";
     }
-
     maze_sprite.setTexture(maze_tex);
     maze_sprite.scale(1.5, 1.5);
 
-    shot_tex.loadFromFile("sprites/space_ships/shot.png");
+    if(!shot_tex.loadFromFile("sprites/space_ships/shot.png")){
+        db<Window>(INF) << "[Debug] Não foi possível obter o o arquivo\n";
+    }else {
+        db<Window>(INF) << "[Debug] Desenhando o tiro\n";
+    };
     shot_sprite.setTexture(shot_tex);
     shot_sprite.scale(-0.5, -0.5);
 
-    space_ship_up.loadFromFile("sprites/space_ships/space_ship1.png");
+    if(!space_ship_up.loadFromFile("sprites/space_ships/space_ship1.png")){
+        db<Window>(INF) << "[Debug] Não foi possível obter o arquivo\n";
+    }else {
+        db<Window>(INF) << "[Debug] Desenhando a nave\n";
+    };
     space_ship_sprite.setTexture(space_ship_up);
     space_ship_sprite.scale(-0.5, -0.5);
 
-    enemy_ship_tex.loadFromFile("sprites/space_ships/enemy_space_ship1.png");
+    if(!enemy_ship_tex.loadFromFile("sprites/space_ships/enemy_space_ship1.png")){
+        db<Window>(INF) << "[Debug] Não foi possível obter o arquivo\n";
+    } else {
+        db<Window>(INF) << "[Debug] Desenhando um inimigo\n";
+    };
     enemy_ship_sprite.setTexture(enemy_ship_tex);
     enemy_ship_sprite.scale(-0.5, -0.5);
 }

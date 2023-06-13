@@ -19,6 +19,7 @@ class Lists;
 class Game;
 class Semaphore;
 class Window;
+class Player;
 
 //declaração da classe Traits
 template<typename T>
@@ -38,7 +39,7 @@ template<>
 struct Traits<CPU>: public Traits<void>
 {
     //Adicionar aqui a declaração do tamanho da Pilha
-    static const unsigned int STACK_SIZE = 128 * 1024; // 1Kb
+    static const unsigned int STACK_SIZE = 64 * 1024; // 1Kb
     static const bool debugged = true;
 };
 
@@ -80,8 +81,17 @@ struct Traits<Window>: public Traits<void>
     static const bool debugged = true;
 };
 
+template<>
+struct Traits<Player>: public Traits<void>
+{
+    static const bool debugged = true;
+};
 
-
+template<>
+struct Traits<Game>: public Traits<void>
+{
+    static const bool debugged = true;
+};
 __END_API
 
 #endif
