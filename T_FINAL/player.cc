@@ -15,7 +15,7 @@ Player::Player(){
     // Chamada da Thread do Jogador
     _player = new Thread();    
     // Chamada de join
-    _player->join();
+    // _player->join();
     // Chamada de init do desenho
     init();
 }
@@ -63,6 +63,7 @@ void Player::rotate(const std::string direction){
 }
 
 void Player::spawn(int x, int y) {
+    db<Player>(INF) << "[Jogador] Chamada de spawn !\n";
     // Seta textura inicial
     space_ship_sprite.setTexture(space_ship_up);
     // Seta a escala da textura

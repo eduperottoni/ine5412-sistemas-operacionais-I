@@ -13,7 +13,7 @@ class Window
 {
 public:
     Window();
-    ~Window() {};
+    ~Window();
     void run();
 
     void draw_texture(unsigned int texture, int length, int height, float angle);
@@ -25,6 +25,7 @@ protected:
 
 private:
     Player * _player;
+    Thread *_window;
     // Maze Texture
     sf::Texture maze_tex;
     sf::Sprite maze_sprite;

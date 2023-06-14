@@ -22,7 +22,7 @@ unsigned int Thread::get_time(){
 }
 
 void Thread::init(void (*main)(void *)) {
-    db<Thread>(INF) << "[Debug] Thread::init() chamado\n";
+    db<Thread>(INF) << "[Thread] Thread::init() chamado\n";
     new (&_main) Thread(main, (void *) "main");
     new (&_dispatcher) Thread((void (*) (void*)) &Thread::dispatcher, (void*) NULL);
     // Using main_context to switch_context()
@@ -35,7 +35,7 @@ void Thread::init(void (*main)(void *)) {
 }
 
 void Thread::dispatcher(){
-    db<Thread>(TRC) << "[Debug] Executando dispatcher\n";
+    db<Thread>(TRC) << "[Thread] Executando dispatcher\n";
     while(!_ready.empty()){
         // Seleciona a próxima Thread a ser executada
         Thread* next_thread = _ready.remove()->object();
@@ -60,7 +60,7 @@ int Thread::id(){
 int Thread::switch_context(Thread * prev, Thread * next) {
     // Thread que está executando será a próxima
     _running = next;
-    db<Thread>(INF) << "[Debug] Trocando contexto: Thread " << prev -> id() << " -> Thread " << next -> id() << "\n";
+    db<Thread>(INF) << "[Thread] Trocando contexto: Thread " << prev -> id() << " -> Thread " << next -> id() << "\n";
     // CPU::switch_context() já retorna int
     return CPU::switch_context(prev -> context(), next -> context());
 }
@@ -73,18 +73,18 @@ void Thread::thread_exit (int exit_code) {
     // Chama resume da thread que está esperando por seu final
     if (_blocked_thread != nullptr) _blocked_thread -> resume();
 
-    db<Thread>(INF) << "[Debug] Finalizando Thread " << _id << "com exit_code = " << _exit_code << "\n";
+    db<Thread>(INF) << "[Thread] Finalizando Thread " << _id << "com exit_code = " << _exit_code << "\n";
     // Sede o processador
     yield();
 }
 
 void Thread::yield() {
-    db<Thread>(TRC) << "[Debug] Execução de yield iniciada para a Thread " << _running -> id() << "\n";
+    db<Thread>(TRC) << "[Thread] Execução de yield iniciada para a Thread " << _running -> id() << "\n";
     // Acessar thread atual
     Thread *current_thread = _running;
     // Atualizar prioridade da thread atual (se não for main e se não estiver finalizando)
     if (current_thread -> id() != _main.id() && current_thread -> _state != FINISHING && current_thread -> _state != BLOCKED && current_thread -> _state != WAITING) {
-        db<Thread>(TRC) << "[Debug] Atualizando prioridade da thread " << current_thread -> id() << "\n";
+        db<Thread>(TRC) << "[Thread] Atualizando prioridade da thread " << current_thread -> id() << "\n";
         // Atualiza prioridade da thread que chamou
         unsigned int new_priority = get_time();
         current_thread -> _link.rank(new_priority);
@@ -94,14 +94,14 @@ void Thread::yield() {
         _ready.insert(&current_thread->_link);
     }
     // Chama o dispatcher -> selecionará uma thread para execução
-    db<Thread>(TRC) << "[Debug] Thread que está chamando a dispatcher " << current_thread -> id() << "\n";
+    db<Thread>(TRC) << "[Thread] Thread que está chamando a dispatcher " << current_thread -> id() << "\n";
     _dispatcher._state = RUNNING;
     _running = &_dispatcher;
     switch_context(current_thread, &_dispatcher);
 }
 
 int Thread::join() {
-    db<Thread>(TRC) << "[DEBUG] Join called to Thread " << _id << "\n";
+    db<Thread>(TRC) << "[Thread] Join called to Thread " << _id << "\n";
 
     if (_state != State::FINISHING){
         _blocked_thread = _running;
@@ -112,7 +112,7 @@ int Thread::join() {
 }
 
 void Thread::suspend() {
-    db<Thread>(TRC) << "[DEBUG] Suspending thread " << _id << "\n";
+    db<Thread>(TRC) << "[Thread] Suspending thread " << _id << "\n";
 
     // Se a thread a ser suspensa não está em execução
     if (_running != this){
@@ -134,7 +134,7 @@ void Thread::suspend() {
 }
 
 void Thread::resume() {
-    db<Thread>(TRC) << "[DEBUG] Resuming thread " << _id << "\n";
+    db<Thread>(TRC) << "[Thread] Resuming thread " << _id << "\n";
     // Tira da fila global de bloqueados
     _blocked_list.remove(&_link);
     // Seta estado para pronto
@@ -144,7 +144,7 @@ void Thread::resume() {
 }
 
 void Thread::sleep() {
-    db<Thread>(TRC) << "[DEBUG] Thread " << _id << " sleeping" << "\n";
+    db<Thread>(TRC) << "[Thread] Thread " << _id << " sleeping" << "\n";
     // Seta estado como WAITING e sede o processador
     _state = State::WAITING;
     yield();
@@ -152,7 +152,7 @@ void Thread::sleep() {
 
 void Thread::wakeup() {
     // Seta estado como READY e insere na lista de prontos
-    db<Thread>(TRC) << "[DEBUG] Waking up Thread " << _id << "\n";
+    db<Thread>(TRC) << "[Thread] Waking up Thread " << _id << "\n";
     _state = State::READY;
     _ready.insert(&_link);
     yield();
