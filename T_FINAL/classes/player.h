@@ -40,7 +40,7 @@ class Player : public Spaceship {
         // Seta a posição do jogador
         void setposition(int x, int y);
         // chamda de window
-        Window* _window_obj;
+        Window * _window_obj;
 };
 
 

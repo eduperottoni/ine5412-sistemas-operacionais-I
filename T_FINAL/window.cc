@@ -38,10 +38,9 @@ void Window::run()
     // Preparação da chamada da Thread jogador:
     // Chamada do escalonador para ceder o processamento para criação do jogador
     // _window->join();
+
     // Instanciação do jodador
     _player = new Player();
-
-    space_ship_sprite.setPosition(220, 365);
 
     while (window.isOpen())
     {
@@ -65,33 +64,42 @@ void Window::run()
                 // _player->rotate();
                 
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+                    // Encapsulamento de funções, não funcional
+                    // _player->move("Left");
                     db<Window>(TRC) <<"[Window] Tecla a esquerda \n";
                     space_ship_sprite.setTexture(space_ship_left);
                     space_ship_sprite.setPosition(space_ship_sprite.getPosition().x - 10, space_ship_sprite.getPosition().y);
                 
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+                    // _player->move("Right");
                     db<Window>(TRC) <<"[Window] Tecla a direita \n";
                     space_ship_sprite.setTexture(space_ship_right);    
                     space_ship_sprite.setPosition(space_ship_sprite.getPosition().x + 10, space_ship_sprite.getPosition().y);
                 
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+                    // _player->rotate("Down");
                     db<Window>(TRC) <<"[Window] Tecla para baixo \n";
                     space_ship_sprite.setTexture(space_ship_down);
                     space_ship_sprite.setPosition(space_ship_sprite.getPosition().x, space_ship_sprite.getPosition().y + 10);
                 
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+                    // _player->rotate("Up");
                     db<Window>(TRC) <<"[Window] Tecla para cima \n";
                     space_ship_sprite.setTexture(space_ship_up);
                     space_ship_sprite.setPosition(space_ship_sprite.getPosition().x, space_ship_sprite.getPosition().y - 10);
 
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
                     db<Window>(TRC) <<"[Window] Tiro orientado \n";
-                    // Chamda de método para direcionar o tiro
+                    // Chamar o Tiro aqui
+                    shot_sprite.setTexture(shot_tex);
+                    shot_sprite.setPosition(space_ship_sprite.getPosition().x + 10, space_ship_sprite.getPosition().y + 10);
+                    // Chamada de método para direcionar o tiro
                 
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                     db<Window>(TRC) <<"[Window] Jogo pausado !\n";
                     // Chamada de Pause
-
+                    // Botando todas as Threads na fila de suspensos
+                    
                 }
                 else
                     std::cout << "Keyboard pressed = " << event.key.code << std::endl;
@@ -174,6 +182,14 @@ void Window::load_and_bind_textures()
     };
     enemy_ship_sprite.setTexture(enemy_ship_tex);
     enemy_ship_sprite.scale(0.85,0.85);
+
+    if(!shot_tex.loadFromFile("sprites/space_ships/shot.png")){
+        db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
+    } else {
+        db<Window>(INF) << "[Window] Desenhando um tiro\n";
+    };
+    shot_sprite.setTexture(enemy_ship_tex);
+    shot_sprite.scale(0.25,0.25);
 }
 
 __END_API

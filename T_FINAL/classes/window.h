@@ -9,8 +9,9 @@
 
 __BEGIN_API
 
-class Window
+class Window 
 {
+friend class Player;
 public:
     Window();
     ~Window();

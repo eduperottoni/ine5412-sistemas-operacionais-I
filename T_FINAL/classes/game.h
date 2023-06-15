@@ -15,9 +15,9 @@ private:
     static Thread* _player;
 
     static void window_run(){
-        db<Game>(INF) << "[Debug] Instanciando uma nova janela!\n";
+        db<Game>(INF) << "[Game] Instanciando uma nova janela!\n";
         _window_obj = new Window();
-        db<Game>(INF) << "[Debug] Chamando método run da janela!\n";
+        db<Game>(INF) << "[Game] Chamando método run da janela!\n";
         _window_obj -> run();
     }
 public:
@@ -25,9 +25,9 @@ public:
     ~Game();
     
     static void run(void* name) {
-        db<Game>(INF) << "[Debug] Inciando a thread da janela\n";
+        db<Game>(INF) << "[Game] Inciando a thread da janela\n";
         _window_thread = new Thread(window_run);
-        db<Game>(INF) << "[Debug] Chamando join\n";
+        db<Game>(INF) << "[Game] Chamando join\n";
         _window_thread -> join();
         // realizar chamada da Thread Player
     };

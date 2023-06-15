@@ -64,6 +64,11 @@ main: $(OBJECTS)
 	$(CC) -c $(CCFLAGS) $< -o $@
 # $(CC) -M $(CCFLAGS) $*.cc > $*.d
 
+OUT = ./main
+
+run:
+	@./${OUT}
+	
 # automatic variables
 # $< contains the first dependency file name
 # $@ contains the target file name
