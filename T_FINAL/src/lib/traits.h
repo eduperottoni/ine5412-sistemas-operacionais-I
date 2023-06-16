@@ -20,6 +20,7 @@ class Game;
 class Semaphore;
 class Window;
 class Player;
+class Keyboard;
 
 //declaração da classe Traits
 template<typename T>
@@ -39,7 +40,7 @@ template<>
 struct Traits<CPU>: public Traits<void>
 {
     //Adicionar aqui a declaração do tamanho da Pilha
-    static const unsigned int STACK_SIZE = 64 * 1024; // 1Kb
+    static const unsigned int STACK_SIZE = 500 * 1024; // 1Kb
     static const bool debugged = true;
 };
 
@@ -89,6 +90,12 @@ struct Traits<Player>: public Traits<void>
 
 template<>
 struct Traits<Game>: public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<>
+struct Traits<Keyboard>: public Traits<void>
 {
     static const bool debugged = true;
 };

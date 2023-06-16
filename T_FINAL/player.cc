@@ -13,7 +13,7 @@ static sf::Sprite space_ship_sprite;
 Player::Player(){
     db<Player>(INF) << "[Jogador] Construindo jogador!\n";
     // Chamada da Thread do Jogador
-    _player = new Thread();    
+    // _player = new Thread();    
     // Chamada de join
     // _player->join();
     // Chamada de init do desenho

@@ -5,32 +5,28 @@
 #include "../src/lib/thread.h"
 #include "../classes/window.h"
 #include "../classes/player.h"
+#include "../classes/keyboard.h"
+
 __BEGIN_API
 
 class Game
 {
 private:
-    static Thread* _window_thread;
     static Window* _window_obj;
+    static Keyboard* _keyboard_obj;
+    static Thread* _window_thread;
     static Thread* _player;
+    static Thread* _keyboard_thread;
 
-    static void window_run(){
-        db<Game>(INF) << "[Game] Instanciando uma nova janela!\n";
-        _window_obj = new Window();
-        db<Game>(INF) << "[Game] Chamando método run da janela!\n";
-        _window_obj -> run();
-    }
+
+    static void _window_run();
+    static void _keyboard_run();
+
 public:
     Game() {}
     ~Game();
     
-    static void run(void* name) {
-        db<Game>(INF) << "[Game] Inciando a thread da janela\n";
-        _window_thread = new Thread(window_run);
-        db<Game>(INF) << "[Game] Chamando join\n";
-        _window_thread -> join();
-        // realizar chamada da Thread Player
-    };
+    static void run(void* name);
 };
 
 

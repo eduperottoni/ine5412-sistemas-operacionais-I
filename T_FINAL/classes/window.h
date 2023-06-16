@@ -20,13 +20,14 @@ public:
     void draw_texture(unsigned int texture, int length, int height, float angle);
 
     void pause();
+    sf::RenderWindow* get_sf_window();
 
 protected:
     void load_and_bind_textures();
 
 private:
-    Player * _player;
-    Thread *_window;
+    Player* _player;
+    sf::RenderWindow _sf_window;
     // Maze Texture
     sf::Texture maze_tex;
     sf::Sprite maze_sprite;
