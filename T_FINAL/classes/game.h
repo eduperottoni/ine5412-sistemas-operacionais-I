@@ -14,13 +14,14 @@ class Game
 private:
     static Window* _window_obj;
     static Keyboard* _keyboard_obj;
+    static Player* _player_obj;
     static Thread* _window_thread;
     static Thread* _player;
     static Thread* _keyboard_thread;
 
-
     static void _window_run();
     static void _keyboard_run();
+    static void _player_run();
 
 public:
     Game() {}

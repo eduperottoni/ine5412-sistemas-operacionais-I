@@ -16,6 +16,17 @@ public:
 
     void run();
 
+    enum State {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        SHOOT,
+        CLOSE,
+        PAUSE,
+        UNPAUSE,
+    };
+
 private:
     void read_key();
     sf::RenderWindow* _sf_window;

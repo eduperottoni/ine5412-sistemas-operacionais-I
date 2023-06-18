@@ -47,6 +47,7 @@ void Keyboard::run()
                 
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
                     // _player->move("Right");
+                    // fila.push(KeyAction::RIGHT)
                     db<Window>(TRC) <<"[Window] Tecla a direita \n";
                     // space_ship_sprite.setTexture(space_ship_right);    
                     // space_ship_sprite.setPosition(space_ship_sprite.getPosition().x + 10, space_ship_sprite.getPosition().y);

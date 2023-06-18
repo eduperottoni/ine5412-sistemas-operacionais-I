@@ -117,6 +117,8 @@ void Window::run()
     
         _sf_window.draw(space_ship_sprite);
         
+        //TODO
+        // player.set_position()
         enemy_ship_sprite.setPosition(245, 150);
         _sf_window.draw(enemy_ship_sprite);
 
@@ -139,6 +141,7 @@ void Window::load_and_bind_textures()
     }
     maze_sprite.setTexture(maze_tex);
     maze_sprite.scale(1.5, 1.5);
+    //TODO player.render()
 
     if(!shot_tex.loadFromFile("sprites/space_ships/shot.png")){
         db<Window>(INF) << "[Window] Não foi possível obter o o arquivo\n";
