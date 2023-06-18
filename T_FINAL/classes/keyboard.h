@@ -6,30 +6,34 @@
 #include "window.h"
 #include <tuple>
 #include <SFML/Graphics.hpp>
+#include <queue>
 
 __BEGIN_API
 
+class Controller;
 
 class Keyboard {
 public:
-    Keyboard(Window* window);
 
     void run();
 
-    enum State {
+    enum Move {
         UP,
         DOWN,
         LEFT,
         RIGHT,
         SHOOT,
-        CLOSE,
+        EXIT,
         PAUSE,
         UNPAUSE,
     };
 
+    Keyboard(Window* window, Controller* controller);
+
 private:
     void read_key();
     sf::RenderWindow* _sf_window;
+    std::queue<Keyboard::Move>* _action_queue;
 };
 
 __END_API

@@ -21,6 +21,7 @@ class Semaphore;
 class Window;
 class Player;
 class Keyboard;
+class Controller;
 
 //declaração da classe Traits
 template<typename T>
@@ -66,7 +67,7 @@ struct Traits<System>: public Traits<void>
 template<>
 struct Traits<Thread>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 
@@ -79,23 +80,29 @@ struct Traits<Semaphore>: public Traits<void>
 template<>
 struct Traits<Window>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
 struct Traits<Player>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
 struct Traits<Game>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
 struct Traits<Keyboard>: public Traits<void>
+{
+    static const bool debugged = false;
+};
+
+template<>
+struct Traits<Controller>: public Traits<void>
 {
     static const bool debugged = true;
 };
