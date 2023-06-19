@@ -10,6 +10,13 @@ Window::Window()
     db<Window>(TRC) << "[Window] Construindo a janela e carregando as texturas \n";
     db<Window>(TRC) << "[Window] Criação da Thread da janela \n";
     // carregamento das texturas
+    map<MovingSprite::Orientation, string> sprites;
+    sprites[MovingSprite::Orientation::RIGHT] = "src/images/space_ships/space_ship1.png";
+    sprites[MovingSprite::Orientation::LEFT] = "src/images/space_ships/space_ship2.png";
+    sprites[MovingSprite::Orientation::UP] = "src/images/space_ships/space_ship3.png";
+    sprites[MovingSprite::Orientation::DOWN] = "src/images/space_ships/space_ship4.png";
+
+    _player = new Player(sprites);
     load_and_bind_textures();
 }
 
@@ -42,7 +49,7 @@ void Window::run()
     // _window->join();
 
     // Instanciação do jodador
-    _player = new Player();
+    // _player = new Player();
 
     db<Window>(TRC) << "[Window] Jogador construido !\n";
 
@@ -114,8 +121,9 @@ void Window::run()
             
         //     }
         // }
-    
-        _sf_window.draw(space_ship_sprite);
+
+        sf::Sprite player_sprite = _player->get_current_sprite();
+        _sf_window.draw(player_sprite);
         
         //TODO
         // player.set_position()
@@ -133,6 +141,7 @@ void Window::run()
 
 void Window::load_and_bind_textures()
 {
+    // for(int i = 0; i < )
     // Bind map textures
     if(!maze_tex.loadFromFile("sprites/maze/screen.png")){
         db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
@@ -141,7 +150,8 @@ void Window::load_and_bind_textures()
     }
     maze_sprite.setTexture(maze_tex);
     maze_sprite.scale(1.5, 1.5);
-    //TODO player.render()
+    
+    // player.render()
 
     if(!shot_tex.loadFromFile("sprites/space_ships/shot.png")){
         db<Window>(INF) << "[Window] Não foi possível obter o o arquivo\n";

@@ -5,14 +5,40 @@
 #include "../src/lib/traits.h"
 #include "sprite.h"
 #include <tuple>
+#include <map>
+#include <string>
+
 
 __BEGIN_API
 
+using namespace std;
 class MovingSprite : public Sprite {
     public:
-        void move();
-    private:
-        int speed;
+        enum Orientation {
+            UNIQUE,
+            RIGHT,
+            LEFT,
+            UP,
+            DOWN
+        };
+        MovingSprite(const map<Orientation, string>& paths);
+        // ~MovingSprite();
+
+        // Moves the Sprite (sets the texture and the position)
+        void move(Orientation orientation);
+
+        // Returns the current sprite, that contains the correct texture.
+        sf::Sprite& get_current_sprite();
+
+        // Sets the position of the object
+        void set_position(tuple<int, int>);
+
+    protected:
+        int _speed;
+        Orientation _orientation;
+        sf::Sprite _current_sprite;
+        
+        map<Orientation, sf::Texture> _textures;
 };
 
 __END_API

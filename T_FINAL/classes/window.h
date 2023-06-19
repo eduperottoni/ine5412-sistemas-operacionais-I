@@ -1,5 +1,5 @@
-#ifndef window_h
-#define window_h
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include <iostream>
 #include <png.h>
