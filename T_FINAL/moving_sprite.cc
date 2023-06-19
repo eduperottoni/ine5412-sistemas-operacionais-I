@@ -36,6 +36,36 @@ MovingSprite::~MovingSprite(){
 }
 */
 
+void MovingSprite::move(Orientation orientation)
+{
+    _current_sprite.setTexture(_textures.at(orientation));
+    float sf::Vector2f::x x_position = _current_sprite.getPosition().x;
+    float sf::Vector2f::y y_position = _current_sprite.getPosition().y;
+    switch (orientation)
+    {
+    case Orientation::LEFT:
+        x_position -= _speed;
+        break;
+    case Orientation::RIGHT:
+        x_position += _speed;
+        break;
+    case Orientation::UP;
+        y_position += _speed;
+        break;
+    case Orientation::DOWN;
+        y_position -= _speed;
+        break;
+    default:
+        break;
+    }
+    _current_sprite.setPosition(x_position, y_position)
+}
+
+MovingSprite::get_current_sprite()
+{
+    return _current_sprite;
+}
+
 MovingSprite::MovingSprite(const map<Orientation, string>& paths)
 {
     for(const auto& item : paths){
