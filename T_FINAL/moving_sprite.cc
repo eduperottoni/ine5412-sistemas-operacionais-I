@@ -39,8 +39,8 @@ MovingSprite::~MovingSprite(){
 void MovingSprite::move(Orientation orientation)
 {
     _current_sprite.setTexture(_textures.at(orientation));
-    float sf::Vector2f::x x_position = _current_sprite.getPosition().x;
-    float sf::Vector2f::y y_position = _current_sprite.getPosition().y;
+    float x_position = _current_sprite.getPosition().x;
+    float y_position = _current_sprite.getPosition().y;
     switch (orientation)
     {
     case Orientation::LEFT:
