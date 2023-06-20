@@ -1,13 +1,13 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-
+#include "keyboard.h"
 #include "../src/lib/traits.h"
 #include "sprite.h"
 #include "spaceship.h"
 #include <tuple>
 #include "../src/lib/thread.h"
-#include "../classes/window.h"
+#include <queue>
 
 __BEGIN_API
 
@@ -18,11 +18,20 @@ class Player : virtual public Spaceship {
         int health = 5;
         // Player's score
         int score = 0;
+        // Current player sprite
         sf::Sprite _current_sprite;
+        // Keyboard event queue
+        static std::queue<Keyboard::Move> _move_queue;
     public:
         // Construtor de Classe
-        Player(const std::map<Orientation, std::string>& paths)
-        : MovingSprite(paths), Spaceship(paths){};
+        Player(const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock)
+        : MovingSprite(paths, initial_orientation, clock), Spaceship(paths, initial_orientation, clock){
+            _speed = 100.f;
+        };
+
+        void run();
+
+        std::queue<Keyboard::Move>* get_move_queue();
 
         // sf::Sprite get_current_sprite();
 

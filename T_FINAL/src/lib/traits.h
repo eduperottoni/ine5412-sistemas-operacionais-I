@@ -22,8 +22,9 @@ class Window;
 class Player;
 class Keyboard;
 class Controller;
-class Enemy;
+class CollisionChecker;
 class MovingSprite;
+class Enemy;
 
 //declaração da classe Traits
 template<typename T>
@@ -82,7 +83,7 @@ struct Traits<Semaphore>: public Traits<void>
 template<>
 struct Traits<Window>: public Traits<void>
 {
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 template<>
@@ -110,13 +111,19 @@ struct Traits<Controller>: public Traits<void>
 };
 
 template<>
-struct Traits<Enemy>: public Traits<void>
+struct Traits<CollisionChecker>: public Traits<void>
 {
     static const bool debugged = true;
 };
 
 template<>
 struct Traits<MovingSprite>: public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<>
+struct Traits<Enemy>: public Traits<void>
 {
     static const bool debugged = true;
 };

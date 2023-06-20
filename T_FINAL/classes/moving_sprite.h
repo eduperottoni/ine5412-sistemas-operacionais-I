@@ -8,7 +8,7 @@
 #include <tuple>
 #include <map>
 #include <string>
-
+#include "clock.h"
 
 __BEGIN_API
 
@@ -21,8 +21,7 @@ class MovingSprite : public Sprite {
             UP,
             DOWN
         };
-        // MovingSprite(){};
-        MovingSprite(const map<Orientation, string>& paths);
+        MovingSprite(const map<Orientation, string>& paths, Orientation initial_orientation, Clock* clock);
         // ~MovingSprite();
 
         // Moves the Sprite (sets the texture and the position)
@@ -34,15 +33,16 @@ class MovingSprite : public Sprite {
         // std::tuple<float,float> getposition(){return std::make_tuple(_current_sprite.getPosition().x,_current_sprite.getPosition().y);}
 
         // Returns the current sprite, that contains the correct texture.
-        sf::Sprite& get_current_sprite();
+        sf::Sprite* get_sprite();
 
         // Sets the position of the object
         // void set_position(tuple<int, int>);
 
     protected:
-        int _speed;
-        Orientation _orientation;
-        sf::Sprite _current_sprite;
+        float _speed;
+        sf::Vector2f _movement;
+        sf::Sprite _sprite;
+        Clock* _clock;
         
         map<Orientation, sf::Texture> _textures;
 };

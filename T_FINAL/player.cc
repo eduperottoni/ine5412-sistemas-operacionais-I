@@ -7,6 +7,7 @@ sf::Texture space_ship_down;
 sf::Texture space_ship_right;
 sf::Texture space_ship_left;
 static sf::Sprite space_ship_sprite;
+std::queue<Keyboard::Move> Player::_move_queue;
 
 // sf::Sprite Player::get_current_sprite()
 // {
@@ -21,6 +22,43 @@ static sf::Sprite space_ship_sprite;
 //     // Chamada de init do desenho
 //     init();
 // }
+
+void Player::run() {
+    while (true) {
+        if (!_move_queue.empty()) {
+            Keyboard::Move move = _move_queue.front();
+            _move_queue.pop();
+            switch (move) {
+            case Keyboard::Move::UP:
+                db<Player>(TRC) << "[Player] UP \n";
+                MovingSprite::move(Orientation::UP);
+                break;
+            case Keyboard::Move::DOWN:
+                db<Player>(TRC) << "[Player] DOWN \n";
+                MovingSprite::move(Orientation::DOWN);
+                break;
+            case Keyboard::Move::LEFT:
+                db<Player>(TRC) << "[Player] LEFT \n";
+                MovingSprite::move(Orientation::LEFT);
+                break;
+            case Keyboard::Move::RIGHT:
+                db<Player>(TRC) << "[Player] RIGHT \n";
+                MovingSprite::move(Orientation::RIGHT);
+                break;
+            default:
+                break;
+            }
+        } else {
+            db<Player>(TRC) << "[PLAYER] EMPTY\n";
+        }
+        Thread::yield();
+    }
+}
+
+std::queue<Keyboard::Move>* Player::get_move_queue(){
+    db<Player>(TRC) << "[CONTROLLER] Entrei no getter do _move_queue! \n";
+    return &_move_queue;
+}
 
 
 // void Player::init(){

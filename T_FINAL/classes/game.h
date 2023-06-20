@@ -7,7 +7,11 @@
 #include "../classes/player.h"
 #include "../classes/keyboard.h"
 #include "../classes/controller.h"
+#include "../classes/clock.h"
+#include "../classes/game_config.h"
 #include "../classes/enemy.h"
+
+
 __BEGIN_API
 
 class Game
@@ -24,6 +28,10 @@ private:
     static Thread* _player_thread;
     static Thread* _keyboard_thread;
     static Thread* _controller_thread;
+    static Controller* _controller_obj;
+    static Clock* _clock_obj;
+
+    static GameConfig* _game_config;
 
     static void _window_run();
     static void _keyboard_run();
@@ -36,6 +44,8 @@ public:
     Game() {}
     ~Game();
     
+    static void configure();
+
     static void run(void* name);
 };
 
