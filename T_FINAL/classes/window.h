@@ -1,11 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include "../src/lib/traits.h"
 #include <iostream>
 #include <png.h>
 #include <SFML/Graphics.hpp>
 #include "../src/lib/traits.h"
-#include "player.h"
 
 __BEGIN_API
 
