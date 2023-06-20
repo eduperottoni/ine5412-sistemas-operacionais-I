@@ -1,9 +1,5 @@
 {
     "files.associations": {
-        "new": "cpp",
-        "tuple": "cpp",
-        "map": "cpp",
-        "iostream": "cpp",
-        "stdexcept": "cpp"
+        "tuple": "cpp"
     }
 }

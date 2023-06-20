@@ -31,7 +31,9 @@ void Keyboard::run()
     while (_sf_window->isOpen()) {
         sf::Event event;
         db<Keyboard>(INF) << "[Keyboard] Entrei no run!\n";
+
         while (_sf_window -> pollEvent(event)) {
+        
             db<Keyboard>(INF) << "[Keyboard] Entrei no loop!\n";
             switch (event.type) {
             case sf::Event::Closed:
@@ -98,6 +100,7 @@ void Keyboard::run()
                     break;
             }
         }
+        db<Keyboard>(TRC) <<"[Window] Chamando yield !\n";
         Thread::yield();
     }
 }

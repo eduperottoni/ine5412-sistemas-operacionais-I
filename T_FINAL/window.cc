@@ -1,5 +1,6 @@
 #include "classes/window.h"
 #include "classes/player.h"
+#include "classes/enemy.h"
 
 __BEGIN_API
 
@@ -27,6 +28,7 @@ sf::RenderWindow* Window::get_sf_window(){
 
 Window::~Window() {
     delete _player;
+    delete _enemy;
 }
 
 void Window::draw_texture(unsigned int texture, int length, int height, float angle)
@@ -38,7 +40,7 @@ void Window::run()
     db<Window>(TRC) << "[Window] Renderizando a janela !\n";
     
     _sf_window.setFramerateLimit(10);
-    db<Window>(TRC) << "[Window] oiii !\n";
+    db<Window>(TRC) << "[Window] FPS 10 !\n";
     //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
     //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
     _sf_window.setKeyRepeatEnabled(false);
@@ -50,8 +52,6 @@ void Window::run()
 
     // Instanciação do jodador
     // _player = new Player();
-
-    db<Window>(TRC) << "[Window] Jogador construido !\n";
 
     while (_sf_window.isOpen())
     {   db<Window>(TRC) << "[Window] Entrei no loop!\n";
@@ -135,6 +135,7 @@ void Window::run()
         _sf_window.draw(shot_sprite);
         
         _sf_window.display();
+        db<Window>(TRC) << "[Window] Chamada de yield!\n";
         Thread::yield();
     }
     
@@ -194,12 +195,36 @@ void Window::load_and_bind_textures()
     space_ship_sprite.setTexture(space_ship_right);
     space_ship_sprite.scale(0.85, 0.85);
 
-    if(!enemy_ship_tex.loadFromFile("sprites/space_ships/enemy_space_ship1.png")){
+    if(!enemy_ship_up.loadFromFile("sprites/space_ships/enemy_space_ship1.png")){
         db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
     } else {
         db<Window>(INF) << "[Window] Desenhando um inimigo\n";
     };
-    enemy_ship_sprite.setTexture(enemy_ship_tex);
+    enemy_ship_sprite.setTexture(enemy_ship_up);
+    enemy_ship_sprite.scale(0.85,0.85);
+
+    if(!enemy_ship_left.loadFromFile("sprites/space_ships/enemy_space_ship2.png")){
+        db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
+    } else {
+        db<Window>(INF) << "[Window] Desenhando um inimigo\n";
+    };
+    enemy_ship_sprite.setTexture(enemy_ship_left);
+    enemy_ship_sprite.scale(0.85,0.85);
+
+    if(!enemy_ship_right.loadFromFile("sprites/space_ships/enemy_space_ship3.png")){
+        db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
+    } else {
+        db<Window>(INF) << "[Window] Desenhando um inimigo\n";
+    };
+    enemy_ship_sprite.setTexture(enemy_ship_right);
+    enemy_ship_sprite.scale(0.85,0.85);
+
+        if(!enemy_ship_down.loadFromFile("sprites/space_ships/enemy_space_ship4.png")){
+        db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
+    } else {
+        db<Window>(INF) << "[Window] Desenhando um inimigo\n";
+    };
+    enemy_ship_sprite.setTexture(enemy_ship_down);
     enemy_ship_sprite.scale(0.85,0.85);
 
     if(!shot_tex.loadFromFile("sprites/space_ships/shot.png")){
@@ -207,7 +232,7 @@ void Window::load_and_bind_textures()
     } else {
         db<Window>(INF) << "[Window] Desenhando um tiro\n";
     };
-    shot_sprite.setTexture(enemy_ship_tex);
+    shot_sprite.setTexture(shot_tex);
     shot_sprite.scale(0.25,0.25);
 }
 

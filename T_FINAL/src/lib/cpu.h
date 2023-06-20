@@ -41,6 +41,7 @@ class CPU
 
 template<typename ... Tn>
 CPU::Context::Context(void (* func)(Tn ...),Tn ... an) {
+    // db<CPU>(TRC) << "[CPU] Chamada da CPU\n";
     // Initializes the context with getcontext()
     save();
     // Allocates the Context's stack

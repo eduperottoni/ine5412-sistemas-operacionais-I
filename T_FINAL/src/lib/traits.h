@@ -22,6 +22,8 @@ class Window;
 class Player;
 class Keyboard;
 class Controller;
+class Enemy;
+class MovingSprite;
 
 //declaração da classe Traits
 template<typename T>
@@ -41,8 +43,8 @@ template<>
 struct Traits<CPU>: public Traits<void>
 {
     //Adicionar aqui a declaração do tamanho da Pilha
-    static const unsigned int STACK_SIZE = 500 * 1024; // 1Kb
-    static const bool debugged = true;
+    static const unsigned int STACK_SIZE = 1000 * 1024; // 1Kb
+    static const bool debugged = false;
 };
 
 // Ativa ou desativa o debug para cada classe
@@ -53,15 +55,15 @@ struct Traits<Sprite>: public Traits<void>
 };
 
 template<>
-struct Traits<Lists>: public Traits<void>
+struct Traits<System>: public Traits<void>
 {
     static const bool debugged = false;
 };
 
 template<>
-struct Traits<System>: public Traits<void>
+struct Traits<Lists>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
@@ -74,7 +76,7 @@ struct Traits<Thread>: public Traits<void>
 template<>
 struct Traits<Semaphore>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
@@ -103,6 +105,18 @@ struct Traits<Keyboard>: public Traits<void>
 
 template<>
 struct Traits<Controller>: public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<>
+struct Traits<Enemy>: public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<>
+struct Traits<MovingSprite>: public Traits<void>
 {
     static const bool debugged = true;
 };

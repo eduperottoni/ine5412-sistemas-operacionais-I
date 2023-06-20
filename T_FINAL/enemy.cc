@@ -11,8 +11,8 @@ static sf::Sprite enemy_ship_sprite;
 // Enemy::vel; 
 
 // Construtor de Enemy
-Enemy::Enemy(Keyboard * keyboard) {
-    db<Enemy>(INF) << "[Enemy] Construindo inimigo!\n";
+Enemy::Enemy() {
+    db<Enemy>(TRC) <<"[Enemy] Construtor do inimigo !\n";
 }
 
 void Enemy::move(const std::string direction){
@@ -60,6 +60,7 @@ void Enemy::spawn(int x, int y) {
     enemy_ship_sprite.setPosition(x,y);
 
     db<Enemy>(INF) << "[Enemy] Chamada de yield !\n";
+    
     while (true)
     {
         Thread::yield();;

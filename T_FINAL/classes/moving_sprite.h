@@ -20,11 +20,15 @@ class MovingSprite : public Sprite {
             UP,
             DOWN
         };
-        MovingSprite(const map<Orientation, string>& paths);
-        // ~MovingSprite();
+        MovingSprite(const map<Orientation, string>& paths) {};
+        ~MovingSprite();
 
         // Moves the Sprite (sets the texture and the position)
         void move(Orientation orientation);
+
+        void init();
+
+        void spawn(int x, int y);
 
         // Returns the current sprite, that contains the correct texture.
         sf::Sprite& get_current_sprite();

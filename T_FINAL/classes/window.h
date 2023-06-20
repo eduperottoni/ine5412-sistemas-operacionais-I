@@ -27,6 +27,8 @@ protected:
 
 private:
     Player* _player;
+    Enemy* _enemy;
+    
     sf::RenderWindow _sf_window;
     // Maze Texture
     sf::Texture maze_tex;
@@ -44,7 +46,10 @@ private:
     sf::Sprite space_ship_sprite;
 
     //Enemy space ship texture
-    sf::Texture enemy_ship_tex;
+    sf::Texture enemy_ship_down;
+    sf::Texture enemy_ship_right;
+    sf::Texture enemy_ship_left;
+    sf::Texture enemy_ship_up;
     sf::Sprite enemy_ship_sprite;
 };
 

@@ -1,13 +1,13 @@
 #include "classes/moving_sprite.h"
 
 __BEGIN_API
-/*
+
 
 // Construtor de Player
-MovingSprite::MovingSprite() {
-    db<MovingSprite>(INF) << "[MovingSprite] Construindo Moving Sprite!\n";
-    init();
-}
+// MovingSprite::MovingSprite() {
+//     db<MovingSprite>(INF) << "[MovingSprite] Construindo Moving Sprite!\n";
+//     init();
+// }
 
 void MovingSprite::init(){
     db<MovingSprite>(INF) << "[MovingSprite] Desenhando Moving Sprite\n";
@@ -18,23 +18,11 @@ void MovingSprite::init(){
     spawn(450,100);
 }
 
-
-void MovingSprite::move(const std::string direction){
-
-}
-
-void MovingSprite::rotate(const std::string direction){
-}
-
 void MovingSprite::spawn(int x, int y) {
     db<MovingSprite>(INF) << "[MovingSprite] Chamada de spawn !\n";
 
 
 }
-
-MovingSprite::~MovingSprite(){
-}
-*/
 
 void MovingSprite::move(Orientation orientation)
 {
