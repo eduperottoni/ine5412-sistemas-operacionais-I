@@ -13,9 +13,6 @@ Player* Game::_player_obj;
 Thread* Game::_player_thread;
 
 
-//Player* Game::_player_obj;
-//Thread* Game::_player_thread;
-
 void Game::_window_run() {
     db<Game>(INF) << "[Game] Instanciando uma nova janela!\n";
     _window_obj = new Window(_player_obj -> get_sprite());
@@ -26,7 +23,7 @@ void Game::_window_run() {
 
 void Game::_keyboard_run() {
     db<Game>(INF) << "[Game] Instanciando um novo teclado!\n";
-    _keyboard_obj = new Keyboard(_window_obj, _controller_obj);
+    _keyboard_obj = new Keyboard(_window_obj, _controller_obj, _player_obj);
     db<Game>(INF) << "[Game] Chamando método run do teclado!\n";
     _keyboard_obj -> run();
 }
@@ -56,14 +53,21 @@ void Game::run(void* name){
     _player_thread = new Thread(_player_run);
     db<Game>(INF) << "[Game] Iniciando a thread da janela\n";
     _window_thread = new Thread(_window_run);
+
     db<Game>(INF) << "[Game] Iniciando a thread do controller\n";
     _controller_thread = new Thread(_controller_run);
+
+    db<Game>(INF) << "[Game] Iniciando a thread do player\n";
+    _player_thread = new Thread(_player_run);
+
     db<Game>(INF) << "[Game] Iniciando a thread do teclado\n";
     _keyboard_thread = new Thread(_keyboard_run);
+
     db<Game>(INF) << "[Game] Chamando join\n";
     _window_thread -> join();
     _controller_thread -> join();
     _keyboard_thread -> join();
+    _player_thread -> join();
     // realizar chamada da Thread Player
 }
 

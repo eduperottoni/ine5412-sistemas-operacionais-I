@@ -12,18 +12,6 @@ void Controller::run() {
             _action_queue.pop();
             db<Controller>(TRC) << "[CONTROLLER] NOT EMPTY \n";
             switch (move) {
-                case Keyboard::Move::UP:
-                    db<Controller>(TRC) << "[CONTROLLER] UP \n";
-                    break;
-                case Keyboard::Move::DOWN:
-                    db<Controller>(TRC) << "[CONTROLLER] DOWN \n";
-                    break;
-                case Keyboard::Move::LEFT:
-                    db<Controller>(TRC) << "[CONTROLLER] LEFT \n";
-                    break;
-                case Keyboard::Move::RIGHT:
-                    db<Controller>(TRC) << "[CONTROLLER] RIGHT \n";
-                    break;
                 case Keyboard::Move::EXIT:
                     db<Controller>(TRC) << "[CONTROLLER] EXIT \n";
                     break;

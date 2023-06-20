@@ -87,7 +87,7 @@ struct Traits<Window>: public Traits<void>
 template<>
 struct Traits<Player>: public Traits<void>
 {
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 template<>
