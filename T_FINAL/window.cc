@@ -123,10 +123,7 @@ void Window::run()
         // }
 
         sf::Sprite player_sprite = _player->get_current_sprite();
-<<<<<<< HEAD
-=======
         player_sprite.setPosition(0,0);
->>>>>>> Improving encapsulation
         _sf_window.draw(player_sprite);
         
         //TODO
