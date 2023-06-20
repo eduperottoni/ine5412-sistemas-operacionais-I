@@ -15,7 +15,6 @@ using namespace std;
 class MovingSprite : public Sprite {
     public:
         enum Orientation {
-            UNIQUE,
             RIGHT,
             LEFT,
             UP,
@@ -31,7 +30,7 @@ class MovingSprite : public Sprite {
         sf::Sprite& get_current_sprite();
 
         // Sets the position of the object
-        void set_position(tuple<int, int>);
+        // void set_position(tuple<int, int>);
 
     protected:
         int _speed;
