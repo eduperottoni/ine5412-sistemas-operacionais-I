@@ -49,19 +49,19 @@ void MovingSprite::move(Orientation orientation)
     case Orientation::RIGHT:
         x_position += _speed;
         break;
-    case Orientation::UP;
+    case Orientation::UP:
         y_position += _speed;
         break;
-    case Orientation::DOWN;
+    case Orientation::DOWN:
         y_position -= _speed;
         break;
     default:
         break;
     }
-    _current_sprite.setPosition(x_position, y_position)
+    _current_sprite.setPosition(x_position, y_position);
 }
 
-MovingSprite::get_current_sprite()
+sf::Sprite& MovingSprite::get_current_sprite()
 {
     return _current_sprite;
 }
