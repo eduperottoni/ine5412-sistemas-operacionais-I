@@ -8,6 +8,15 @@ sf::Texture space_ship_right;
 sf::Texture space_ship_left;
 static sf::Sprite space_ship_sprite;
 
+
+void Player::run()
+{
+    while (true)
+    {
+        db<Player>(INF) << "[Jogador] Jogador rodando!\n";
+        Thread::yield();
+    }
+}
 // sf::Sprite Player::get_current_sprite()
 // {
 //     return _current_sprite;

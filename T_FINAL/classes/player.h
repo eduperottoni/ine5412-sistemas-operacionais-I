@@ -24,7 +24,7 @@ class Player : virtual public Spaceship {
         Player(const std::map<Orientation, std::string>& paths)
         : MovingSprite(paths), Spaceship(paths){};
 
-        // sf::Sprite get_current_sprite();
+        void run();
 
         // sf::Sprite get_sprite(MovingSprite::Orientation orientation){
         //     return 

@@ -17,7 +17,7 @@ private:
     static Keyboard* _keyboard_obj;
     static Player* _player_obj;
     static Thread* _window_thread;
-    static Thread* _player;
+    static Thread* _player_thread;
     static Thread* _keyboard_thread;
     static Thread* _controller_thread;
     static Controller* _controller_obj;

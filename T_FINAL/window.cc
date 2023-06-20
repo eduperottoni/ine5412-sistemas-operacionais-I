@@ -3,20 +3,14 @@
 
 __BEGIN_API
 
-Window::Window()
+Window::Window(sf::Sprite& sprite)
 {
     _sf_window.create(sf::VideoMode(900, 560), "Brick Game");
     //_sf_window = window;
     db<Window>(TRC) << "[Window] Construindo a janela e carregando as texturas \n";
     db<Window>(TRC) << "[Window] Criação da Thread da janela \n";
     // carregamento das texturas
-    map<MovingSprite::Orientation, string> sprites;
-    sprites[MovingSprite::Orientation::RIGHT] = "src/images/space_ships/space_ship1.png";
-    sprites[MovingSprite::Orientation::LEFT] = "src/images/space_ships/space_ship2.png";
-    sprites[MovingSprite::Orientation::UP] = "src/images/space_ships/space_ship3.png";
-    sprites[MovingSprite::Orientation::DOWN] = "src/images/space_ships/space_ship4.png";
-
-    _player = new Player(sprites);
+    _player_sprite = sprite;
     load_and_bind_textures();
 }
 
@@ -26,7 +20,7 @@ sf::RenderWindow* Window::get_sf_window(){
 }
 
 Window::~Window() {
-    delete _player;
+    // delete _player;
 }
 
 void Window::draw_texture(unsigned int texture, int length, int height, float angle)
@@ -122,9 +116,9 @@ void Window::run()
         //     }
         // }
 
-        sf::Sprite player_sprite = _player->get_current_sprite();
-        player_sprite.setPosition(0,0);
-        _sf_window.draw(player_sprite);
+        // sf::Sprite player_sprite = _player_sprite;
+        _player_sprite.setPosition(0,0);
+        _sf_window.draw(_player_sprite);
         
         //TODO
         // player.set_position()
@@ -162,39 +156,39 @@ void Window::load_and_bind_textures()
     shot_sprite.setTexture(shot_tex);
     shot_sprite.scale(-0.5, -0.5);
 
-    if(!space_ship_up.loadFromFile("sprites/space_ships/space_ship1.png")){
-        db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
-    }else {
-        db<Window>(INF) << "[Window] Desenhando a nave\n";
-    };
-    space_ship_sprite.setTexture(space_ship_up);
-    space_ship_sprite.scale(0.85, 0.85);
+    // if(!space_ship_up.loadFromFile("sprites/space_ships/space_ship1.png")){
+    //     db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
+    // }else {
+    //     db<Window>(INF) << "[Window] Desenhando a nave\n";
+    // };
+    // space_ship_sprite.setTexture(space_ship_up);
+    // space_ship_sprite.scale(0.85, 0.85);
 
-    if(!space_ship_left.loadFromFile("sprites/space_ships/space_ship2.png")){
-        db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
-    }else {
-        db<Window>(INF) << "[Window] Desenhando a nave\n";
-    };
-    space_ship_sprite.setTexture(space_ship_left);
-    space_ship_sprite.scale(0.85, 0.85);
+    // if(!space_ship_left.loadFromFile("sprites/space_ships/space_ship2.png")){
+    //     db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
+    // }else {
+    //     db<Window>(INF) << "[Window] Desenhando a nave\n";
+    // };
+    // space_ship_sprite.setTexture(space_ship_left);
+    // space_ship_sprite.scale(0.85, 0.85);
 
-    if(!space_ship_down.loadFromFile("sprites/space_ships/space_ship3.png")){
-        db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
-    }else {
-        db<Window>(INF) << "[Window] Desenhando a nave\n";
-    };
-    space_ship_sprite.setTexture(space_ship_down);
-    space_ship_sprite.scale(0.85, 0.85);
+    // if(!space_ship_down.loadFromFile("sprites/space_ships/space_ship3.png")){
+    //     db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
+    // }else {
+    //     db<Window>(INF) << "[Window] Desenhando a nave\n";
+    // };
+    // space_ship_sprite.setTexture(space_ship_down);
+    // space_ship_sprite.scale(0.85, 0.85);
 
-    if(!space_ship_right.loadFromFile("sprites/space_ships/space_ship4.png")){
-        db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
-    }else {
-        db<Window>(INF) << "[Window] Desenhando a nave\n";
-    };
-    space_ship_sprite.setTexture(space_ship_right);
-    space_ship_sprite.scale(0.85, 0.85);
+    // if(!space_ship_right.loadFromFile("sprites/space_ships/enemy)space_ship.png")){
+    //     db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
+    // }else {
+    //     db<Window>(INF) << "[Window] Desenhando a nave\n";
+    // };
+    // space_ship_sprite.setTexture(space_ship_right);
+    // space_ship_sprite.scale(0.85, 0.85);
 
-    if(!enemy_ship_tex.loadFromFile("sprites/space_ships/enemy_space_ship1.png")){
+    if(!enemy_ship_tex.loadFromFile("sprites/space_ships/enemy_space_ship_up.png")){
         db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
     } else {
         db<Window>(INF) << "[Window] Desenhando um inimigo\n";

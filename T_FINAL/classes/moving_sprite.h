@@ -27,7 +27,7 @@ class MovingSprite : public Sprite {
         void move(Orientation orientation);
 
         // Returns the current sprite, that contains the correct texture.
-        sf::Sprite& get_current_sprite();
+        sf::Sprite& get_sprite();
 
         // Sets the position of the object
         // void set_position(tuple<int, int>);
@@ -35,7 +35,7 @@ class MovingSprite : public Sprite {
     protected:
         int _speed;
         Orientation _orientation;
-        sf::Sprite _current_sprite;
+        sf::Sprite _sprite;
         
         map<Orientation, sf::Texture> _textures;
 };

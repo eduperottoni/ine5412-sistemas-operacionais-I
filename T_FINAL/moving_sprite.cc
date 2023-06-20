@@ -38,9 +38,9 @@ MovingSprite::~MovingSprite(){
 
 void MovingSprite::move(Orientation orientation)
 {
-    _current_sprite.setTexture(_textures.at(orientation));
-    float x_position = _current_sprite.getPosition().x;
-    float y_position = _current_sprite.getPosition().y;
+    _sprite.setTexture(_textures.at(orientation));
+    float x_position = _sprite.getPosition().x;
+    float y_position = _sprite.getPosition().y;
     switch (orientation)
     {
     case Orientation::LEFT:
@@ -58,12 +58,12 @@ void MovingSprite::move(Orientation orientation)
     default:
         break;
     }
-    _current_sprite.setPosition(x_position, y_position);
+    _sprite.setPosition(x_position, y_position);
 }
 
-sf::Sprite& MovingSprite::get_current_sprite()
+sf::Sprite& MovingSprite::get_sprite()
 {
-    return _current_sprite;
+    return _sprite;
 }
 
 MovingSprite::MovingSprite(const map<Orientation, string>& paths)
@@ -73,7 +73,7 @@ MovingSprite::MovingSprite(const map<Orientation, string>& paths)
             throw std::invalid_argument("Erro no carregamento de texturas");
         }
     }
-    _current_sprite.setTexture(_textures.at(Orientation::UP));
+    _sprite.setTexture(_textures.at(Orientation::UP));
     cout << "MovingSprite construido";
 }
 

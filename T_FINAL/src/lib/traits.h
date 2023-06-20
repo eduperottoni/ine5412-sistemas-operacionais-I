@@ -22,6 +22,7 @@ class Window;
 class Player;
 class Keyboard;
 class Controller;
+class CollisionChecker;
 
 //declaração da classe Traits
 template<typename T>
@@ -103,6 +104,12 @@ struct Traits<Keyboard>: public Traits<void>
 
 template<>
 struct Traits<Controller>: public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<>
+struct Traits<CollisionChecker>: public Traits<void>
 {
     static const bool debugged = true;
 };

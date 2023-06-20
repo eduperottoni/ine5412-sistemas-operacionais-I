@@ -13,7 +13,7 @@ class Window
 {
 friend class Player;
 public:
-    Window();
+    Window(sf::Sprite& sprite);
     ~Window();
     void run();
 
@@ -26,7 +26,7 @@ protected:
     void load_and_bind_textures();
 
 private:
-    Player* _player;
+    sf::Sprite _player_sprite;
     sf::RenderWindow _sf_window;
     // Maze Texture
     sf::Texture maze_tex;
