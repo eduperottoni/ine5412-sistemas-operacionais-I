@@ -9,15 +9,6 @@ sf::Texture space_ship_left;
 static sf::Sprite space_ship_sprite;
 std::queue<Keyboard::Move> Player::_move_queue;
 
-
-void Player::run()
-{
-    while (true)
-    {
-        db<Player>(INF) << "[Jogador] Jogador rodando!\n";
-        Thread::yield();
-    }
-}
 // sf::Sprite Player::get_current_sprite()
 // {
 //     return _current_sprite;
@@ -38,20 +29,25 @@ void Player::run() {
             Keyboard::Move move = _move_queue.front();
             _move_queue.pop();
             switch (move) {
-                case Keyboard::Move::UP:
-                    db<Player>(TRC) << "[Player] UP \n";
-                    break;
-                case Keyboard::Move::DOWN:
-                    db<Player>(TRC) << "[Player] DOWN \n";
-                    break;
-                case Keyboard::Move::LEFT:
-                    db<Player>(TRC) << "[Player] LEFT \n";
-                    break;
-                case Keyboard::Move::RIGHT:
-                    db<Player>(TRC) << "[Player] RIGHT \n";
-                    break;
+            case Keyboard::Move::UP:
+                db<Player>(TRC) << "[Player] UP \n";
+                MovingSprite::move(Orientation::UP);
                 break;
-                }
+            case Keyboard::Move::DOWN:
+                db<Player>(TRC) << "[Player] DOWN \n";
+                MovingSprite::move(Orientation::DOWN);
+                break;
+            case Keyboard::Move::LEFT:
+                db<Player>(TRC) << "[Player] LEFT \n";
+                MovingSprite::move(Orientation::LEFT);
+                break;
+            case Keyboard::Move::RIGHT:
+                db<Player>(TRC) << "[Player] RIGHT \n";
+                MovingSprite::move(Orientation::RIGHT);
+                break;
+            default:
+                break;
+            }
         } else {
             db<Player>(TRC) << "[PLAYER] EMPTY\n";
         }

@@ -6,6 +6,7 @@
 #include <png.h>
 #include <SFML/Graphics.hpp>
 #include "../src/lib/traits.h"
+#include "clock.h"
 
 __BEGIN_API
 
@@ -13,7 +14,7 @@ class Window
 {
 friend class Player;
 public:
-    Window(sf::Sprite& sprite);
+    Window(sf::Sprite* sprite, Clock* clock);
     ~Window();
     void run();
 
@@ -26,8 +27,12 @@ protected:
     void load_and_bind_textures();
 
 private:
-    sf::Sprite _player_sprite;
+    sf::Sprite* _player_sprite;
     sf::RenderWindow _sf_window;
+
+    Clock* _clock;
+
+
     // Maze Texture
     sf::Texture maze_tex;
     sf::Sprite maze_sprite;

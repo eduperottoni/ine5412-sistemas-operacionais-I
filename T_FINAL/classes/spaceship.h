@@ -10,8 +10,8 @@ __BEGIN_API
 
 class Spaceship : virtual public MovingSprite {
     public:
-        Spaceship(const std::map<Orientation, std::string>& paths)
-        : MovingSprite(paths){};
+        Spaceship(const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock)
+        : MovingSprite(paths, initial_orientation, clock){};
         void shoot();
         void die();
     private:

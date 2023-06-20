@@ -23,6 +23,7 @@ class Player;
 class Keyboard;
 class Controller;
 class CollisionChecker;
+class MovingSprite;
 
 //declaração da classe Traits
 template<typename T>
@@ -81,7 +82,7 @@ struct Traits<Semaphore>: public Traits<void>
 template<>
 struct Traits<Window>: public Traits<void>
 {
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 template<>
@@ -110,6 +111,12 @@ struct Traits<Controller>: public Traits<void>
 
 template<>
 struct Traits<CollisionChecker>: public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<>
+struct Traits<MovingSprite>: public Traits<void>
 {
     static const bool debugged = true;
 };

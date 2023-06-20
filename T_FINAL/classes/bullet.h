@@ -11,7 +11,12 @@ __BEGIN_API
 
 
 class Bullet : public MovingSprite {
-
+public:
+    Bullet(const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock)
+        : MovingSprite(paths, initial_orientation, clock){
+            _speed = 100.f;
+        };
+private:
 };
 
 
