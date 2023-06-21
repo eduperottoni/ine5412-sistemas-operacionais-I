@@ -45,7 +45,7 @@ struct Traits<CPU>: public Traits<void>
 {
     //Adicionar aqui a declaração do tamanho da Pilha
     static const unsigned int STACK_SIZE = 1000 * 1024; // 1Kb
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 // Ativa ou desativa o debug para cada classe

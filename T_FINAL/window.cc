@@ -1,5 +1,6 @@
 #include "classes/window.h"
 #include "classes/player.h"
+#include <stdio.h>
 
 __BEGIN_API
 
@@ -7,6 +8,7 @@ Window::Window(sf::Sprite* sprite, Clock* clock)
 {
     _sf_window.create(sf::VideoMode(900, 560), "Brick Game");
     //_sf_window = window;
+    std::cout << "Entrei aqui !\n";
     db<Window>(TRC) << "[Window] Construindo a janela e carregando as texturas \n";
     db<Window>(TRC) << "[Window] Criação da Thread da janela \n";
     // carregamento das texturas
@@ -137,13 +139,13 @@ void Window::load_and_bind_textures()
 {
     // for(int i = 0; i < )
     // Bind map textures
-    // if(!maze_tex.loadFromFile("sprites/maze/screen.png")){
-    //     db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
-    // }else{
-    //     db<Window>(INF) << "[Window] Desenhando a Arena\n";
-    // }
-    // maze_sprite.setTexture(maze_tex);
-    // maze_sprite.scale(1.5, 1.5);
+    if(!maze_tex.loadFromFile("../src/images/screen/screen.png")){
+        db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
+    }else{
+        db<Window>(INF) << "[Window] Desenhando a Arena\n";
+    }
+    maze_sprite.setTexture(maze_tex);
+    maze_sprite.scale(1.5, 1.5);
     
     // // player.render()
 
