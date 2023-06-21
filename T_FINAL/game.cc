@@ -11,8 +11,12 @@ Keyboard* Game::_keyboard_obj;
 
 Thread* Game::_controller_thread;
 Controller* Game::_controller_obj;
+
 Player* Game::_player_obj;
 Thread* Game::_player_thread;
+
+Enemy* Game::_enemy_obj;
+Thread* Game::_enemy_thread;
 
 GameConfig* Game::_game_config;
 
@@ -58,6 +62,20 @@ void Game::_player_run() {
     _player_obj -> run();
 }
 
+void Game::_enemy_run() {
+    map<MovingSprite::Orientation, string> sprites;
+    sprites[MovingSprite::Orientation::RIGHT] = "src/images/space_ships/enemy_space_ship_right.png";
+    sprites[MovingSprite::Orientation::LEFT] = "src/images/space_ships/enemy_space_ship_left.png";
+    sprites[MovingSprite::Orientation::UP] = "src/images/space_ships/enemy_space_ship_up.png";
+    sprites[MovingSprite::Orientation::DOWN] = "src/images/space_ships/enemy_space_ship_down.png";
+
+    db<Game>(INF) << "[Game] Instanciando um novo enemy !\n";
+    _enemy_obj = new Enemy(sprites, MovingSprite::Orientation::UP, _clock_obj);
+    
+    db<Game>(INF) << "[Game] Chamando método run do player!\n";
+    _enemy_obj -> run();
+}
+
 void Game::run(void* name){
     //Instancia um clock
     _clock_obj = new Clock();
@@ -78,11 +96,15 @@ void Game::run(void* name){
     db<Game>(INF) << "[Game] Iniciando a thread do teclado\n";
     _keyboard_thread = new Thread(_keyboard_run);
 
+    db<Game>(INF) << "[Game] Iniciando a thread do inimigo\n";
+    _enemy_thread = new Thread(_enemy_run);
+
     db<Game>(INF) << "[Game] Chamando join\n";
     _window_thread -> join();
     _controller_thread -> join();
     _keyboard_thread -> join();
     _player_thread -> join();
+    _enemy_thread->join();
     // realizar chamada da Thread Player
 }
 

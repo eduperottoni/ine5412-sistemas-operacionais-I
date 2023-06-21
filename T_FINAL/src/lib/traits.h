@@ -24,6 +24,7 @@ class Keyboard;
 class Controller;
 class CollisionChecker;
 class MovingSprite;
+class Enemy;
 
 //declaração da classe Traits
 template<typename T>
@@ -117,6 +118,12 @@ struct Traits<CollisionChecker>: public Traits<void>
 
 template<>
 struct Traits<MovingSprite>: public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<>
+struct Traits<Enemy>: public Traits<void>
 {
     static const bool debugged = true;
 };
