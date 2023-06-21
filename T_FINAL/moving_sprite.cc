@@ -15,14 +15,16 @@ void MovingSprite::init(){
     // Verificação se há espaço em pilha para desenhar o jogador
     // Verificação se o sprite está disponível para desenhar
     // Spawn no meio da tela
-    spawn(450,100);
+    // spawn(450,100);
 }
 
-void MovingSprite::spawn(int x, int y) {
-    db<MovingSprite>(INF) << "[MovingSprite] Chamada de spawn !\n";
-
-
-}
+// void MovingSprite::spawn(int x, int y) {
+//     db<MovingSprite>(INF) << "[MovingSprite] Chamada de spawn !\n";
+//     _current_sprite.setTexture(_textures.at(UP));
+//     float x_position = x;
+//     float y_position = y;
+//     _current_sprite.setPosition(x_position, y_position);    
+// }
 
 void MovingSprite::move(Orientation orientation)
 {
@@ -58,11 +60,11 @@ MovingSprite::MovingSprite(const map<Orientation, string>& paths)
 {
     for(const auto& item : paths){
         if (!_textures[item.first].loadFromFile(item.second)){
-            throw std::invalid_argument("Erro no carregamento de texturas");
+            db<MovingSprite>(INF) << "[MovingSprite] Erro no carregamento de texturas !\n";
         }
     }
     _current_sprite.setTexture(_textures.at(Orientation::UP));
-    cout << "MovingSprite construido";
+    db<MovingSprite>(INF) << "[MovingSprite] MovingSprite construido !\n";
 }
 
 __END_API

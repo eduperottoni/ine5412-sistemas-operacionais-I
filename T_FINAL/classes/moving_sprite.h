@@ -3,6 +3,7 @@
 
 
 #include "../src/lib/traits.h"
+#include "../src/lib/thread.h"
 #include "sprite.h"
 #include <tuple>
 #include <map>
@@ -20,15 +21,17 @@ class MovingSprite : public Sprite {
             UP,
             DOWN
         };
-        MovingSprite(const map<Orientation, string>& paths) {};
-        ~MovingSprite();
+        // MovingSprite(){};
+        MovingSprite(const map<Orientation, string>& paths);
+        // ~MovingSprite();
 
         // Moves the Sprite (sets the texture and the position)
         void move(Orientation orientation);
 
         void init();
 
-        void spawn(int x, int y);
+        // Pegar a posição atual do sprite
+        // std::tuple<float,float> getposition(){return std::make_tuple(_current_sprite.getPosition().x,_current_sprite.getPosition().y);}
 
         // Returns the current sprite, that contains the correct texture.
         sf::Sprite& get_current_sprite();

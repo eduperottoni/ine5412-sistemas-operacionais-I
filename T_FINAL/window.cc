@@ -26,10 +26,11 @@ sf::RenderWindow* Window::get_sf_window(){
     return &_sf_window;
 }
 
-Window::~Window() {
-    delete _player;
-    delete _enemy;
-}
+
+// Window::~Window() {
+//     delete _player;
+//     delete _enemy;
+// }
 
 void Window::draw_texture(unsigned int texture, int length, int height, float angle)
 {
@@ -58,81 +59,17 @@ void Window::run()
         _sf_window.clear();
         _sf_window.draw(maze_sprite);
         
-        
-        // sf::Event event;
-        // while (window.pollEvent(event))
-        // {
-        //     switch (event.type) {
-        //     case sf::Event::Closed:
-        //         window.close();
-        //         break;
-            
-        //     // key pressed
-        //     case sf::Event::KeyPressed:
-        //         // // Player será movido para cima ou para baixo
-        //         // _player->move();
-        //         // // PLayer será movido para a esquerda ou para a direita
-        //         // _player->rotate();
-                
-        //         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        //             // Encapsulamento de funções, não funcional
-        //             // _player->move("Left");
-        //             db<Window>(TRC) <<"[Window] Tecla a esquerda \n";
-        //             space_ship_sprite.setTexture(space_ship_left);
-        //             space_ship_sprite.setPosition(space_ship_sprite.getPosition().x - 10, space_ship_sprite.getPosition().y);
-                
-        //         } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        //             // _player->move("Right");
-        //             db<Window>(TRC) <<"[Window] Tecla a direita \n";
-        //             space_ship_sprite.setTexture(space_ship_right);    
-        //             space_ship_sprite.setPosition(space_ship_sprite.getPosition().x + 10, space_ship_sprite.getPosition().y);
-                
-        //         } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        //             // _player->rotate("Down");
-        //             db<Window>(TRC) <<"[Window] Tecla para baixo \n";
-        //             space_ship_sprite.setTexture(space_ship_down);
-        //             space_ship_sprite.setPosition(space_ship_sprite.getPosition().x, space_ship_sprite.getPosition().y + 10);
-                
-        //         } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        //             // _player->rotate("Up");
-        //             db<Window>(TRC) <<"[Window] Tecla para cima \n";
-        //             space_ship_sprite.setTexture(space_ship_up);
-        //             space_ship_sprite.setPosition(space_ship_sprite.getPosition().x, space_ship_sprite.getPosition().y - 10);
-
-        //         } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
-        //             db<Window>(TRC) <<"[Window] Tiro orientado \n";
-        //             // Chamar o Tiro aqui
-        //             shot_sprite.setTexture(shot_tex);
-        //             shot_sprite.setPosition(space_ship_sprite.getPosition().x + 10, space_ship_sprite.getPosition().y + 10);
-        //             // Chamada de método para direcionar o tiro
-                
-        //         } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
-        //             db<Window>(TRC) <<"[Window] Jogo pausado !\n";
-        //             // Chamada de Pause
-        //             // Botando todas as Threads na fila de suspensos
-                    
-        //         }
-        //         else
-        //             std::cout << "Keyboard pressed = " << event.key.code << std::endl;
-        //         break;
-
-        //         default:
-        //             break;
-            
-        //     }
-        // }
-
         sf::Sprite player_sprite = _player->get_current_sprite();
         player_sprite.setPosition(0,0);
         _sf_window.draw(player_sprite);
         
-        //TODO
-        // player.set_position()
-        enemy_ship_sprite.setPosition(245, 150);
-        _sf_window.draw(enemy_ship_sprite);
+        // //TODO
+        // // player.set_position()
+        // enemy_ship_sprite.setPosition(245, 150);
+        // _sf_window.draw(enemy_ship_sprite);
 
-        shot_sprite.setPosition(204, 400);
-        _sf_window.draw(shot_sprite);
+        // shot_sprite.setPosition(204, 400);
+        // _sf_window.draw(shot_sprite);
         
         _sf_window.display();
         db<Window>(TRC) << "[Window] Chamada de yield!\n";

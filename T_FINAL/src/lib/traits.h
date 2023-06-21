@@ -94,7 +94,7 @@ struct Traits<Player>: public Traits<void>
 template<>
 struct Traits<Game>: public Traits<void>
 {
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 template<>

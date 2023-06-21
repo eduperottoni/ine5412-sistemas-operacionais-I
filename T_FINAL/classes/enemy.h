@@ -4,8 +4,12 @@
 #include "../classes/keyboard.h"
 #include "../src/lib/traits.h"
 #include "../src/lib/thread.h"
+#include "../classes/window.h"
 #include "sprite.h"
 #include "spaceship.h"
+
+#include <iostream>
+#include <random>
 #include <tuple>
 
 __BEGIN_API
@@ -15,6 +19,7 @@ class Enemy :
     public Spaceship {
     private:
         const static int vel = 10;
+        int move;
 
         // sf::Texture enemy_ship_down;
         // sf::Texture enemy_ship_right;
@@ -25,22 +30,20 @@ class Enemy :
 
     public:
         // Construtor de Classe
-        Enemy();
+        Enemy(const std::map<Orientation, std::string>& paths)
+        : MovingSprite(paths), Spaceship(paths){};
+        // MovingSprite
+
+        // getter da posição do sprite do inimigo
+        int getter(int x, int y);
         // Destrutor da classe
-        ~Enemy();
+        // ~Enemy();
+
         // Método para movimentar o personagem
-        void move(const std::string direction);
-        // Método para rotacionar o personagem
-        void rotate(const std::string direction);
-        // Método para realizar o spawn em uma determinada posição da tela
-        void spawn(int x, int y);
-        // Obtendo a posição do jogador
-        int getposition(int x, int y);
-        // Seta a posição do jogador
-        void setposition(int x, int y);
-        // chamda de window
-        Window * _window_obj;
-        Enemy * _enemy;
+        void run();
+        
+        // Método para obter um número entre 1 e 4 
+        int random_num();
 };
 
 __END_API

@@ -14,12 +14,17 @@ class Window
 friend class Player;
 public:
     Window();
-    ~Window();
+    // ~Window();
     void run();
 
     void draw_texture(unsigned int texture, int length, int height, float angle);
 
     void pause();
+
+    sf::Vector2u getWindowSize(const sf::RenderWindow& window) {
+        return window.getSize();
+    }
+    
     sf::RenderWindow* get_sf_window();
 
 protected:

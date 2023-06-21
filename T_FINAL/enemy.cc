@@ -8,69 +8,52 @@ sf::Texture enemy_ship_right;
 sf::Texture enemy_ship_left;
 sf::Texture enemy_ship_up;
 static sf::Sprite enemy_ship_sprite;
-// Enemy::vel; 
+MovingSprite *_movinsp;
 
-// Construtor de Enemy
-Enemy::Enemy() {
-    db<Enemy>(TRC) <<"[Enemy] Construtor do inimigo !\n";
+// void Enemy::Enemy(){
+//        db<Enemy>(INF) << "[Enemy] Chamada de run!\n"; 
+//     
+//     Thread::yield();
+// }
+
+int Enemy::random_num(){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(1, 4);
+    int randomNum = dist(gen);
+
+    return randomNum;
 }
 
-void Enemy::move(const std::string direction){
+void Enemy::run(){
+    while (true){
+        // verificar se o movimento está dentro da tela, com o tamanho da tela atual
+        db<Enemy>(INF) << "[Enemy] posição atual do sprite inimigo: " << this->getposition() << "\n";
+        // verificar se o sprite está tocando outro sprite, caso este seja outro enemy realiza o respawn do enemy, caso seja o player, deletar o player.
+        // if(this->getposition()){
+            
+            move = Enemy::random_num();
+            db<Enemy>(INF) << "[Enemy] Chamada de número: " << move << "\n";
+            // switch (move)
+            // {
+            // case move == 1:
+            //     /* code */
+            //     break;
+            
+            // default:
+            //     break;
+            // }
+        // }
 
-    if(direction == "Left") {
-        db<Enemy>(TRC) <<"[Enemy] Direção a esquerda \n";
-        // carrega a sprite do jogador para a esquerda
-       enemy_ship_sprite.setTexture(enemy_ship_left);
-       enemy_ship_sprite.setPosition(enemy_ship_sprite.getPosition().x - vel, enemy_ship_sprite.getPosition().y);
-    } else if(direction == "Right") {
-        db<Enemy>(TRC) <<"[Enemy] Direção a direita \n";
-        // // carrega a sprite do jogador para a direita
-        enemy_ship_sprite.setTexture(enemy_ship_right);
-        enemy_ship_sprite.setPosition(enemy_ship_sprite.getPosition().x + vel, enemy_ship_sprite.getPosition().y);
+
+        // Chamando yield ao final da chamada
+        Thread::yield();
     }
-
-     db<Enemy>(INF) << "[Enemy] Chamada de yield !\n";
-    Thread::yield();
 }
 
-void Enemy::rotate(const std::string direction){
-    if(direction == "Down") {
-        db<Enemy>(TRC) <<"[Enemy] Direção a baixo \n";
-        // carregar a sprite do jogador para baixo
-        enemy_ship_sprite.setTexture(enemy_ship_down);
-        enemy_ship_sprite.setPosition(enemy_ship_sprite.getPosition().x, enemy_ship_sprite.getPosition().y - vel);
-                
-    } else if(direction == "Up") {
-        db<Enemy>(TRC) <<"[Enemy] Direção a cima \n";
-        // carregar a sprite do jogador para cima
-        enemy_ship_sprite.setTexture(enemy_ship_up);
-        enemy_ship_sprite.setPosition(enemy_ship_sprite.getPosition().x, enemy_ship_sprite.getPosition().y + vel);
-    }
-     db<Enemy>(INF) << "[Enemy] Chamada de yield !\n";
-    Thread::yield();
-}
-
-void Enemy::spawn(int x, int y) {
-    db<Enemy>(INF) << "[Enemy] Chamada de spawn !\n";
-    // Seta textura inicial
-    enemy_ship_sprite.setTexture(enemy_ship_up);
-    // Seta a escala da textura
-    enemy_ship_sprite.scale(-0.5, -0.5);
-    // Posição incial de spawn do jogador
-    enemy_ship_sprite.setPosition(x,y);
-
-    db<Enemy>(INF) << "[Enemy] Chamada de yield !\n";
-    
-    while (true)
-    {
-        Thread::yield();;
-    }
-    
-}
-
-Enemy::~Enemy(){
-    // deleta o inimigo
-    delete this;
-}
+// Enemy::~Enemy(){
+//     // deleta o inimigo
+//     delete this;
+// }
 
 __END_API
