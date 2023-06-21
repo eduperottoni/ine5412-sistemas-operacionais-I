@@ -5,6 +5,7 @@
 #include "../src/lib/traits.h"
 #include "../src/lib/thread.h"
 #include "../classes/window.h"
+#include "../classes/bullet.h"
 #include "sprite.h"
 #include "spaceship.h"
 
@@ -32,15 +33,20 @@ class Enemy :
         // Construtor de Classe
         Enemy(const std::map<Orientation, std::string>& paths)
         : MovingSprite(paths), Spaceship(paths){};
-        // MovingSprite
+        
+        // Instancia de tiro
+        Bullet *_shoot;  
 
         // getter da posição do sprite do inimigo
-        int getter(int x, int y);
+        // int getter(int x, int y);
         // Destrutor da classe
         // ~Enemy();
 
         // Método para movimentar o personagem
         void run();
+
+        // Método para o tiro do inimigo
+        void shoot();
         
         // Método para obter um número entre 1 e 4 
         int random_num();

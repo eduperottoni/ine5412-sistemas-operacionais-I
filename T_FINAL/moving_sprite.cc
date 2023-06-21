@@ -31,18 +31,23 @@ void MovingSprite::move(Orientation orientation)
     _current_sprite.setTexture(_textures.at(orientation));
     float x_position = _current_sprite.getPosition().x;
     float y_position = _current_sprite.getPosition().y;
+    
     switch (orientation)
     {
     case Orientation::LEFT:
+        db<MovingSprite>(INF) << "[MovingSprite] Orientação do sprite "<< Orientation::LEFT <<"\n";
         x_position -= _speed;
         break;
     case Orientation::RIGHT:
+        db<MovingSprite>(INF) << "[MovingSprite] Orientação do sprite "<< Orientation::RIGHT <<"\n";
         x_position += _speed;
         break;
     case Orientation::UP:
+        db<MovingSprite>(INF) << "[MovingSprite] Orientação do sprite "<< Orientation::UP<<"\n";
         y_position += _speed;
         break;
     case Orientation::DOWN:
+        db<MovingSprite>(INF) << "[MovingSprite] Orientação do sprite "<< Orientation::DOWN<<"\n";
         y_position -= _speed;
         break;
     default:
