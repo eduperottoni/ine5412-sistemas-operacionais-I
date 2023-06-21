@@ -1,6 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include "../src/lib/traits.h"
 #include <iostream>
 #include <png.h>
 #include <SFML/Graphics.hpp>
@@ -35,7 +36,7 @@ private:
     sf::RenderWindow _sf_window;
 
     Clock* _clock;
-    Player* _player;
+
 
     // Maze Texture
     sf::Texture maze_tex;

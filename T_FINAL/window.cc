@@ -139,13 +139,13 @@ void Window::load_and_bind_textures()
 {
     // for(int i = 0; i < )
     // Bind map textures
-    if(!maze_tex.loadFromFile("../src/images/screen/screen.png")){
-        db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
-    }else{
-        db<Window>(INF) << "[Window] Desenhando a Arena\n";
-    }
-    maze_sprite.setTexture(maze_tex);
-    maze_sprite.scale(1.5, 1.5);
+    // if(!maze_tex.loadFromFile("sprites/maze/screen.png")){
+    //     db<Window>(INF) << "[Window] Não foi possível obter o arquivo\n";
+    // }else{
+    //     db<Window>(INF) << "[Window] Desenhando a Arena\n";
+    // }
+    // maze_sprite.setTexture(maze_tex);
+    // maze_sprite.scale(1.5, 1.5);
     
     // // player.render()
 
