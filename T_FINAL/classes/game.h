@@ -22,14 +22,13 @@ private:
     static Player* _player_obj;
     static Enemy* _enemy_obj;
     static Controller* _controller_obj;
-
+    static Clock* _clock_obj;
+    
     static Thread* _enemy_thread0;
     static Thread* _window_thread;
     static Thread* _player_thread;
     static Thread* _keyboard_thread;
     static Thread* _controller_thread;
-    static Controller* _controller_obj;
-    static Clock* _clock_obj;
 
     static GameConfig* _game_config;
 

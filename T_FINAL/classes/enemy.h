@@ -31,8 +31,10 @@ class Enemy :
 
     public:
         // Construtor de Classe
-        Enemy(const std::map<Orientation, std::string>& paths)
-        : MovingSprite(paths), Spaceship(paths){};
+        Enemy(const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock)
+        : MovingSprite(paths, initial_orientation, clock), Spaceship(paths, initial_orientation, clock){
+            _speed = 100.f;
+        };
         
         // Instancia de tiro
         Bullet *_shoot;  

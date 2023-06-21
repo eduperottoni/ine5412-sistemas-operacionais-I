@@ -15,6 +15,9 @@ Controller* Game::_controller_obj;
 Enemy* Game::_enemy_obj;
 Thread* Game::_enemy_thread0;
 
+Player* Game::_player_obj;
+Thread* Game::_player_thread;
+
 GameConfig* Game::_game_config;
 
 Clock* Game::_clock_obj;
@@ -51,12 +54,17 @@ void Game::_controller_run() {
     _controller_obj -> run();
 }
 
-// void Game::_player_run() {
-//     db<Game>(INF) << "[Game] Instanciando um novo player!\n";
-//     _player_obj = new Player();
-//     db<Game>(INF) << "[Game] Chamando método run do player!\n";
-//     _player_obj -> run();
-// }
+void Game::_player_run() {
+    map<MovingSprite::Orientation, string> sprites;
+    sprites[MovingSprite::Orientation::RIGHT] = "src/images/space_ships/space_ship_right.png";
+    sprites[MovingSprite::Orientation::LEFT] = "src/images/space_ships/space_ship_left.png";
+    sprites[MovingSprite::Orientation::UP] = "src/images/space_ships/space_ship_up.png";
+    sprites[MovingSprite::Orientation::DOWN] = "src/images/space_ships/space_ship_down.png";
+    db<Game>(INF) << "[Game] Instanciando um novo player!\n";
+    _player_obj = new Player(sprites, MovingSprite::Orientation::UP, _clock_obj);
+    db<Game>(INF) << "[Game] Chamando método run do player!\n";
+    _player_obj -> run();
+}
 
 void Game::_enemy_run(){
     map<MovingSprite::Orientation, string> sprites;
