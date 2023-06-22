@@ -3,7 +3,7 @@
 
 __BEGIN_API
 
-Window::Window(sf::Sprite* sprite, Clock* clock)
+Window::Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, sf::Sprite* screen, Clock* clock)
 {
     _sf_window.create(sf::VideoMode(900, 560), "Brick Game");
     //_sf_window = window;
@@ -11,7 +11,12 @@ Window::Window(sf::Sprite* sprite, Clock* clock)
     db<Window>(TRC) << "[Window] Criação da Thread da janela \n";
     // carregamento das texturas
     _player_sprite = sprite;
+    for (auto enemy_sprite : enemies_sprites_list){
+        _enemies_sprites_list.push_back(enemy_sprite);
+    }
+    // _enemies_sprites_list = enemies_sprites_list;
     _clock = clock;
+    _screen_sprite = screen;
     load_and_bind_textures();
 }
 
@@ -32,13 +37,15 @@ void Window::run()
 {
     db<Window>(TRC) << "[Window] Renderizando a janela !\n";
     
-    _sf_window.setFramerateLimit(120);
+    // FIXME ESSE VALOR DEVE VIR DE UMA CLASSE DE CONFIGURAÇÃO
+    _sf_window.setFramerateLimit(60);
     db<Window>(TRC) << "[Window] oiii !\n";
     //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
     //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
+    // FIXME ESSE VALOR DEVE VIR DE UMA CLASSE DE CONFIGURAÇÃO
     _sf_window.setKeyRepeatEnabled(true);
 
-    _clock->set_delta_time();
+    
 
     db<Window>(TRC) << "[Window] Preparação da chamada do jogador !\n";
     // Preparação da chamada da Thread jogador:
@@ -48,10 +55,21 @@ void Window::run()
     // Instanciação do jodador
     // _player = new Player();
 
-    db<Window>(TRC) << "[Window] Jogador construido !\n";
+    // db<Window>(TRC) << "[Window] Jogador construido !\n";
 
     while (_sf_window.isOpen())
-    {   db<Window>(TRC) << "[Window] Entrei no loop!\n";
+    {   
+
+        // AQUI:
+
+        // 1. Fazer a janela ler fila de eventos dela no game (criar fila de eventos para ela a ser atualizada pelo keyboard)
+        // 1.1. Caso o evento for de pause, ficar em um loop mostrando a tela de pause
+        //      Nesse caso, a thread vai ficar parada, não liberando o processador para as demais
+        //      O que está certo, visto que nada pode acontecer quando o jogo estiver pausado.
+        // 1.1.1. Dentro desse loop, quando ler o unpause, sai desse loop.
+
+        _clock->set_delta_time();
+        db<Window>(TRC) << "[Window] Entrei no loop!\n";
         _sf_window.clear();
         // _sf_window.draw(maze_sprite);
         
@@ -118,8 +136,19 @@ void Window::run()
             
         //     }
         // }
-
+        _sf_window.draw(*_screen_sprite);
         _sf_window.draw(*_player_sprite);
+        // _sf_window.display();
+        // _sf_window.draw(*_enemies_sprites_list.front());
+        
+        cout << "TAMANHO DA LISTA:" << _enemies_sprites_list.size() << "/n";
+        for (auto enemy_sprite : _enemies_sprites_list){
+            std::cout << "Type: " << typeid(*enemy_sprite).name() << std::endl;
+            cout << "POSIÇÃO DO INIMIGO EM X:" << enemy_sprite->getPosition().x << "\n";
+            cout << "POSIÇÃO DO INIMIGO EM Y:" << enemy_sprite->getPosition().y << "\n";
+            _sf_window.draw(*enemy_sprite);
+        }
+        _sf_window.display();
 
         // enemy_ship_sprite.setPosition(245, 150);
         // _sf_window.draw(enemy_ship_sprite);
@@ -127,7 +156,7 @@ void Window::run()
         // shot_sprite.setPosition(204, 400);
         // _sf_window.draw(shot_sprite);
         
-        _sf_window.display();
+        // _sf_window.display();
         Thread::yield();
     }
     

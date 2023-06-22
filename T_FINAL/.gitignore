@@ -1,2 +1,4 @@
 *.o
-main
+./main
+./target
+*.d

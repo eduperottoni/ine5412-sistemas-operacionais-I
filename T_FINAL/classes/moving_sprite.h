@@ -12,22 +12,18 @@
 __BEGIN_API
 
 using namespace std;
-class MovingSprite : public Sprite {
+class MovingSprite : virtual public Sprite {
     public:
-        enum Orientation {
-            RIGHT,
-            LEFT,
-            UP,
-            DOWN
+        MovingSprite(float scale, int size, float speed, const map<Sprite::Orientation, string>& paths, Sprite::Orientation initial_orientation, Clock* clock) 
+        : Sprite(scale, size, paths, initial_orientation) {
+            _clock = clock;
+            _speed = speed;
+            cout << "MovingSprite construido";
         };
-        MovingSprite(const map<Orientation, string>& paths, Orientation initial_orientation, Clock* clock);
         // ~MovingSprite();
 
         // Moves the Sprite (sets the texture and the position)
         void move(Orientation orientation);
-
-        // Returns the current sprite, that contains the correct texture.
-        sf::Sprite* get_sprite();
 
         // Sets the position of the object
         // void set_position(tuple<int, int>);
@@ -35,10 +31,7 @@ class MovingSprite : public Sprite {
     protected:
         float _speed;
         sf::Vector2f _movement;
-        sf::Sprite _sprite;
         Clock* _clock;
-        
-        map<Orientation, sf::Texture> _textures;
 };
 
 __END_API

@@ -1,12 +1,7 @@
 #include "classes/player.h"
 
 __BEGIN_API
-// código ainda não funcional
-sf::Texture space_ship_up;
-sf::Texture space_ship_down;
-sf::Texture space_ship_right;
-sf::Texture space_ship_left;
-static sf::Sprite space_ship_sprite;
+
 std::queue<Keyboard::Move> Player::_move_queue;
 
 // sf::Sprite Player::get_current_sprite()

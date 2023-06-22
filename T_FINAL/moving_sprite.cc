@@ -80,21 +80,11 @@ void MovingSprite::move(Orientation orientation)
     else _sprite.move(_movement);
 }
 
-sf::Sprite* MovingSprite::get_sprite()
-{
-    return &_sprite;
-}
-
-MovingSprite::MovingSprite(const map<Orientation, string>& paths, Orientation initial_orientation, Clock* clock)
-{
-    for(const auto& item : paths){
-        if (!_textures[item.first].loadFromFile(item.second)){
-            throw std::invalid_argument("Erro no carregamento de texturas");
-        }
-    }
-    _sprite.setTexture(_textures.at(initial_orientation));
-    _clock = clock;
-    cout << "MovingSprite construido";
-}
+// MovingSprite::MovingSprite(float scale, int size, float speed, const map<Sprite::Orientation, string>& paths, Sprite::Orientation initial_orientation, Clock* clock)
+// {
+//     _clock = clock;
+//     _speed = speed;
+//     cout << "MovingSprite construido";
+// }
 
 __END_API

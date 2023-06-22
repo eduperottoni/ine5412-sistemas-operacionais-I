@@ -9,5 +9,22 @@ sf::Texture Sprite::load_texture(const string& path)
     return texture;
 }
 
+sf::Sprite* Sprite::get_sprite()
+{
+    return &_sprite;
+}
+
+Sprite::Sprite(float scale, int size, const map<Orientation, string>& paths, Orientation initial_orientation)
+{
+    for(const auto& item : paths){
+        if (!_textures[item.first].loadFromFile(item.second)){
+            throw std::invalid_argument("Erro no carregamento de texturas");
+        }
+    }
+    _sprite.setTexture(_textures.at(initial_orientation));
+    _sprite.scale(scale, scale);
+    cout << "MovingSprite construido";
+}
+
 __END_API
 

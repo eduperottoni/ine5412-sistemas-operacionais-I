@@ -24,6 +24,8 @@ class Keyboard;
 class Controller;
 class CollisionChecker;
 class MovingSprite;
+class Enemy;
+class EnemyRandom;
 
 //declaração da classe Traits
 template<typename T>
@@ -69,7 +71,7 @@ struct Traits<System>: public Traits<void>
 template<>
 struct Traits<Thread>: public Traits<void>
 {
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 
@@ -117,6 +119,18 @@ struct Traits<CollisionChecker>: public Traits<void>
 
 template<>
 struct Traits<MovingSprite>: public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<>
+struct Traits<Enemy>: public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<>
+struct Traits<EnemyRandom>: public Traits<void>
 {
     static const bool debugged = true;
 };

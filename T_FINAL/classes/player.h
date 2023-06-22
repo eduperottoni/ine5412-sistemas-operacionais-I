@@ -24,10 +24,9 @@ class Player : virtual public Spaceship {
         static std::queue<Keyboard::Move> _move_queue;
     public:
         // Construtor de Classe
-        Player(const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock)
-        : MovingSprite(paths, initial_orientation, clock), Spaceship(paths, initial_orientation, clock){
-            _speed = 100.f;
-        };
+        Player(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock)
+        : Spaceship(scale, size, speed, paths, initial_orientation, clock), MovingSprite(scale, size, speed, paths, initial_orientation, clock),
+        Sprite(scale, size, paths, initial_orientation) {};
 
         void run();
 
@@ -35,7 +34,7 @@ class Player : virtual public Spaceship {
 
         // sf::Sprite get_current_sprite();
 
-        // sf::Sprite get_sprite(MovingSprite::Orientation orientation){
+        // sf::Sprite get_sprite(Sprite::Orientation orientation){
         //     return 
         // }
         // // Destrutor da classe

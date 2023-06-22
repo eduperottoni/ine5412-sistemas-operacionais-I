@@ -1,0 +1,67 @@
+#ifndef ENEMY_RANDOM_H
+#define ENEMY_RANDOM_H
+
+#include "../classes/enemy.h"
+#include "../src/lib/traits.h"
+#include "../src/lib/thread.h"
+#include "../classes/window.h"
+#include "../classes/bullet.h"
+#include "sprite.h"
+#include "spaceship.h"
+
+#include <iostream>
+#include <random>
+#include <tuple>
+
+__BEGIN_API
+
+
+class EnemyRandom : virtual public Enemy {
+    private:
+
+        sf::Texture enemy_ship_down;
+        sf::Texture enemy_ship_right;
+        sf::Texture enemy_ship_left;
+        sf::Texture enemy_ship_up;
+        sf::Sprite enemy_ship_sprite;
+
+
+    public:
+
+        EnemyRandom(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock)
+        : Sprite(scale, size, paths, initial_orientation), 
+        MovingSprite(scale, size, speed, paths, initial_orientation, clock),
+        Spaceship(scale, size, speed, paths, initial_orientation, clock),
+        Enemy(scale, size, speed, paths, initial_orientation, clock) {
+            std::cout << "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" << "/n";
+        };
+        // Construtor de Classe
+        // EnemyRandom(float scale, int size, int speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock)
+        // : MovingSprite(scale, size, speed, paths, initial_orientation, clock), 
+        // Spaceship(scale, size, speed, paths, initial_orientation, clock), 
+        // Enemy(scale, size, speed, paths, initial_orientation, clock){
+        //     _speed = speed;
+        // };
+        
+        // Instancia de tiro
+
+        // getter da posição do sprite do inimigo
+        // int getter(int x, int y);
+        // Destrutor da classe
+        // ~Enemy();
+
+        // Método para movimentar o personagem
+        void run() override;
+
+        int get_random_num();
+
+        // Método para o tiro do inimigo
+        void shoot();
+        
+        // Método para obter um número entre 1 e 4 
+        int random_num();
+};
+
+__END_API
+
+#endif

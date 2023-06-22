@@ -15,12 +15,24 @@ __BEGIN_API
 
 class Sprite {
     public:
+        enum Orientation {
+            STATIC,
+            RIGHT,
+            LEFT,
+            UP,
+            DOWN
+        };
         // Carrega e devolve a textura
         sf::Texture load_texture(const string& path);
+        sf::Sprite* get_sprite();
+        Sprite(float scale, int size, const map<Orientation, string>& paths, Sprite::Orientation initial_orientation);
+
     protected:
-        int scale;
+        float scale;
         int size;
         std::tuple<int, int> position;
+        sf::Sprite _sprite;
+        map<Orientation, sf::Texture> _textures;
 };
 
 __END_API

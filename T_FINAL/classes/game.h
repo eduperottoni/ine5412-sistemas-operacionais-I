@@ -9,6 +9,10 @@
 #include "../classes/controller.h"
 #include "../classes/clock.h"
 #include "../classes/game_config.h"
+#include "../classes/enemy.h"
+#include "../classes/enemy_random.h"
+#include "../classes/static_sprite.h"
+#include <list>
 
 
 __BEGIN_API
@@ -25,13 +29,17 @@ private:
     static Thread* _controller_thread;
     static Controller* _controller_obj;
     static Clock* _clock_obj;
+    static list<Enemy*> _enemy_objects;
+    static list<Thread*> _enemy_threads;
 
     static GameConfig* _game_config;
+    static StaticSprite* _screen;
 
     static void _window_run();
     static void _keyboard_run();
     static void _player_run();
     static void _controller_run();
+    static void _enemy_run(int i);
 
 
 public:

@@ -44,11 +44,13 @@ CCFLAGS = -Wall -g -std=c++14
 NONTEST = main.cc main.o
 
 SOURCES = $(filter-out $(NONMAIN), $(wildcard *.cc))
-OBJECTS = $(SOURCES:.cc=.o)
+OBJECTS = $(patsubst %.cc,$(OBJDIR)/%.o,$(SOURCES))
 
 LIBDIR = -L/usr/lib/x86_64-linux-gnu
 
 LNFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lm -lpng -g
+
+OBJDIR = target
 
 # main target
 all: main
@@ -57,16 +59,16 @@ main: $(OBJECTS)
 	$(CC) $(LIBDIR) -o $@ $^ $(LNFLAGS)
 
 # pull in dependency info for existing .o files
--include $(OBJECTS:.o=.d) $(OBJECTS:.o=.d)
+-include $(OBJECTS:.o=.d)
 
 # compile and generate dependency info
-%.o: %.cc
+$(OBJDIR)/%.o: %.cc
 	$(CC) -c $(CCFLAGS) $< -o $@
-# $(CC) -M $(CCFLAGS) $*.cc > $*.d
+	$(CC) -M -MT $@ $(CCFLAGS) $< > $(OBJDIR)/$*.d
 
 OUT = ./main
 
-run:
+run: clean
 	@./${OUT}
 	
 # automatic variables
