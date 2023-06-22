@@ -25,17 +25,15 @@ public:
         RIGHT,
         SHOOT,
         EXIT,
-        PAUSE,
-        UNPAUSE,
+        P
     };
 
-    Keyboard(Window* window, Controller* controller, Player* player);
+    Keyboard(Window* window, Controller* controller);
 
 private:
     void read_key();
     sf::RenderWindow* _sf_window;
     std::queue<Keyboard::Move>* _action_queue;
-    std::queue<Keyboard::Move>* _player_queue;
 };
 
 __END_API

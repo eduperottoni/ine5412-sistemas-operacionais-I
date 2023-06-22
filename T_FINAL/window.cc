@@ -38,12 +38,12 @@ void Window::run()
     db<Window>(TRC) << "[Window] Renderizando a janela !\n";
     
     // FIXME ESSE VALOR DEVE VIR DE UMA CLASSE DE CONFIGURAÇÃO
-    _sf_window.setFramerateLimit(60);
+    _sf_window.setFramerateLimit(10);
     db<Window>(TRC) << "[Window] oiii !\n";
     //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
     //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
     // FIXME ESSE VALOR DEVE VIR DE UMA CLASSE DE CONFIGURAÇÃO
-    _sf_window.setKeyRepeatEnabled(true);
+    _sf_window.setKeyRepeatEnabled(false);
 
     
 
@@ -141,11 +141,11 @@ void Window::run()
         // _sf_window.display();
         // _sf_window.draw(*_enemies_sprites_list.front());
         
-        cout << "TAMANHO DA LISTA:" << _enemies_sprites_list.size() << "/n";
+        // cout << "TAMANHO DA LISTA:" << _enemies_sprites_list.size() << "/n";
         for (auto enemy_sprite : _enemies_sprites_list){
-            std::cout << "Type: " << typeid(*enemy_sprite).name() << std::endl;
-            cout << "POSIÇÃO DO INIMIGO EM X:" << enemy_sprite->getPosition().x << "\n";
-            cout << "POSIÇÃO DO INIMIGO EM Y:" << enemy_sprite->getPosition().y << "\n";
+            // std::cout << "Type: " << typeid(*enemy_sprite).name() << std::endl;
+            // cout << "POSIÇÃO DO INIMIGO EM X:" << enemy_sprite->getPosition().x << "\n";
+            // cout << "POSIÇÃO DO INIMIGO EM Y:" << enemy_sprite->getPosition().y << "\n";
             _sf_window.draw(*enemy_sprite);
         }
         _sf_window.display();

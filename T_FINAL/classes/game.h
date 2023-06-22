@@ -19,6 +19,15 @@ __BEGIN_API
 
 class Game
 {
+public:
+
+    Game() {}
+    ~Game();
+    
+    static void configure();
+
+    static void run(void* name);
+
 private:
     static Window* _window_obj;
     static Keyboard* _keyboard_obj;
@@ -40,15 +49,6 @@ private:
     static void _player_run();
     static void _controller_run();
     static void _enemy_run(int i);
-
-
-public:
-    Game() {}
-    ~Game();
-    
-    static void configure();
-
-    static void run(void* name);
 };
 
 

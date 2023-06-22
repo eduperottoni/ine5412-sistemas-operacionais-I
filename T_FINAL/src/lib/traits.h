@@ -71,7 +71,7 @@ struct Traits<System>: public Traits<void>
 template<>
 struct Traits<Thread>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 
@@ -102,7 +102,7 @@ struct Traits<Game>: public Traits<void>
 template<>
 struct Traits<Keyboard>: public Traits<void>
 {
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 template<>
@@ -114,19 +114,19 @@ struct Traits<Controller>: public Traits<void>
 template<>
 struct Traits<CollisionChecker>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
 struct Traits<MovingSprite>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
 struct Traits<Enemy>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>

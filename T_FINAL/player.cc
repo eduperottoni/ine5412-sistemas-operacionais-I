@@ -40,6 +40,9 @@ void Player::run() {
                 db<Player>(TRC) << "[Player] RIGHT \n";
                 MovingSprite::move(Orientation::RIGHT);
                 break;
+            case Keyboard::Move::SHOOT:
+                db<Controller>(TRC) << "[PLAYER] SHOOT \n";
+                break;
             default:
                 break;
             }

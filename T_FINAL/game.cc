@@ -13,8 +13,8 @@ Controller* Game::_controller_obj;
 Player* Game::_player_obj;
 Thread* Game::_player_thread;
 std::list<Enemy*> Game::_enemy_objects;
-std::list<Thread*>  Game:: _enemy_threads;
-StaticSprite* Game:: _screen;
+std::list<Thread*> Game::_enemy_threads;
+StaticSprite* Game::_screen;
 
 GameConfig* Game::_game_config;
 
@@ -83,14 +83,14 @@ void Game::_window_run() {
 
 void Game::_keyboard_run() {
     db<Game>(INF) << "[Game] Instanciando um novo teclado!\n";
-    _keyboard_obj = new Keyboard(_window_obj, _controller_obj, _player_obj);
+    _keyboard_obj = new Keyboard(_window_obj, _controller_obj);
     db<Game>(INF) << "[Game] Chamando método run do teclado!\n";
     _keyboard_obj -> run();
 }
 
 void Game::_controller_run() {
     db<Game>(INF) << "[Game] Instanciando um novo controller!\n";
-    _controller_obj = new Controller();
+    _controller_obj = new Controller(_player_thread, _enemy_threads, _player_obj -> get_move_queue());
     db<Game>(INF) << "[Game] Chamando método run do controller!\n";
     _controller_obj -> run();
 }
@@ -119,7 +119,7 @@ void Game::run(void* name){
     db<Game>(INF) << "[Game] Iniciando a thread do player\n";
     _player_thread = new Thread(_player_run);
 
-    db<Game>(INF) << "[Game] Iniciando a thread do player\n";
+    db<Game>(INF) << "[Game] Iniciando a thread dos inimigos\n";
     for (int i = 0; i < NUMBER_OF_ENEMIES; i++){
         _enemy_threads.push_back(new Thread(_enemy_run, i)); 
     }
