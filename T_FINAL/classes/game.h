@@ -42,7 +42,6 @@ private:
     static list<Thread*> _enemy_threads;
 
     static GameConfig* _game_config;
-    static StaticSprite* _screen;
 
     static void _window_run();
     static void _keyboard_run();

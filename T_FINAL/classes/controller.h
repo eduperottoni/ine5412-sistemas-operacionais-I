@@ -30,6 +30,7 @@ public:
     ~Controller();
     void run();
     std::queue<Keyboard::Move>* get_action_queue();
+    // static std::list<Bullet>* Controller::_bullet_list;
 
     //static State* get_state();
 

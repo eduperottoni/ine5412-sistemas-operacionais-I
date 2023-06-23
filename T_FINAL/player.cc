@@ -42,6 +42,9 @@ void Player::run() {
                 break;
             case Keyboard::Move::SHOOT:
                 db<Controller>(TRC) << "[PLAYER] SHOOT \n";
+                if (_ready_to_shoot) {
+                    shoot();
+                }
                 break;
             default:
                 break;

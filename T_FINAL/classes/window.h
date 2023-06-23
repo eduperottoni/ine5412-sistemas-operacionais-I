@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include "../src/lib/traits.h"
 #include "clock.h"
+#include "static_sprite.h"
 #include <list>
 
 __BEGIN_API
@@ -15,7 +16,7 @@ class Window
 {
 friend class Player;
 public:
-    Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, sf::Sprite* screen, Clock* clock);
+    Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, Clock* clock);
     ~Window();
     void run();
 
@@ -30,6 +31,11 @@ protected:
 private:
     sf::Sprite* _player_sprite;
     sf::Sprite* _screen_sprite;
+    static StaticSprite* _screen;
+    static StaticSprite* _ready;
+    static StaticSprite* _score;
+    sf::Text _text;
+    sf::Font _font;
     std::list<sf::Sprite*> _enemies_sprites_list;
     sf::RenderWindow _sf_window;
 

@@ -25,9 +25,10 @@ class Sprite {
         // Carrega e devolve a textura
         sf::Texture load_texture(const string& path);
         sf::Sprite* get_sprite();
-        Sprite(float scale, int size, const map<Orientation, string>& paths, Sprite::Orientation initial_orientation);
+        Sprite(float scale, int size, const map<Orientation, string>& paths, Sprite::Orientation initial_orientation, int x, int y);
 
     protected:
+        Orientation _current_orientation;
         float scale;
         int size;
         std::tuple<int, int> position;

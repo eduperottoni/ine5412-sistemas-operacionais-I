@@ -10,8 +10,8 @@ __BEGIN_API
 
 class StaticSprite : public Sprite {
     public:
-        StaticSprite(float scale, int size, const map<Sprite::Orientation, string>& paths, Sprite::Orientation initial_orientation)
-        : Sprite(scale, size, paths, initial_orientation) {};
+        StaticSprite(float scale, int size, const map<Sprite::Orientation, string>& paths, Sprite::Orientation initial_orientation, int x, int y)
+        : Sprite(scale, size, paths, initial_orientation, x, y) {};
     private:
 };
 

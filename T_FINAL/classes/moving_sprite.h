@@ -14,8 +14,8 @@ __BEGIN_API
 using namespace std;
 class MovingSprite : virtual public Sprite {
     public:
-        MovingSprite(float scale, int size, float speed, const map<Sprite::Orientation, string>& paths, Sprite::Orientation initial_orientation, Clock* clock) 
-        : Sprite(scale, size, paths, initial_orientation) {
+        MovingSprite(float scale, int size, float speed, const map<Sprite::Orientation, string>& paths, Sprite::Orientation initial_orientation, Clock* clock, int x, int y) 
+        : Sprite(scale, size, paths, initial_orientation, x, y) {
             _clock = clock;
             _speed = speed;
             cout << "MovingSprite construido";

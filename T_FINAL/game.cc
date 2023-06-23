@@ -14,7 +14,6 @@ Player* Game::_player_obj;
 Thread* Game::_player_thread;
 std::list<Enemy*> Game::_enemy_objects;
 std::list<Thread*> Game::_enemy_threads;
-StaticSprite* Game::_screen;
 
 GameConfig* Game::_game_config;
 
@@ -27,7 +26,6 @@ float SCREEN_SCALE = 1.5f;
 
 void Game::configure(){
     _game_config = &GameConfig::get_instance();
-
     //TODO -> Aqui, inicializar as configurações utilizando os setters de GameConfig.
 }
 
@@ -62,10 +60,10 @@ void Game::_enemy_run(int i){
 
     Enemy* new_enemy;
     if (i % 2 == 0){
-        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, MovingSprite::Orientation::UP, _clock_obj);
+        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0);
     } else {
         // FIXME INSERIR AQUI O OUTRO TIPO DE INIMIGO
-        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, MovingSprite::Orientation::UP, _clock_obj);
+        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0);
     }
     
     _enemy_objects.push_back(new_enemy);
@@ -76,7 +74,7 @@ void Game::_window_run() {
     db<Game>(INF) << "[Game] Instanciando uma nova janela!\n";
     std::list<sf::Sprite*> enemies_sprites_list;
     for (auto enemy : _enemy_objects) enemies_sprites_list.push_back(enemy -> get_sprite());
-    _window_obj = new Window(_player_obj->get_sprite(), enemies_sprites_list, _screen->get_sprite(), _clock_obj);
+    _window_obj = new Window(_player_obj->get_sprite(), enemies_sprites_list, _clock_obj);
     db<Game>(INF) << "[Game] Chamando método run da janela!\n";
     _window_obj -> run();
 }
@@ -102,7 +100,7 @@ void Game::_player_run() {
     sprites[Sprite::Orientation::UP] = "src/images/space_ships/space_ship_up.png";
     sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/space_ship_down.png";
     db<Game>(INF) << "[Game] Instanciando um novo player!\n";
-    _player_obj = new Player(SCALE, 1, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj);
+    _player_obj = new Player(SCALE, 1, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 50, 50);
     // _player_obj = new Player(scale, size, speed, paths, sprites, clock);
     db<Game>(INF) << "[Game] Chamando método run do player!\n";
     _player_obj -> run();
@@ -111,9 +109,6 @@ void Game::_player_run() {
 void Game::run(void* name){
     //Instancia um clock
     _clock_obj = new Clock();
-    map<Sprite::Orientation, string> path;
-    path[Sprite::Orientation::STATIC] = "src/images/screen/screen.png";
-    _screen = new StaticSprite(SCREEN_SCALE, 0, path, Sprite::Orientation::STATIC);
 
     // _window_thread = new Window(_window_run(_player_object, _enemy_object, ...))
     db<Game>(INF) << "[Game] Iniciando a thread do player\n";

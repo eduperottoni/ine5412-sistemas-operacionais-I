@@ -1,10 +1,12 @@
 #include "classes/controller.h"
+#include "classes/bullet.h"
 
 __BEGIN_API
 
 std::queue<Keyboard::Move> Controller::_action_queue;
 Controller::State Controller::_game_state;
 std::queue<Keyboard::Move>* Controller::_player_queue;
+// std::list<Bullet>* Controller::_bullet_list;
 
 void Controller::run() {
     while (true) {
@@ -13,7 +15,7 @@ void Controller::run() {
             _action_queue.pop();
             db<Controller>(TRC) << "[CONTROLLER] NOT EMPTY" << move << "\n";
             // MOVIMENTO DO JOGADOR
-            if (move == Keyboard::Move::DOWN || move == Keyboard::Move::LEFT || move == Keyboard::Move::RIGHT || move == Keyboard::Move::UP) {
+            if (move == Keyboard::Move::DOWN || move == Keyboard::Move::LEFT || move == Keyboard::Move::RIGHT || move == Keyboard::Move::UP || move == Keyboard::Move::SHOOT) {
                 if (_game_state == RUNNING) _player_queue -> push(move);
             } else {
                 // MOVIMENTO DE CONTROLE DO JOGO

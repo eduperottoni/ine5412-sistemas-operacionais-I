@@ -14,7 +14,7 @@ sf::Sprite* Sprite::get_sprite()
     return &_sprite;
 }
 
-Sprite::Sprite(float scale, int size, const map<Orientation, string>& paths, Orientation initial_orientation)
+Sprite::Sprite(float scale, int size, const map<Orientation, string>& paths, Orientation initial_orientation, int x, int y)
 {
     for(const auto& item : paths){
         if (!_textures[item.first].loadFromFile(item.second)){
@@ -22,8 +22,10 @@ Sprite::Sprite(float scale, int size, const map<Orientation, string>& paths, Ori
         }
     }
     _sprite.setTexture(_textures.at(initial_orientation));
+    _sprite.setPosition(x, y);
     _sprite.scale(scale, scale);
-    cout << "MovingSprite construido";
+    _current_orientation = paths.begin() -> first;
+    cout << "Sprite construido";
 }
 
 __END_API

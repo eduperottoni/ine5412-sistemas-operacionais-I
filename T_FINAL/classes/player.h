@@ -22,15 +22,20 @@ class Player : virtual public Spaceship {
         sf::Sprite _current_sprite;
         // Keyboard event queue
         static std::queue<Keyboard::Move> _move_queue;
+
     public:
         // Construtor de Classe
-        Player(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock)
-        : Spaceship(scale, size, speed, paths, initial_orientation, clock), MovingSprite(scale, size, speed, paths, initial_orientation, clock),
-        Sprite(scale, size, paths, initial_orientation) {};
+        Player(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y)
+        : Spaceship(scale, size, speed, paths, initial_orientation, clock, x, y), MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y),
+        Sprite(scale, size, paths, initial_orientation, x, y) {};
 
         void run();
 
         std::queue<Keyboard::Move>* get_move_queue();
+
+
+        
+        
 
         // sf::Sprite get_current_sprite();
 
