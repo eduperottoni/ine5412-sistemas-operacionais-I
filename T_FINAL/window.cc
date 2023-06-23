@@ -191,7 +191,7 @@ void Window::load_and_bind_textures()
     _ready = new StaticSprite(3, 0, ready_path, Sprite::Orientation::STATIC, 850, 200);
 
     
-    if (!_font.loadFromFile("Orbitron-VariableFont_wght"))
+    if (!_font.loadFromFile("src/fonts/Orbitron-VariableFont_wght.ttf"))
     {
         // Tratar erro caso a fonte não seja carregada corretamente
         db<Window>(ERR) << "[Window] Não foi possível carregar a fonte!\n";
@@ -199,7 +199,7 @@ void Window::load_and_bind_textures()
 
     _text.setFont(_font);
     _text.setString("0");
-    _text.setCharacterSize(24);
+    _text.setCharacterSize(50);
     _text.setFillColor(sf::Color::White);
     _text.setPosition(TEXT_X, TEXT_Y);
     
