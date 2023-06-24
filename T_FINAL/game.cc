@@ -69,7 +69,7 @@ void Game::_enemy_run(int i) {
         new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_bullet_list);
     } else {
         // FIXME INSERIR AQUI O OUTRO TIPO DE INIMIGO
-        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_bullet_list);
+        new_enemy = new EnemyTracker(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_bullet_list, _player_obj->get_sprite());
     }
     
     _enemy_objects.push_back(new_enemy);

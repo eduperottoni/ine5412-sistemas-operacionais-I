@@ -12,6 +12,7 @@
 #include "../classes/enemy.h"
 #include "../classes/enemy_random.h"
 #include "../classes/static_sprite.h"
+#include "../classes/enemy_tracker.h"
 #include <list>
 
 

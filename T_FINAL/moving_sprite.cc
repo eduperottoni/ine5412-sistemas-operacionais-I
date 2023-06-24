@@ -51,18 +51,22 @@ void MovingSprite::move(Orientation orientation)
     {
     case Orientation::LEFT:
         // y_position -= _speed;
+        // _movement.x -= _speed;
         _movement.x -= _speed * delta;
         break;
     case Orientation::RIGHT:
         // x_position += _speed;
+        // _movement.x -= _speed;
         _movement.x += _speed * delta;
         break;
     case Orientation::UP:
         // y_position -= _speed;
+        // _movement.y -= _speed;
         _movement.y -= _speed * delta;
         break;
     case Orientation::DOWN:
         // y_position += _speed;
+        // _movement.y += _speed;
         _movement.y += _speed * delta;
         break;
     default:
@@ -76,11 +80,13 @@ void MovingSprite::move(Orientation orientation)
     if (x_position < 0.f) _sprite.setPosition(0.f, y_position);
     else if (y_position < 0.f) _sprite.setPosition(x_position, 0.f);
     // TODO ARRUMAR ISSO AQUI
-    else if (x_position + bounds.width > 900) _sprite.setPosition(900 - bounds.width, y_position);
-    else if (y_position + bounds.height > 560) _sprite.setPosition(x_position, 560 - bounds.height);
+    else if (x_position + bounds.width > 1086 - 320) _sprite.setPosition(1086 - 320 - bounds.width, y_position);
+    else if (y_position + bounds.height > 746 + 260) _sprite.setPosition(x_position, 746 + 260 - bounds.height);
     else{
         _sprite.move(_movement);
     }
+
+    // 1086, 746
     db<MovingSprite>(TRC) << "[MovingSprite] posição do sprite"<< _sprite.getPosition().x << _sprite.getPosition().y<<"\n";
 }
 
