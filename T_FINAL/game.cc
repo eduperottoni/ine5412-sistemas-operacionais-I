@@ -57,7 +57,7 @@ void Game::configure(){
 // }
 
 
-void Game::_enemy_run(int i){
+void Game::_enemy_run(int i) {
     map<Sprite::Orientation, string> sprites;
     sprites[Sprite::Orientation::RIGHT] = "src/images/space_ships/enemy_space_ship_right.png";
     sprites[Sprite::Orientation::LEFT] = "src/images/space_ships/enemy_space_ship_left.png";
@@ -107,7 +107,7 @@ void Game::_keyboard_run() {
 
 void Game::_controller_run() {
     db<Game>(INF) << "[Game] Instanciando um novo controller!\n";
-    _controller_obj = new Controller(_player_thread, _enemy_threads, _player_obj -> get_move_queue());
+    _controller_obj = new Controller(_player_thread, _enemy_threads, _player_obj -> get_move_queue(), &_bullet_list);
     db<Game>(INF) << "[Game] Chamando método run do controller!\n";
     _controller_obj -> run();
 }

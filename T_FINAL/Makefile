@@ -52,6 +52,9 @@ LNFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lm -lpng -g
 
 OBJDIR = target
 
+
+
+
 # main target
 all: main
 
@@ -68,8 +71,13 @@ $(OBJDIR)/%.o: %.cc
 
 OUT = ./main
 
+check:
+	valgrind  --leak-check=summary --show-leak-kinds=all ./${OUT}
+
 run: clean
-	@./${OUT}
+	rm -rf $(OBJDIR)/*
+# @${OUT}
+	
 	
 # automatic variables
 # $< contains the first dependency file name

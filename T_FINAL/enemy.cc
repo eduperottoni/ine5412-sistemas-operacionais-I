@@ -9,7 +9,7 @@ __BEGIN_API
 //     
 //     Thread::yield();
 // }
-
+/* 
 void Enemy::shoot(){
     while(true){
         db<Enemy>(INF) << "[Enemy] Chamada de tiro !\n";
@@ -17,7 +17,7 @@ void Enemy::shoot(){
 
         Thread::yield();
     }
-}
+} */
 
 // Enemy::~Enemy(){
 //     // deleta o inimigo

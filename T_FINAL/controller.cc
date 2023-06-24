@@ -10,6 +10,46 @@ std::queue<Keyboard::Move>* Controller::_player_queue;
 
 void Controller::run() {
     while (true) {
+        // _bullet_list->remove_if([](Bullet* bullet) {
+        //     if(bullet->out_of_screen()){
+        //         db<Controller>(TRC) << "[CONTROLLER] REMOVENDO BULLET DA LISTA" << "\n";
+        //         return true;
+        //     };
+        //     return false;
+        // });
+        auto it = _bullet_list->begin();
+        while (it != _bullet_list->end()) {
+            if ((*it)->out_of_screen()) {
+                db<Controller>(TRC) << "[CONTROLLER] ENTREI NO LOOP" << "\n";
+                delete *it;
+                it = _bullet_list->erase(it);
+            } else {
+                ++it;
+            }
+        }
+        // for (auto bullet : *_bullet_list){
+        //     db<Controller>(TRC) << "[CONTROLLER] ENTREI NO LOOP" << "\n";
+        //     if (!bullet -> out_of_screen()) {
+        //         db<Controller>(TRC) << "[CONTROLLER] TENTAR ATUALIZAR" << "\n";
+        //         bullet -> update();
+        //         db<Controller>(TRC) << "[CONTROLLER] ATUALIZEI" << "\n";
+        //     } else {
+        //         // _bullet_list -> remove_if([&bullet](Bullet* ptr) { return ptr == bullet; });
+        //         db<Controller>(TRC) << "[CONTROLLER] REMOVENDO BULLET DA LISTA" << "\n";
+        //         _bullet_list->erase(std::remove(_bullet_list->begin(), _bullet_list->end(), bullet), _bullet_list->end());
+        //         // delete bullet;
+        //         db<Controller>(TRC) << "[CONTROLLER] REMOVI BULLET DA LISTA" << "\n";
+        //     }
+        // }
+        // auto it = _bullet_list->begin();
+        // while (it != _bullet_list->end()) {
+        //     if ((*it)->out_of_screen()) {
+        //         delete *it;
+        //         it = _bullet_list->erase(it);
+        //     } else {
+        //         ++it;
+        //     }
+        // }
         if (!_action_queue.empty()) {
             Keyboard::Move move = _action_queue.front();
             _action_queue.pop();

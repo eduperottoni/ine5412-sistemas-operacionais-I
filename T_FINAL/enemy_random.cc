@@ -41,6 +41,7 @@ void EnemyRandom::run(){
         default:
             break;
         }
+        // Spaceship::shoot();
         // _sprite.setPosition(50, 50);
 
         // } // caso contrario, realiza o respaw do inimigo na posicao inicial 

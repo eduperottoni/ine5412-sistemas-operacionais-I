@@ -43,7 +43,7 @@ void Window::run()
     db<Window>(TRC) << "[Window] Renderizando a janela !\n";
     
     // FIXME ESSE VALOR DEVE VIR DE UMA CLASSE DE CONFIGURAÇÃO
-    _sf_window.setFramerateLimit(60);
+    _sf_window.setFramerateLimit(50);
     db<Window>(TRC) << "[Window] oiii !\n";
     //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
     //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
@@ -161,7 +161,9 @@ void Window::run()
 
         for (auto bullet : *_bullet_list){
             bullet->update();
+            // db<Window>(TRC) << "[Window] DESENHANDO BULLET!\n";
             _sf_window.draw(*bullet->get_sprite());
+            // db<Window>(TRC) << "[Window] DESENHEI BULLET!\n";
         }
         _sf_window.display();
 
