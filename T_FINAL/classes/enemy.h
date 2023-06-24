@@ -20,8 +20,8 @@ class Enemy :
     virtual public Spaceship {
     public:
         // Construtor de Classe
-        Enemy(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y)
-        : Sprite(scale, size, paths, initial_orientation, x, y), MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y), Spaceship(scale, size, speed, paths, initial_orientation, clock, x, y){};
+        Enemy(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y, std::list<Bullet*>* bullet_list)
+        : Sprite(scale, size, paths, initial_orientation, x, y), MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y), Spaceship(scale, size, speed, paths, initial_orientation, clock, x, y, bullet_list){};
 
         // Instancia de tiro
 

@@ -11,15 +11,18 @@ __BEGIN_API
 using namespace std;
 class CollisionChecker
 {
-private:
-    sf::Sprite _player_sprite;
-    list<sf::Sprite> _enemies_sprites;
-    //Inserir também os sprites das balas
 public:
-    CollisionChecker(sf::Sprite player_sprite, list<sf::Sprite>);
+    CollisionChecker(sf::Sprite* player_sprite, list<sf::Sprite*> enemies_sprites_list);
+
     ~CollisionChecker();
     
-    static void run();
+    void run();
+private:
+    static sf::Sprite* _player_sprite;
+    static list<sf::Sprite*> _enemies_sprites;
+    //Inserir também os sprites das balas
+
+    // static Game::State* _game_state;
 };
 
 

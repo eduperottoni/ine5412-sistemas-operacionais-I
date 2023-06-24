@@ -31,12 +31,12 @@ void Spaceship::shoot() {
     default:
         break;
     }
-    _bullet->get_sprite()->setPosition(bullet_x_pos, bullet_y_pos);
+    std::map<Orientation, std::string> path;
+    path[_current_orientation] = "src/images/space_ships/shot.png";
+    Bullet* bullet = new Bullet(1.5, 0, _speed*2, path, _current_orientation, _clock, bullet_x_pos, bullet_y_pos);
+    _bullet_list->push_back(bullet);
+    db<Spaceship>(TRC) << "[SPACESHIP] tamanho da lista" << _bullet_list->size() << "\n";
     db<Spaceship>(TRC) << "[SPACESHIP] SHOOTING!!! \n";
 }
 
-
-Bullet* Spaceship::get_bullet() {
-    return _bullet;
-}
 __END_API

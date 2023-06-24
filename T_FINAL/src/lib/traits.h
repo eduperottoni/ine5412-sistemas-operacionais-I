@@ -27,6 +27,7 @@ class MovingSprite;
 class Enemy;
 class EnemyRandom;
 class Spaceship;
+class Bullet;
 
 //declaração da classe Traits
 template<typename T>
@@ -138,6 +139,12 @@ struct Traits<EnemyRandom>: public Traits<void>
 
 template<>
 struct Traits<Spaceship>: public Traits<void>
+{
+    static const bool debugged = true;
+};
+
+template<>
+struct Traits<Bullet>: public Traits<void>
 {
     static const bool debugged = true;
 };

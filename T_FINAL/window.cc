@@ -6,8 +6,9 @@ __BEGIN_API
 StaticSprite* Window::_screen;
 StaticSprite* Window::_ready;
 StaticSprite* Window::_score;
+std::list<Bullet*>* Window::_bullet_list;
 
-Window::Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, Clock* clock)
+Window::Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, std::list<Bullet*>* bullet_list, Clock* clock)
 {
     _sf_window.create(sf::VideoMode(1086, 746), "Brick Game");
     //_sf_window = window;
@@ -18,6 +19,7 @@ Window::Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, 
     for (auto enemy_sprite : enemies_sprites_list){
         _enemies_sprites_list.push_back(enemy_sprite);
     }
+    _bullet_list = bullet_list;
     // _enemies_sprites_list = enemies_sprites_list;
     _clock = clock;
     load_and_bind_textures();
@@ -149,12 +151,17 @@ void Window::run()
         // _sf_window.display();
         // _sf_window.draw(*_enemies_sprites_list.front());
         
-        // cout << "TAMANHO DA LISTA:" << _enemies_sprites_list.size() << "/n";
+        cout << "TAMANHO DA LISTA:" << _bullet_list->size() << "\n";
         for (auto enemy_sprite : _enemies_sprites_list){
             // std::cout << "Type: " << typeid(*enemy_sprite).name() << std::endl;
             // cout << "POSIÇÃO DO INIMIGO EM X:" << enemy_sprite->getPosition().x << "\n";
             // cout << "POSIÇÃO DO INIMIGO EM Y:" << enemy_sprite->getPosition().y << "\n";
             _sf_window.draw(*enemy_sprite);
+        }
+
+        for (auto bullet : *_bullet_list){
+            bullet->update();
+            _sf_window.draw(*bullet->get_sprite());
         }
         _sf_window.display();
 
@@ -172,7 +179,7 @@ void Window::run()
 
 void Window::load_and_bind_textures()
 {
-    int NUMBER_OF_ENEMIES = 4;
+    // int NUMBER_OF_ENEMIES = 4;
     float SCALE = 0.75;
     float ENEMIES_SPEED = 100.f;
     float SCREEN_SCALE = 2.f;

@@ -28,11 +28,11 @@ class EnemyRandom : virtual public Enemy {
 
     public:
 
-        EnemyRandom(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y)
+        EnemyRandom(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y, std::list<Bullet*>* bullet_list)
         : Sprite(scale, size, paths, initial_orientation, x, y), 
         MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y),
-        Spaceship(scale, size, speed, paths, initial_orientation, clock, x, y),
-        Enemy(scale, size, speed, paths, initial_orientation, clock, x, y) {
+        Spaceship(scale, size, speed, paths, initial_orientation, clock, x, y, bullet_list),
+        Enemy(scale, size, speed, paths, initial_orientation, clock, x, y, bullet_list) {
             std::cout << "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" << "/n";
         };
         // Construtor de Classe

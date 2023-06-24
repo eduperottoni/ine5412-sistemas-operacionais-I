@@ -24,7 +24,7 @@ Sprite::Sprite(float scale, int size, const map<Orientation, string>& paths, Ori
     _sprite.setTexture(_textures.at(initial_orientation));
     _sprite.setPosition(x, y);
     _sprite.scale(scale, scale);
-    _current_orientation = paths.begin() -> first;
+    _current_orientation = initial_orientation;
     cout << "Sprite construido";
 }
 

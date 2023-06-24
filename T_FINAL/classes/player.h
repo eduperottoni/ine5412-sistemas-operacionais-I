@@ -25,8 +25,8 @@ class Player : virtual public Spaceship {
 
     public:
         // Construtor de Classe
-        Player(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y)
-        : Spaceship(scale, size, speed, paths, initial_orientation, clock, x, y), MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y),
+        Player(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y, std::list<Bullet*>* bullet_list)
+        : Spaceship(scale, size, speed, paths, initial_orientation, clock, x, y, bullet_list), MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y),
         Sprite(scale, size, paths, initial_orientation, x, y) {};
 
         void run();

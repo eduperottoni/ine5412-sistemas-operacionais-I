@@ -68,6 +68,7 @@ void MovingSprite::move(Orientation orientation)
     default:
         break;
     }
+    _current_orientation = orientation;
     
     // _sprite.setPosition(x_position, y_position);
 
@@ -77,7 +78,10 @@ void MovingSprite::move(Orientation orientation)
     // TODO ARRUMAR ISSO AQUI
     else if (x_position + bounds.width > 900) _sprite.setPosition(900 - bounds.width, y_position);
     else if (y_position + bounds.height > 560) _sprite.setPosition(x_position, 560 - bounds.height);
-    else _sprite.move(_movement);
+    else{
+        _sprite.move(_movement);
+    }
+    db<MovingSprite>(TRC) << "[MovingSprite] posição do sprite"<< _sprite.getPosition().x << _sprite.getPosition().y<<"\n";
 }
 
 // MovingSprite::MovingSprite(float scale, int size, float speed, const map<Sprite::Orientation, string>& paths, Sprite::Orientation initial_orientation, Clock* clock)

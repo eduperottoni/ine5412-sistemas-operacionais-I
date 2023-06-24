@@ -27,8 +27,10 @@ public:
     static void configure();
 
     static void run(void* name);
+    static std::list<sf::Sprite*> get_enemies_sprites_list();
 
 private:
+
     static Window* _window_obj;
     static Keyboard* _keyboard_obj;
     static Player* _player_obj;
@@ -48,6 +50,8 @@ private:
     static void _player_run();
     static void _controller_run();
     static void _enemy_run(int i);
+
+    static std::list<Bullet*> _bullet_list;
 };
 
 
