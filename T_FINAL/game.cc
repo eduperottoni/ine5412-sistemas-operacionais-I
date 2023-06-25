@@ -28,6 +28,7 @@ std::list<Bullet*> Game:: _bullet_list;
 int NUMBER_OF_ENEMIES = 4;
 float SCALE = 0.75;
 float ENEMIES_SPEED = 100.f;
+float PLAYER_SPEED = 150.f;
 float SCREEN_SCALE = 1.5f;
 
 void Game::configure(){
@@ -62,13 +63,16 @@ void Game::_enemy_run(int i) {
     sprites[Sprite::Orientation::RIGHT] = "src/images/space_ships/enemy_space_ship_right.png";
     sprites[Sprite::Orientation::LEFT] = "src/images/space_ships/enemy_space_ship_left.png";
     sprites[Sprite::Orientation::UP] = "src/images/space_ships/enemy_space_ship_up.png";
-    sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/enemy_space_ship_down.png";
-
+    sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/enemy_space_ship_down.png";;
     Enemy* new_enemy;
-    if (i % 2 == 0){
+    if (i == 0){
+        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_bullet_list);
+    } else if (i == 1) {
+        // FIXME INSERIR AQUI O OUTRO TIPO DE INIMIGO
+        new_enemy = new EnemyTracker(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_bullet_list, _player_obj->get_sprite());
+    } else if (i == 2) {
         new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_bullet_list);
     } else {
-        // FIXME INSERIR AQUI O OUTRO TIPO DE INIMIGO
         new_enemy = new EnemyTracker(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_bullet_list, _player_obj->get_sprite());
     }
     
@@ -107,7 +111,7 @@ void Game::_keyboard_run() {
 
 void Game::_controller_run() {
     db<Game>(INF) << "[Game] Instanciando um novo controller!\n";
-    _controller_obj = new Controller(_player_thread, _enemy_threads, _player_obj -> get_move_queue(), &_bullet_list);
+    _controller_obj = new Controller(_player_thread, _enemy_threads, &_enemy_objects, _player_obj -> get_move_queue(), _player_obj, &_bullet_list);
     db<Game>(INF) << "[Game] Chamando método run do controller!\n";
     _controller_obj -> run();
 }
@@ -119,7 +123,7 @@ void Game::_player_run() {
     sprites[Sprite::Orientation::UP] = "src/images/space_ships/space_ship_up.png";
     sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/space_ship_down.png";
     db<Game>(INF) << "[Game] Instanciando um novo player!\n";
-    _player_obj = new Player(SCALE, 1, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 50, 50, &_bullet_list);
+    _player_obj = new Player(SCALE, 1, PLAYER_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 500, 500, &_bullet_list);
     // _player_obj = new Player(scale, size, speed, paths, sprites, clock);
     db<Game>(INF) << "[Game] Chamando método run do player!\n";
     _player_obj -> run();
@@ -135,9 +139,8 @@ void Game::run(void* name){
 
     db<Game>(INF) << "[Game] Iniciando a thread dos inimigos\n";
     for (int i = 0; i < NUMBER_OF_ENEMIES; i++){
-        _enemy_threads.push_back(new Thread(_enemy_run, i)); 
+        _enemy_threads.push_back(new Thread(_enemy_run, i));
     }
-
     // db<Game>(INF) << "[Game] Iniciando a thread do collision checker\n";
     // _collision_checker_thread = new Thread(_collision_checker_run);
 

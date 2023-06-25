@@ -7,6 +7,8 @@
 #include "keyboard.h"
 #include <queue>
 #include <list>
+#include "../classes/enemy.h"
+#include "../classes/player.h"
 
 __BEGIN_API
 
@@ -19,7 +21,7 @@ public:
         OVER
     };
 
-    Controller(Thread* player_thread, std::list<Thread*> enemy_threads, std::queue<Keyboard::Move>* player_queue, std::list<Bullet*>* bullet_list) {
+    Controller(Thread* player_thread, std::list<Thread*> enemy_threads, std::list<Enemy*>* enemy_objects, std::queue<Keyboard::Move>* player_queue, Player* player_object, std::list<Bullet*>* bullet_list) {
         _player_thread = player_thread;
         for (auto enemy_thread : enemy_threads) {
             _enemy_threads.push_back(enemy_thread);
@@ -27,6 +29,8 @@ public:
         _game_state = RUNNING;
         _player_queue = player_queue;
         _bullet_list = bullet_list;
+        _enemy_objects = enemy_objects;
+        _player_object = player_object;
     };
     
     ~Controller();
@@ -42,11 +46,13 @@ private:
 
     static std::queue<Keyboard::Move> _action_queue;
     static std::queue<Keyboard::Move>* _player_queue;
-    Thread* _player_thread;
-    std::list<Thread*> _enemy_threads;
+    static Thread* _player_thread;
+    static std::list<Thread*> _enemy_threads;
     static State _game_state;
+    static std::list<Enemy*>* _enemy_objects;
+    static Player* _player_object;
 
-    std::list<Bullet*>* _bullet_list;
+    static std::list<Bullet*>* _bullet_list;
     //List<Bullet*> _bullet_list;
 };
 

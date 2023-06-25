@@ -160,7 +160,7 @@ void Window::run()
         }
 
         for (auto bullet : *_bullet_list){
-            bullet->update();
+            // bullet->update();
             // db<Window>(TRC) << "[Window] DESENHANDO BULLET!\n";
             _sf_window.draw(*bullet->get_sprite());
             // db<Window>(TRC) << "[Window] DESENHEI BULLET!\n";

@@ -86,13 +86,13 @@ struct Traits<Semaphore>: public Traits<void>
 template<>
 struct Traits<Window>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
 struct Traits<Player>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
@@ -104,7 +104,7 @@ struct Traits<Game>: public Traits<void>
 template<>
 struct Traits<Keyboard>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
@@ -134,19 +134,19 @@ struct Traits<Enemy>: public Traits<void>
 template<>
 struct Traits<EnemyRandom>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
 struct Traits<Spaceship>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 
 template<>
 struct Traits<Bullet>: public Traits<void>
 {
-    static const bool debugged = true;
+    static const bool debugged = false;
 };
 __END_API
 

@@ -3,7 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <tuple>
 
+using namespace std;
 class GameConfig {
 public:
     static GameConfig& get_instance();
@@ -12,7 +14,7 @@ public:
     sf::VideoMode get_video_mode() const;
 
     void set_window_title(const std::string& title);
-    std::string get_window_title() const;
+    string get_window_title() const;
 
     void set_frame_limit(unsigned int limit);
     unsigned int get_frame_limit() const;
@@ -21,7 +23,11 @@ public:
     bool is_key_repeat_enabled() const;
 
     void set_texture_path(const std::string& path);
-    std::string get_texture_path() const;
+    string get_texture_path() const;
+
+    // void set_usable_screen(const unsigned int x, const unsigned int y);
+    // unsigned int get_usable_screen_x();
+    // unsigned int get_usable_screen_y();
 
 private:
     GameConfig(){};
@@ -29,10 +35,13 @@ private:
     GameConfig& operator=(const GameConfig&) = delete;
 
     sf::VideoMode _video_mode;
-    std::string _window_title;
+    string _window_title;
     unsigned int _frame_limit;
     bool _key_repeat_enabled;
-    std::string _texture_path;
+    string _texture_path;
+    float _enemies_speed;
+    float _player_speed;
+    // tuple<int, int> _usable_screen;
 };
 
 #endif  // GAME_CONFIG_H

@@ -45,3 +45,16 @@ void GameConfig::set_texture_path(const std::string& path) {
 std::string GameConfig::get_texture_path() const {
     return _texture_path;
 }
+
+
+// void GameConfig::set_usable_screen(const unsigned int x, const unsigned int y){
+//     get<0>(_usable_screen) = x;
+//     get<1>(_usable_screen) = y;
+// }
+
+// unsigned int GameConfig::get_usable_screen_x(){
+//     return get<0>(_usable_screen);
+// }
+// unsigned int GameConfig::get_usable_screen_y(){
+//     return get<0>(_usable_screen);
+// }

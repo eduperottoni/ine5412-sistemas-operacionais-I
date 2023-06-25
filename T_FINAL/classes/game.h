@@ -22,7 +22,7 @@ class Game
 {
 public:
 
-    Game() {}
+    Game() {};
     ~Game();
     
     static void configure();
