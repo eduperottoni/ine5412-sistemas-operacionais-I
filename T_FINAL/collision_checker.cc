@@ -1,33 +1,51 @@
 #include "classes/collision_checker.h"
+#include "classes/bullet.h"
 
 __BEGIN_API
 
 sf::Sprite* CollisionChecker::_player_sprite;
 list<sf::Sprite*> CollisionChecker::_enemies_sprites;
-// Game::State* CollisionChecker::_game_state;
+list<Bullet*>* CollisionChecker::_enemies_bullets_list;
+list<Bullet*>* CollisionChecker::_player_bullets_list;
 
-CollisionChecker::CollisionChecker(sf::Sprite* player_sprite, list<sf::Sprite*> enemies_sprites_list){
-    // _player_sprite = player_sprite;
-    // for (auto sprite : enemies_sprites_list) _enemies_sprites.push_back(sprite);
-    // _game_state = state;
-}
-
-bool check_collision(const sf::Sprite& sprite1, const sf::Sprite& sprite2){
-    sf::FloatRect rect1 = sprite1.getGlobalBounds();
-    sf::FloatRect rect2 = sprite2.getGlobalBounds();
+bool CollisionChecker::check_collision(const sf::Sprite* sprite1, const sf::Sprite* sprite2){
+    sf::FloatRect rect1 = sprite1 -> getGlobalBounds();
+    sf::FloatRect rect2 = sprite2 -> getGlobalBounds();
 
     return rect1.intersects(rect2);
 }
 
+bool CollisionChecker::check_bullet_enemy_collision() {
+    for (auto enemy_sprite : _enemies_sprites){
+        for (auto bullet : *_player_bullets_list) {
+            if  (check_collision(bullet -> get_sprite(), enemy_sprite)){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool CollisionChecker::check_enemy_player_collision(){
+    return true;
+};
+
+bool CollisionChecker::check_enemy_enemy_collision(){
+    return false;
+};
+
 void CollisionChecker::run(){
     while (true){
         db<CollisionChecker>(INF) << "[CollisionChecker] CollisionChecker dá oi!\n";
-
+        if (check_bullet_enemy_collision()){
+            db<CollisionChecker>(INF) << "[CollisionChecker] BULLET_ENEMY_COLLISION\n";
+        }
         // for (auto enemy_sprite : _enemies_sprites){
         //     if (check_collision(enemy_sprite, _player_sprite)){
         //         db<CollisionChecker>(INF) << "[CollisionChecker] COLISÃO ENTRE O JOGADOR E UM INIMIGO\n";
         //     }
         // }
+
 
 
 

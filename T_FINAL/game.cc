@@ -23,7 +23,8 @@ GameConfig* Game::_game_config;
 
 Clock* Game::_clock_obj;
 
-std::list<Bullet*> Game:: _bullet_list;
+std::list<Bullet*> Game:: _player_bullet_list;
+std::list<Bullet*> Game:: _enemies_bullet_list;
 
 int NUMBER_OF_ENEMIES = 4;
 float SCALE = 0.75;
@@ -86,13 +87,15 @@ std::list<sf::Sprite*> Game::get_enemies_sprites_list(){
     return enemies_sprites_list;
 }
 
-// void Game::_collision_checker_run() {
-//     db<Game>(INF) << "[Game] Instanciando um collision checker\n";
-//     std::list<sf::Sprite*> enemies_sprites_list = get_enemies_sprites_list();
-//     _collision_checker_obj = new CollisionChecker(_player_obj->get_sprite(), enemies_sprites_list, &_state);
-//     db<Game>(INF) << "[Game] Chamando método run do collision checker\n";
-//     _collision_checker_obj -> run();
-// }
+void Game::_collision_checker_run() {
+    db<Game>(INF) << "[Game] Instanciando um collision checker\n";
+    std::list<sf::Sprite*> enemies_sprites_list = get_enemies_sprites_list();
+    _collision_checker_obj = new CollisionChecker(_player_obj->get_sprite(), enemies_sprites_list);
+
+    list<Bullet*>* player_bullets_list, list<Bullet*>* enemies_bullets_list
+    db<Game>(INF) << "[Game] Chamando método run do collision checker\n";
+    _collision_checker_obj -> run();
+}
 
 void Game::_window_run() {
     db<Game>(INF) << "[Game] Instanciando uma nova janela!\n";
@@ -123,7 +126,7 @@ void Game::_player_run() {
     sprites[Sprite::Orientation::UP] = "src/images/space_ships/space_ship_up.png";
     sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/space_ship_down.png";
     db<Game>(INF) << "[Game] Instanciando um novo player!\n";
-    _player_obj = new Player(SCALE, 1, PLAYER_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 500, 500, &_bullet_list);
+    _player_obj = new Player(SCALE, 1, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 50, 50, &_player_bullet_list);
     // _player_obj = new Player(scale, size, speed, paths, sprites, clock);
     db<Game>(INF) << "[Game] Chamando método run do player!\n";
     _player_obj -> run();

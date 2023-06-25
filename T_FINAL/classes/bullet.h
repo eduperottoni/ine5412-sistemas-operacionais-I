@@ -12,13 +12,16 @@ __BEGIN_API
 class Bullet : public MovingSprite {
 public:
     Bullet(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y)
-        : MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y), Sprite(scale, size, paths, initial_orientation, x, y){};
+        : MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y), Sprite(scale, size, paths, initial_orientation, x, y){
+
+        };
     
     // Updates the sprite of the bullet
     void update();
-
+    // Returns if the sprite is out of screen
     bool out_of_screen();
 private:
+    static unsigned int id_counter;
 };
 
 

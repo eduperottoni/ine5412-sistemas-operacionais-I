@@ -52,7 +52,8 @@ private:
     static void _controller_run();
     static void _enemy_run(int i);
 
-    static std::list<Bullet*> _bullet_list;
+    static std::list<Bullet*> _player_bullet_list;
+    static std::list<Bullet*> _enemies_bullet_list;
 };
 
 
