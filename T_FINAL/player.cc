@@ -43,6 +43,7 @@ int Player::get_health(){
 }
 
 void Player::run() {
+    GameConfig* game_config = &GameConfig::get_instance();
     while (true) {
         if (!_move_queue.empty()) {
             Keyboard::Move move = _move_queue.front();

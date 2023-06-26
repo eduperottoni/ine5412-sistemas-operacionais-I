@@ -42,6 +42,12 @@ int GameConfig::get_kills_to_lvl_3() const {
     return _kills_to_lvl_3;
 }
 
+void GameConfig::set_number_of_enemies(int number) {
+    _number_of_enemies = number;
+}
+int GameConfig::get_number_of_enemies() const {
+    return _number_of_enemies;
+}
 
 void GameConfig::set_key_repeat_enabled(bool enabled) {
     _key_repeat_enabled = enabled;
@@ -131,6 +137,14 @@ float GameConfig::get_font_size() const{
     return _font_size;
 }
 
+
+void GameConfig::set_game_state(State state){
+    _game_state = state;
+}
+
+State* GameConfig::get_game_state() {
+    return &_game_state;
+}
 
 // void GameConfig::GameConfig::set_usable_screen(const unsigned int x, const unsigned int y){
 //     get<0>(_usable_screen) = x;

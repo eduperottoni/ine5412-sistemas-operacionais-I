@@ -95,7 +95,7 @@ void MovingSprite::move(Orientation orientation)
     else if (y_position < 0.f) _sprite.setPosition(x_position, 0.f);
     // TODO ARRUMAR ISSO AQUI
     else if (x_position + bounds.width > 1086 - 320) _sprite.setPosition(1086 - 320 - bounds.width, y_position);
-    else if (y_position + bounds.height > 746 + 260) _sprite.setPosition(x_position, 746 + 260 - bounds.height);
+    else if (y_position + bounds.height > 760) _sprite.setPosition(x_position, 760 - bounds.height);
     else{
         _sprite.move(_movement);
     }

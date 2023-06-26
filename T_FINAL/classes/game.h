@@ -6,7 +6,6 @@
 #include "../classes/window.h"
 #include "../classes/player.h"
 #include "../classes/keyboard.h"
-#include "../classes/controller.h"
 #include "../classes/clock.h"
 #include "../classes/game_config.h"
 #include "../classes/enemy.h"
@@ -19,6 +18,7 @@
 
 __BEGIN_API
 
+class Controller;
 class Game
 {
 public:
@@ -26,6 +26,13 @@ public:
         LEVEL_1,
         LEVEL_2,
         LEVEL_3
+    };
+
+    enum State{
+        READY,
+        RUNNING,
+        PAUSED,
+        OVER
     };
 
     Game() {

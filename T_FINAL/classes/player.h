@@ -8,6 +8,7 @@
 #include <tuple>
 #include "../src/lib/thread.h"
 #include <queue>
+#include "../classes/game_config.h"
 
 __BEGIN_API
 

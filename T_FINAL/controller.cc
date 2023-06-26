@@ -1,12 +1,11 @@
 #include "classes/controller.h"
 #include "classes/bullet.h"
 #include "classes/game_config.h"
-#include "classes/game.h"
 
 __BEGIN_API
 
 std::queue<Keyboard::Move> Controller::_action_queue;
-Controller::State Controller::_game_state;
+Controller::State Controller::*_current_state;
 std::queue<Keyboard::Move>* Controller::_player_queue;
 std::queue<CollisionChecker::Collision*> Controller::_collision_queue;
 
@@ -93,8 +92,9 @@ void Controller::handle_bullet_player_collision(int id_player, int id_bullet) {
 }
 
 void Controller::run() {
+    GameConfig* Game_config = &GameConfig::get_instance();
     while (true) {
-        if (_game_state == RUNNING) {
+        if (*_current_state == RUNNING) {
             db<Controller>(TRC) << "[CONTROLLER]vazia?" << !_collision_queue.empty() <<"\n";
             db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE COLISÕES:" << _collision_queue.size() <<"\n";
             while (!_collision_queue.empty()) {
@@ -169,25 +169,26 @@ void Controller::run() {
             //db<Controller>(TRC) << "[CONTROLLER] NOT EMPTY" << move << "\n";
             // MOVIMENTO DO JOGADOR
             if (move == Keyboard::Move::DOWN || move == Keyboard::Move::LEFT || move == Keyboard::Move::RIGHT || move == Keyboard::Move::UP || move == Keyboard::Move::SHOOT) {
-                if (_game_state == RUNNING) _player_queue -> push(move);
+                if (*_current_state == RUNNING) _player_queue -> push(move);
             } else {
                 // MOVIMENTO DE CONTROLE DO JOGO
                 switch (move) {
                 case Keyboard::Move::EXIT:
+                    
                     //db<Controller>(TRC) << "[CONTROLLER] EXIT \n";
                     break;
                 case Keyboard::Move::P:
                     //db<Controller>(TRC) << "[CONTROLLER] PAUSE PRESSIONADO \n";
-                    if (_game_state == RUNNING) {
+                    if (*_current_state == RUNNING) {
                         //db<Controller>(TRC) << "[CONTROLLER] PAUSE \n";
                         // SUPEND EM TODAS, EXCETO WINDOW E KEYBOARD
                     for (auto thread : _enemy_threads) thread -> suspend();
                         _player_thread -> suspend();
-                        _game_state = PAUSED;
-                    } else if (_game_state == PAUSED) {
+                        *_current_state = PAUSED;
+                    } else if (*_current_state == PAUSED) {
                         for (auto thread : _enemy_threads) thread -> resume();
                         _player_thread -> resume();
-                        _game_state = RUNNING;
+                        *_current_state = RUNNING;
                         //db<Controller>(TRC) << "[CONTROLLER] UNPAUSE \n";
                     }
                     break;
@@ -197,7 +198,7 @@ void Controller::run() {
             }
         } else {
             //db<Controller>(TRC) << "[CONTROLLER] EMPTY\n";
-            //db<Controller>(TRC) << "[CONTROLLER] GAME ESTATE " << _game_state << "\n";
+            //db<Controller>(TRC) << "[CONTROLLER] GAME ESTATE " << *_current_state << "\n";
         }
         Thread::yield();
     }
@@ -215,6 +216,11 @@ std::queue<Keyboard::Move>* Controller::get_action_queue(){
 std::queue<CollisionChecker::Collision*>* Controller::get_collision_queue(){
     // if (_collision_queue == nullptr) db<Controller>(TRC) << "[CONTROLLER] NULO CARALHO" << "\n";
     return &_collision_queue;
+}
+
+Controller::State* Controller::get_game_state(){
+    // if (_collision_queue == nullptr) db<Controller>(TRC) << "[CONTROLLER] NULO CARALHO" << "\n";
+    return &_game_state;
 }
 
 __END_API

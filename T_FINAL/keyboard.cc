@@ -84,13 +84,14 @@ void Keyboard::run()
                     // shot_sprite.setTexture(shot_tex);
                     // shot_sprite.setPosition(space_ship_sprite.getPosition().x + 10, space_ship_sprite.getPosition().y + 10);
                     // Chamada de método para direcionar o tiro
-                } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)){
+                } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
                     _action_queue -> push(Move::P);
+                } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+                    _action_queue -> push(Move::EXIT);
                 } else {
                     std::cout << "Keyboard pressed = " << event.key.code << std::endl;
                 }
                 break;
-
             default:
                 break;
             }

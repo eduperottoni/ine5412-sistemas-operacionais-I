@@ -14,9 +14,9 @@ bool Bullet::out_of_screen() {
         return y_position <= - bounds.height + 20;
         break;
     case Orientation::DOWN:
-        return y_position >= HEIGHT_OF_SCREEN*2;
+        return y_position >= HEIGHT_OF_SCREEN - 20;
     case Orientation::LEFT:
-        return x_position <= 0;
+        return x_position <= 0 + 20;
     case Orientation::RIGHT:
         return x_position >= WIDTH_OF_SCREEN - 340;
     default:

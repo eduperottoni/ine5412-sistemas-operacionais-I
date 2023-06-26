@@ -8,6 +8,13 @@
 using namespace std;
 class GameConfig {
 public:
+    enum State{
+        READY,
+        RUNNING,
+        PAUSED,
+        OVER
+    };
+
     static GameConfig& get_instance();
 
     void set_video_mode(unsigned int width, unsigned int height);
@@ -49,6 +56,9 @@ public:
     void set_player_speed(const float& player_speed);
     float get_player_speed() const;
 
+    void set_number_of_enemies(int number_of_enemies);
+    int get_number_of_enemies() const;
+
     void set_screen_sprite_scale(const float& screen_sprite_scale);
     float get_screen_sprite_scale() const;
 
@@ -60,6 +70,9 @@ public:
 
     void set_player_health(int player_health);
     int get_player_health() const;
+
+    void set_game_state(State state);
+    State* get_game_state();
 
     // void set_usable_screen(const unsigned int x, const unsigned int y);
     // unsigned int get_usable_screen_x();
@@ -75,6 +88,7 @@ private:
     unsigned int _frame_limit;
     unsigned int _kills_to_lvl_2;
     unsigned int _kills_to_lvl_3;
+    unsigned int _number_of_enemies;
     bool _key_repeat_enabled;
     string _texture_path;
     std::tuple<int, int> _video_size;
@@ -87,6 +101,7 @@ private:
     float _screen_sprite_scale;
     std::tuple<float, float> _start_panel;
     float _font_size;
+    State _game_state;
 };
 
 #endif  // GAME_CONFIG_H

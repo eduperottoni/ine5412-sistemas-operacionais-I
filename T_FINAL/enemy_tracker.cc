@@ -3,6 +3,7 @@
 __BEGIN_API
 
 void EnemyTracker::run(){
+    GameConfig* game_config = &GameConfig::get_instance();
     int timer = 100;
     int timer_shoot = 30;
     int counter = 0;

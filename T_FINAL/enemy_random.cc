@@ -13,6 +13,7 @@ int EnemyRandom::get_random_num(){
 
 
 void EnemyRandom::run(){
+    GameConfig* game_config = &GameConfig::get_instance();
     int timer = 100;
     int timer_shoot = 30;
     int counter = 0;

@@ -1,4 +1,5 @@
 #include "classes/game.h"
+#include "classes/controller.h"
 #include <typeinfo>
 #include <functional>
 
@@ -9,7 +10,6 @@ Thread* Game::_keyboard_thread;
 Thread* Game::_controller_thread;
 Thread* Game::_player_thread;
 Thread* Game::_collision_checker_thread;
-// Thread* Game::_collision_checker_thread;
 
 CollisionChecker* Game::_collision_checker_obj;
 Window* Game::_window_obj;
@@ -27,11 +27,6 @@ Game::Level Game::_level;
 std::list<Bullet*> Game:: _player_bullet_list;
 std::list<Bullet*> Game:: _enemies_bullet_list;
 
-int NUMBER_OF_ENEMIES = 4;
-float SCALE = 0.75;
-float ENEMIES_SPEED = 100.f;
-float PLAYER_SPEED = 150.f;
-float SCREEN_SCALE = 1.5f;
 
 void Game::set_level(Level level) {_level = level;}
 Game::Level Game::get_level() {
@@ -50,11 +45,12 @@ void Game::_configure(){
     _game_config -> set_enemies_speed_lvl_3(150.f);
     _game_config -> set_screen_sprite_scale(2);
     _game_config -> set_start_panel(std::make_tuple(850, 100));
-    _game_config -> set_player_speed(200.f);
+    _game_config -> set_player_speed(250.f);
     _game_config -> set_font_size(50);
     _game_config -> set_kills_to_lvl_2(4);
     _game_config -> set_kills_to_lvl_3(8);
     _game_config -> set_player_health(3);
+    _game_config -> set_number_of_enemies(4);
 
     //TODO -> Aqui, inicializar as configurações utilizando os setters de GameConfig.
 }
@@ -89,14 +85,14 @@ void Game::_enemy_run(int i) {
     sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/enemy_space_ship_down.png";
     Enemy* new_enemy;
     if (i == 0) {
-        new_enemy = new EnemyRandom(SCALE, 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list);
+        new_enemy = new EnemyRandom(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list);
     } else if (i == 1) {
         // FIXME INSERIR AQUI O OUTRO TIPO DE INIMIGO
-        new_enemy = new EnemyTracker(SCALE, 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 400, 400, &_enemies_bullet_list, _player_obj->get_sprite());
+        new_enemy = new EnemyTracker(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 400, 400, &_enemies_bullet_list, _player_obj->get_sprite());
     } else if (i == 2) {
-        new_enemy = new EnemyRandom(SCALE, 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 200, 200, &_enemies_bullet_list);
+        new_enemy = new EnemyRandom(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 200, 200, &_enemies_bullet_list);
     } else {
-        new_enemy = new EnemyTracker(SCALE, 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 600, 600, &_enemies_bullet_list, _player_obj->get_sprite());
+        new_enemy = new EnemyTracker(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 600, 600, &_enemies_bullet_list, _player_obj->get_sprite());
     }
     
     _enemy_objects.push_back(new_enemy);
@@ -136,6 +132,7 @@ void Game::_controller_run() {
     db<Game>(INF) << "[Game] Instanciando um novo controller!\n";
     _controller_obj = new Controller(_player_thread, _enemy_threads, &_enemy_objects, _player_obj -> get_move_queue(), _player_obj, &_player_bullet_list, &_enemies_bullet_list);
     db<Game>(INF) << "[Game] Chamando método run do controller!\n";
+    _game_config.set_game_state(_controller_obj->get_state());
     _controller_obj -> run();
 }
 
@@ -172,7 +169,7 @@ void Game::run(void* name){
     _player_thread = new Thread(_player_run);
 
     db<Game>(INF) << "[Game] Iniciando a thread dos inimigos\n";
-    for (int i = 0; i < NUMBER_OF_ENEMIES; i++){
+    for (int i = 0; i < _game_config->get_number_of_enemies(); i++){
         _enemy_threads.push_back(new Thread(_enemy_run, i));
     }
     
