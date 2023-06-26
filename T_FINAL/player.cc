@@ -18,6 +18,18 @@ std::queue<Keyboard::Move> Player::_move_queue;
 //     init();
 // }
 
+void Player::increment_score(int value){
+    _score += value;
+}
+
+void Player::increment_kill(){
+    _kills++;
+}
+
+int Player::get_score(){
+    return _score;
+}
+
 void Player::run() {
     while (true) {
         if (!_move_queue.empty()) {

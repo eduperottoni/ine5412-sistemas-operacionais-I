@@ -18,7 +18,7 @@ class Window
 {
 friend class Player;
 public:
-    Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, std::list<Bullet*>* player_bullet_list, std::list<Bullet*>* enemies_bullet_list, Clock* clock);
+    Window(Player* player, std::list<sf::Sprite*> enemies_sprites_list, std::list<Bullet*>* player_bullet_list, std::list<Bullet*>* enemies_bullet_list, Clock* clock);
     ~Window();
     void run();
 
@@ -35,13 +35,19 @@ private:
     static std::list<Bullet*>* _enemies_bullet_list;
 
     std::list<sf::Sprite*> enemies_sprites_list;
-    sf::Sprite* _player_sprite;
+    Player* _player_obj;
     sf::Sprite* _screen_sprite;
     static StaticSprite* _screen;
     static StaticSprite* _ready;
     static StaticSprite* _score;
-    sf::Text _text;
+
+    sf::Text _text_score_value;
+    sf::Text _text_speed;
+    sf::Text _text_speed_value;
+    sf::Text _text_level;
+    sf::Text _text_level_value;
     sf::Font _font;
+
     std::list<sf::Sprite*> _enemies_sprites_list;
     sf::RenderWindow _sf_window;
 

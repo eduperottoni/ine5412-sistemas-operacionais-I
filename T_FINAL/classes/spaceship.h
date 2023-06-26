@@ -16,7 +16,6 @@ class Spaceship : virtual public MovingSprite {
             db<Spaceship>(TRC) << "[SPACESHIP] SHOOTING!!! \n";
             _ready_to_shoot = true;
             _bullet_list = bullet_list;
-
             // float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y
         };
         virtual void run() = 0;

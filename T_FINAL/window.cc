@@ -9,26 +9,25 @@ StaticSprite* Window::_score;
 std::list<Bullet*>* Window::_player_bullet_list;
 std::list<Bullet*>* Window::_enemies_bullet_list;
 
-Window::Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, std::list<Bullet*>* player_bullet_list, std::list<Bullet*>* enemies_bullet_list, Clock* clock)
+Window::Window(Player* player, std::list<sf::Sprite*> enemies_sprites_list, std::list<Bullet*>* player_bullet_list, std::list<Bullet*>* enemies_bullet_list, Clock* clock)
 {
-    _sf_window.create(sf::VideoMode(1086, 746), "Brick Game");
-    //_sf_window = window;
-    db<Window>(TRC) << "[Window] Construindo a janela e carregando as texturas \n";
-    db<Window>(TRC) << "[Window] Criação da Thread da janela \n";
-    // carregamento das texturas
-    _player_sprite = sprite;
+    db<Window>(TRC) << "[Window] Construindo a Window\n";
+
+    int width = std::get<0>(_game_config.get_video_size());
+    int height = std::get<1>(_game_config.get_video_size());
+    _sf_window.create(sf::VideoMode(width, height), _game_config.get_window_title());
+
+    _player_obj = player;
     for (auto enemy_sprite : enemies_sprites_list){
         _enemies_sprites_list.push_back(enemy_sprite);
     }
     _player_bullet_list = player_bullet_list;
     _enemies_bullet_list = enemies_bullet_list;
-    // _enemies_sprites_list = enemies_sprites_list;
     _clock = clock;
     load_and_bind_textures();
 }
 
 sf::RenderWindow* Window::get_sf_window(){
-    db<Window>(TRC) << "[Window] Entrei no getter do _sf_window! \n";
     return &_sf_window;
 }
 
@@ -44,15 +43,10 @@ void Window::run()
 {
     db<Window>(TRC) << "[Window] Renderizando a janela !\n";
     
-    // FIXME ESSE VALOR DEVE VIR DE UMA CLASSE DE CONFIGURAÇÃO
-    _sf_window.setFramerateLimit(10);
-    db<Window>(TRC) << "[Window] oiii !\n";
+    _sf_window.setFramerateLimit(_game_config.get_frame_limit());
     //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
     //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
-    // FIXME ESSE VALOR DEVE VIR DE UMA CLASSE DE CONFIGURAÇÃO
     _sf_window.setKeyRepeatEnabled(_game_config.is_key_repeat_enabled());
-
-    
 
     db<Window>(TRC) << "[Window] Preparação da chamada do jogador !\n";
     // Preparação da chamada da Thread jogador:
@@ -148,8 +142,10 @@ void Window::run()
         _sf_window.draw(*_screen -> get_sprite());
         _sf_window.draw(*_ready -> get_sprite());
         _sf_window.draw(*_score -> get_sprite());
-        _sf_window.draw(*_player_sprite);
-        _sf_window.draw(_text);
+        _sf_window.draw(*_player_obj -> get_sprite());
+        _text_score_value.setString(std::to_string(_player_obj -> get_score()));
+        _sf_window.draw(_text_score_value);
+        _sf_window.draw(_text_level);
         // _sf_window.display();
         // _sf_window.draw(*_enemies_sprites_list.front());
         
@@ -193,30 +189,41 @@ void Window::load_and_bind_textures()
     float SCREEN_SCALE = 2.f;
     float TEXT_X = 850;
     float TEXT_Y = 100;
+
+    float x_start = std::get<0>(_game_config.get_start_panel());
+    float y_start = std::get<1>(_game_config.get_start_panel());
+
     map<Sprite::Orientation, string> path;
     path[Sprite::Orientation::STATIC] = "src/images/screen/screen.png";
-    _screen = new StaticSprite(SCREEN_SCALE, 0, path, Sprite::Orientation::STATIC, 0, 0);
+    _screen = new StaticSprite(_game_config.get_screen_sprite_scale(), 0, path, Sprite::Orientation::STATIC, 0, 0);
 
     map<Sprite::Orientation, string> score_path;
     score_path[Sprite::Orientation::STATIC] = "src/images/ui/score_tex.png";
-    _score = new StaticSprite(3, 0, score_path, Sprite::Orientation::STATIC, 850, 50);
+    _score = new StaticSprite(3, 0, score_path, Sprite::Orientation::STATIC, x_start, y_start);
 
     map<Sprite::Orientation, string> ready_path;
     ready_path[Sprite::Orientation::STATIC] = "src/images/ui/ready.png";
-    _ready = new StaticSprite(3, 0, ready_path, Sprite::Orientation::STATIC, 850, 200);
+    _ready = new StaticSprite(3, 0, ready_path, Sprite::Orientation::STATIC, x_start, y_start+200);
 
     
-    if (!_font.loadFromFile("src/fonts/Orbitron-VariableFont_wght.ttf"))
+    if (!_font.loadFromFile("src/fonts/Retro-Gaming.ttf"))
     {
         // Tratar erro caso a fonte não seja carregada corretamente
         db<Window>(ERR) << "[Window] Não foi possível carregar a fonte!\n";
     }
 
-    _text.setFont(_font);
-    _text.setString("0");
-    _text.setCharacterSize(50);
-    _text.setFillColor(sf::Color::White);
-    _text.setPosition(TEXT_X, TEXT_Y);
+    _text_score_value.setFont(_font);
+    _text_score_value.setCharacterSize(_game_config.get_font_size());
+    _text_score_value.setFillColor(sf::Color::White);
+    _text_score_value.setPosition(TEXT_X, TEXT_Y);
+
+    _text_level.setPosition(x_start, y_start + 200);
+    _text_level.setFont(_font);
+    _text_level.setString("LEVEL");
+
+    _text_level_value.setPosition(TEXT_X, 250);
+    _text_speed.setPosition(TEXT_X, 250);
+    _text_speed_value.setPosition(TEXT_X, 250);
     
 
     // for(int i = 0; i < )

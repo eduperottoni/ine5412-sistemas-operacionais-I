@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <list>
+#include <chrono>
 #include "../src/lib/thread.h"
 
 __BEGIN_API
@@ -10,6 +11,7 @@ __BEGIN_API
 class Clock
 {
 public:
+    static double get_current_time();
     // Resets the clock
     static float reset();
     // Sets the delta time

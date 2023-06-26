@@ -18,6 +18,7 @@ class MovingSprite : virtual public Sprite {
         : Sprite(scale, size, paths, initial_orientation, x, y) {
             _clock = clock;
             _speed = speed;
+            _can_render = true;
             cout << "MovingSprite construido";
         };
         // ~MovingSprite();
@@ -25,11 +26,13 @@ class MovingSprite : virtual public Sprite {
         // Moves the Sprite (sets the texture and the position)
         void move(Orientation orientation);
 
-        // Sets the position of the object
-        // void set_position(tuple<int, int>);
+        // Enable/disable the Sprite
+        void set_can_render(bool can_render);
 
     protected:
         float _speed;
+        bool _can_render;
+        double _time_off;
         sf::Vector2f _movement;
         Clock* _clock;
 };

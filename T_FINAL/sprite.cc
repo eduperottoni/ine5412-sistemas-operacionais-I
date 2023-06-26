@@ -21,11 +21,12 @@ Sprite::Sprite(float scale, int size, const map<Orientation, string>& paths, Ori
             throw std::invalid_argument("Erro no carregamento de texturas");
         }
     }
+    _scale = scale;
     _sprite.setTexture(_textures.at(initial_orientation));
     _sprite.setPosition(x, y);
     _sprite.scale(scale, scale);
     _current_orientation = initial_orientation;
-    cout << "Sprite construido";
+    cout << "Sprite construído";
 }
 
 __END_API

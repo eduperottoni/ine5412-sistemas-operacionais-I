@@ -36,6 +36,15 @@ void Game::_configure(){
     _game_config = &GameConfig::get_instance();
     _game_config -> set_frame_limit(50);
     _game_config -> set_key_repeat_enabled(true);
+    _game_config -> set_video_size(std::make_tuple(1086, 746));
+    _game_config -> set_window_title("Spaceships Game");
+    _game_config -> set_sprites_scale(0.75);
+    _game_config -> set_enemies_speed(100.f);
+    _game_config -> set_screen_sprite_scale(2);
+    _game_config -> set_start_panel(std::make_tuple(850, 100));
+    _game_config -> set_player_speed(200.f);
+    _game_config -> set_font_size(50);
+
     //TODO -> Aqui, inicializar as configurações utilizando os setters de GameConfig.
 }
 
@@ -100,7 +109,7 @@ void Game::_collision_checker_run() {
 void Game::_window_run() {
     db<Game>(INF) << "[Game] Instanciando uma nova janela!\n";
     std::list<sf::Sprite*> enemies_sprites_list = get_enemies_sprites_list();
-    _window_obj = new Window(_player_obj->get_sprite(), enemies_sprites_list, &_player_bullet_list, &_enemies_bullet_list, _clock_obj);
+    _window_obj = new Window(_player_obj, enemies_sprites_list, &_player_bullet_list, &_enemies_bullet_list, _clock_obj);
     db<Game>(INF) << "[Game] Chamando método run da janela!\n";
     _window_obj -> run();
 }
@@ -126,7 +135,7 @@ void Game::_player_run() {
     sprites[Sprite::Orientation::UP] = "src/images/space_ships/space_ship_up.png";
     sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/space_ship_down.png";
     db<Game>(INF) << "[Game] Instanciando um novo player!\n";
-    _player_obj = new Player(SCALE, 1, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 50, 50, &_player_bullet_list);
+    _player_obj = new Player(SCALE, 1, ENEMIES_SPEED*2, sprites, Sprite::Orientation::UP, _clock_obj, 50, 50, &_player_bullet_list);
     // _player_obj = new Player(scale, size, speed, paths, sprites, clock);
     db<Game>(INF) << "[Game] Chamando método run do player!\n";
     _player_obj -> run();

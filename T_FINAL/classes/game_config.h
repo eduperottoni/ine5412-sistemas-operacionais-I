@@ -25,6 +25,27 @@ public:
     void set_texture_path(const std::string& path);
     string get_texture_path() const;
 
+    void set_video_size(const std::tuple<int, int>& new_video_size);
+    std::tuple<int, int> get_video_size() const;
+
+    void set_sprites_scale(const float& scale);
+    float get_sprites_scale() const;
+
+    void set_enemies_speed(const float& enemies_speed);
+    float get_enemies_speed() const;
+
+    void set_player_speed(const float& player_speed);
+    float get_player_speed() const;
+
+    void set_screen_sprite_scale(const float& screen_sprite_scale);
+    float get_screen_sprite_scale() const;
+
+    void set_start_panel(const std::tuple<float, float>& start_panel);
+    std::tuple<float, float> get_start_panel() const;
+
+    void set_font_size(const float& font_size);
+    float get_font_size() const;
+
     // void set_usable_screen(const unsigned int x, const unsigned int y);
     // unsigned int get_usable_screen_x();
     // unsigned int get_usable_screen_y();
@@ -39,9 +60,13 @@ private:
     unsigned int _frame_limit;
     bool _key_repeat_enabled;
     string _texture_path;
+    std::tuple<int, int> _video_size;
+    float _sprites_scale;
     float _enemies_speed;
     float _player_speed;
-    // tuple<int, int> _usable_screen;
+    float _screen_sprite_scale;
+    std::tuple<float, float> _start_panel;
+    float _font_size;
 };
 
 #endif  // GAME_CONFIG_H

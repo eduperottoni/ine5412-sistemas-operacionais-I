@@ -31,11 +31,56 @@ void Controller::_update_bullet_list(std::list<Bullet*>* bullet_list) {
     }
 }
 
+void Controller::handle_bullet_bullet_collision(int id_player_bullet, int id_enemy_bullet){
+    db<Controller>(TRC) << "COLISÃO ENTRE BALA DO JOGADOR E BALA DO INIMIGO" <<"\n";
+    if (id_player_bullet >= 0 && id_player_bullet < _player_bullet_list->size()) {
+        auto it = _player_bullet_list->begin();
+        std::advance(it, id_player_bullet); // Avança para o índice desejado
+        delete *it;
+        _player_bullet_list->erase(it); // Remove o elemento
+        db<Controller>(TRC) << "[CONTROLLER] ELEMENTO REMOVIDO" <<"\n";
+    } else {
+        std::cout << "Índice inválido!" << std::endl;
+    }
+    if (id_enemy_bullet >= 0 && id_enemy_bullet < _enemies_bullet_list->size()) {
+        auto it = _enemies_bullet_list->begin();
+        std::advance(it, id_enemy_bullet); // Avança para a posição desejada
+        delete *it;
+        _enemies_bullet_list->erase(it);
+    } else {
+        db<Controller>(TRC) << "ERRO AO TRATAR bala inimiga" <<"\n";
+    }
+}
+
+void Controller::handle_bullet_enemy_collision(int id_bullet, int id_enemy){
+    db<Controller>(TRC) << "COLISÃO ENTRE BALA DO JOGADOR E INIMIGO" <<"\n";
+    if (id_bullet >= 0 && id_bullet < _player_bullet_list->size()) {
+        auto it = _player_bullet_list->begin();
+        std::advance(it, id_bullet); // Avança para o índice desejado
+        delete *it;
+        _player_bullet_list->erase(it); // Remove o elemento
+        _player_object->increment_score(100);
+        _player_object->increment_kill();
+        db<Controller>(TRC) << "[CONTROLLER] ELEMENTO REMOVIDO" <<"\n";
+    } else {
+        std::cout << "Índice inválido!" << std::endl;
+    }
+    if (id_enemy >= 0 && id_enemy < _enemy_objects->size()) {
+        auto it = _enemy_objects->begin();
+        std::advance(it, id_enemy); // Avança para a posição desejada
+        Enemy* element = *it; // Acessa o elemento
+        element->set_can_render(false);
+        db<Controller>(TRC) << "CAN RENDER DO INIMIGO SETADO COMO FALSE" <<"\n";
+    } else {
+        db<Controller>(TRC) << "ERRO AO TRATAR INIMIGO" <<"\n";
+    }
+}
+
 void Controller::run() {
     while (true) {
         if (_game_state == RUNNING) {
-            db<Controller>(TRC) << "[CONTROLLER]"  <<"\n";
             db<Controller>(TRC) << "[CONTROLLER]vazia?" << !_collision_queue.empty() <<"\n";
+            db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE COLISÕES:" << _collision_queue.size() <<"\n";
             if (!_collision_queue.empty()) {
                 CollisionChecker::Collision* collision = _collision_queue.front();
                 _collision_queue.pop();
@@ -43,26 +88,19 @@ void Controller::run() {
                 db<Controller>(TRC) << "[CONTROLLER]id 1:" << collision->_obj_id1 <<"\n";
                 db<Controller>(TRC) << "[CONTROLLER]id 2:" << collision->_obj_id2 <<"\n";
                 db<Controller>(TRC) << "[CONTROLLER]CollisionType:" << collision->_collision_type <<"\n";
-                if (CollisionChecker::BULLET_ENEMY){
-                    db<Controller>(TRC) << "COLISÃO ENTRE BALA DO JOGADOR E INIMIGO" <<"\n";
-                    // Tirar a bala da posição
-                    // Adicionar o evento de colisão no inimigo:
-                    // O inimigo deve:
-                    // -> setar seu atributo de renderização como false
-                    // -> pegar tempo atual e guardar num atributo
-                    // -> a cada loop, se estiver como false, pegar tempo e ver se é maior que 2 seg.
-                    // ----> Se for maior que 2 seg, setar atributo como verdadeiro
-                    // ----> Se for menor, yield
-                    
-                } else if (CollisionChecker::PLAYER_ENEMY){
+                if (collision->_collision_type == CollisionChecker::BULLET_ENEMY){
+                    handle_bullet_enemy_collision(collision->_obj_id1, collision->_obj_id2);   
+                } else if (collision->_collision_type == CollisionChecker::PLAYER_ENEMY){
                     db<Controller>(TRC) << "COLISÃO ENTRE PLAYER E INIMIGO" <<"\n";
                     // 
-                } else if (CollisionChecker::ENEMY_ENEMY){
+                } else if (collision->_collision_type == CollisionChecker::ENEMY_ENEMY){
                     db<Controller>(TRC) << "COLISÃO ENTRE INIMIGO E INIMIGO" <<"\n";
-                } else if (CollisionChecker::BULLET_PLAYER){
+                } else if (collision->_collision_type == CollisionChecker::BULLET_PLAYER){
                     db<Controller>(TRC) << "COLISÃO ENTRE BALA E JOGADOR" <<"\n";
-                } else if (CollisionChecker::BULLET_BULLET){
+                } else if (collision->_collision_type == CollisionChecker::BULLET_BULLET){
+                    handle_bullet_bullet_collision(collision->_obj_id1, collision->_obj_id2);
                     db<Controller>(TRC) << "COLISÃO ENTRE BALA E BALA" << "\n";
+                    // 
                 }
                 delete collision;
             }

@@ -18,45 +18,55 @@ void EnemyRandom::run(){
     int counter = 0;
     int counter_shoot = 0;
     while (true) {
-        db<EnemyRandom>(INF) << "[EnemyRandom] GET CLOCK !" << counter << "\n";
-        // verificar se o movimento está dentro da tela, com o tamanho da tela atual: TODO --> puxar o tamanho da tela por um metodo da classe 
-        // if(this->enemy_ship_sprite.getPosition().x < _window->getsizex() && this->enemy_ship_sprite.getPosition().y < _window->getsizey()){
-        counter++;
-        counter_shoot++;
+        if (_can_render){
+            db<EnemyRandom>(INF) << "[EnemyRandom] GET CLOCK !" << counter << "\n";
+            // verificar se o movimento está dentro da tela, com o tamanho da tela atual: TODO --> puxar o tamanho da tela por um metodo da classe 
+            // if(this->enemy_ship_sprite.getPosition().x < _window->getsizex() && this->enemy_ship_sprite.getPosition().y < _window->getsizey()){
+            counter++;
+            counter_shoot++;
 
-        if (counter_shoot > timer_shoot){
-            counter_shoot = 0;
-            Spaceship::shoot();
-        }
-        if (counter > timer) {
-            counter = 0;
-            int random_int = get_random_num();
-            db<EnemyRandom>(INF) << "[Enemy] Chamada de run com int = " << random_int << "\n";
-            switch (random_int)
-            {
-            case 2:
-                // movimento do inimigo 
-                MovingSprite::move(Orientation::UP);           
-                break;
-            
-            case 3:   
-                MovingSprite::move(Orientation::DOWN);  
-                break;
-            
-            case 1:
-                MovingSprite::move(Orientation::LEFT);                
-                break;
-            
-            case 0:
-                MovingSprite::move(Orientation::RIGHT);
-                break;
-            
-            default:
-                break;
+            if (counter_shoot > timer_shoot){
+                counter_shoot = 0;
+                Spaceship::shoot();
+            }
+            if (counter > timer) {
+                counter = 0;
+                int random_int = get_random_num();
+                db<EnemyRandom>(INF) << "[Enemy] Chamada de run com int = " << random_int << "\n";
+                switch (random_int)
+                {
+                case 2:
+                    // movimento do inimigo 
+                    MovingSprite::move(Orientation::UP);           
+                    break;
+                
+                case 3:   
+                    MovingSprite::move(Orientation::DOWN);  
+                    break;
+                
+                case 1:
+                    MovingSprite::move(Orientation::LEFT);                
+                    break;
+                
+                case 0:
+                    MovingSprite::move(Orientation::RIGHT);
+                    break;
+                
+                default:
+                    break;
+                }
+            } else {
+                MovingSprite::move(_current_orientation);
             }
         } else {
-            MovingSprite::move(_current_orientation);
-        }
+            double timestamp = _clock->get_current_time();
+            if (timestamp - _time_off >= 2){
+                db<EnemyRandom>(INF) << "[Enemy] PASSOU OS DOIS SEGUNDOS" << "\n";
+                _sprite.setScale(_scale, _scale);
+                _can_render = true;
+            }
+        } 
+        
         // Spaceship::shoot();
         // _sprite.setPosition(50, 50);
 

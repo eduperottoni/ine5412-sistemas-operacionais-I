@@ -56,7 +56,8 @@ public:
 
     static bool check_bullet_enemy_collision();
     static bool check_enemy_player_collision();
-    static bool check_enemy_enemy_collision();
+    // static bool check_enemy_enemy_collision();
+    static bool check_bullet_bullet_collision();
     static bool check_collision(const sf::Sprite* sprite1, const sf::Sprite* sprite2);
 private:
     static sf::Sprite* _player_sprite;

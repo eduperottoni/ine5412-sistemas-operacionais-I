@@ -36,6 +36,15 @@ MovingSprite::~MovingSprite(){
 }
 */
 
+void MovingSprite::set_can_render(bool can_render){ 
+    _can_render = can_render;
+    if (!_can_render){
+        _time_off = _clock->get_current_time();
+        _sprite.scale(0.f, 0.f);
+    }
+}
+
+
 void MovingSprite::move(Orientation orientation)
 { 
     db<MovingSprite>(TRC) << "[MovingSprite] rodando método move \n";

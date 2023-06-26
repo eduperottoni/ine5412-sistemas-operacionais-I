@@ -39,7 +39,9 @@ public:
     void run();
     std::queue<Keyboard::Move>* get_action_queue();
     std::queue<CollisionChecker::Collision*>* get_collision_queue();
-    
+    // void remove_from_index(int index_to_remove, std::list* list);
+    void handle_bullet_enemy_collision(int id_bullet, int id_enemy);
+    void handle_bullet_bullet_collision(int id_player_bullet, int id_enemy_bullet);
 
     //static State* get_state();
 

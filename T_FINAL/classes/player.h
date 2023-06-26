@@ -14,25 +14,37 @@ __BEGIN_API
 
 class Player : virtual public Spaceship {
     private:
+        // Kills counter
+        int _kills;
         // Player's health
-        int health = 5;
+        int _health;
         // Player's score
-        int score = 0;
+        int _score;
         // Current player sprite
         sf::Sprite _current_sprite;
         // Keyboard event queue
         static std::queue<Keyboard::Move> _move_queue;
 
+
     public:
         // Construtor de Classe
         Player(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y, std::list<Bullet*>* bullet_list)
         : Spaceship(scale, size, speed, paths, initial_orientation, clock, x, y, bullet_list), MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y),
-        Sprite(scale, size, paths, initial_orientation, x, y) {};
+        Sprite(scale, size, paths, initial_orientation, x, y) {
+            _kills = 0;
+            _health = 3;
+            _score = 0;
+        };
 
         void run();
 
         std::queue<Keyboard::Move>* get_move_queue();
 
+        void increment_score(int value);
+
+        void increment_kill();
+
+        int get_score();
 
         
         

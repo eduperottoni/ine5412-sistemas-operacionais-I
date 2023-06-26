@@ -29,8 +29,8 @@ class Sprite {
 
     protected:
         Orientation _current_orientation;
-        float scale;
-        int size;
+        float _scale;
+        int _size;
         std::tuple<int, int> position;
         sf::Sprite _sprite;
         map<Orientation, sf::Texture> _textures;
