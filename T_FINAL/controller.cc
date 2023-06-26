@@ -1,6 +1,7 @@
 #include "classes/controller.h"
 #include "classes/bullet.h"
 #include "classes/game_config.h"
+#include "classes/game.h"
 
 __BEGIN_API
 
@@ -96,7 +97,7 @@ void Controller::run() {
         if (_game_state == RUNNING) {
             db<Controller>(TRC) << "[CONTROLLER]vazia?" << !_collision_queue.empty() <<"\n";
             db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE COLISÕES:" << _collision_queue.size() <<"\n";
-            if (!_collision_queue.empty()) {
+            while (!_collision_queue.empty()) {
                 CollisionChecker::Collision* collision = _collision_queue.front();
                 _collision_queue.pop();
                 db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE COLISÕES:" << _collision_queue.size() <<"\n";
@@ -148,19 +149,20 @@ void Controller::run() {
         //     }
         // }
 
-        GameConfig* game_config;
-        game_config = &GameConfig::get_instance();
-        if (_player_object->get_kills() == 5) {
+        if (_player_object->get_kills() == _game_config.get_kills_to_lvl_2()) {
             for (auto enemy : *_enemy_objects) {
-                enemy->set_speed(game_config->get_enemies_speed_lvl_2());
+                enemy->set_speed(_game_config.get_enemies_speed_lvl_2());
+                Game::set_level(Game::Level::LEVEL_2);
             }
         }
 
-        if (_player_object->get_kills() == 10) {
+        if (_player_object->get_kills() == _game_config.get_kills_to_lvl_3()) {
             for (auto enemy : *_enemy_objects) {
-                enemy->set_speed(game_config->get_enemies_speed_lvl_3());
+                enemy->set_speed(_game_config.get_enemies_speed_lvl_3());
+                Game::set_level(Game::Level::LEVEL_3);
             }
         }
+
         if (!_action_queue.empty()) {
             Keyboard::Move move = _action_queue.front();
             _action_queue.pop();

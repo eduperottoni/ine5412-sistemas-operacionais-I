@@ -46,6 +46,8 @@ private:
     sf::Text _text_speed_value;
     sf::Text _text_level;
     sf::Text _text_level_value;
+    sf::Text _text_health;
+    sf::Text _text_health_value;
     sf::Font _font;
 
     std::list<sf::Sprite*> _enemies_sprites_list;

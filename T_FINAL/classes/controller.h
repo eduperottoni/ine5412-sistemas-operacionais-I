@@ -10,6 +10,7 @@
 #include <list>
 #include "../classes/enemy.h"
 #include "../classes/player.h"
+#include "../classes/game_config.h"
 
 __BEGIN_API
 
@@ -61,6 +62,8 @@ private:
 
     static std::list<Bullet*>* _player_bullet_list;
     static std::list<Bullet*>* _enemies_bullet_list;
+
+    GameConfig& _game_config = GameConfig::get_instance();;
 
     static void _update_bullet_list(std::list<Bullet*>* bullet_list);
     //List<Bullet*> _bullet_list;

@@ -22,6 +22,7 @@ std::list<Thread*> Game::_enemy_threads;
 GameConfig* Game::_game_config;
 
 Clock* Game::_clock_obj;
+Game::Level Game::_level;
 
 std::list<Bullet*> Game:: _player_bullet_list;
 std::list<Bullet*> Game:: _enemies_bullet_list;
@@ -32,9 +33,14 @@ float ENEMIES_SPEED = 100.f;
 float PLAYER_SPEED = 150.f;
 float SCREEN_SCALE = 1.5f;
 
+void Game::set_level(Level level) {_level = level;}
+Game::Level Game::get_level() {
+    return _level;
+}
+
 void Game::_configure(){
     _game_config = &GameConfig::get_instance();
-    _game_config -> set_frame_limit(50);
+    _game_config -> set_frame_limit(50);    
     _game_config -> set_key_repeat_enabled(true);
     _game_config -> set_video_size(std::make_tuple(1086, 746));
     _game_config -> set_window_title("Spaceships Game");
@@ -46,6 +52,9 @@ void Game::_configure(){
     _game_config -> set_start_panel(std::make_tuple(850, 100));
     _game_config -> set_player_speed(200.f);
     _game_config -> set_font_size(50);
+    _game_config -> set_kills_to_lvl_2(4);
+    _game_config -> set_kills_to_lvl_3(8);
+    _game_config -> set_player_health(3);
 
     //TODO -> Aqui, inicializar as configurações utilizando os setters de GameConfig.
 }
@@ -137,7 +146,17 @@ void Game::_player_run() {
     sprites[Sprite::Orientation::UP] = "src/images/space_ships/space_ship_up.png";
     sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/space_ship_down.png";
     db<Game>(INF) << "[Game] Instanciando um novo player!\n";
-    _player_obj = new Player(SCALE, 1, ENEMIES_SPEED*2, sprites, Sprite::Orientation::UP, _clock_obj, 50, 50, &_player_bullet_list);
+    _player_obj = new Player(
+        _game_config -> get_player_health(),
+        _game_config -> get_sprites_scale(),
+        1,
+        _game_config -> get_player_speed(),
+        sprites, 
+        Sprite::Orientation::UP,
+        _clock_obj, 
+        50, 
+        50,
+        &_player_bullet_list);
     // _player_obj = new Player(scale, size, speed, paths, sprites, clock);
     db<Game>(INF) << "[Game] Chamando método run do player!\n";
     _player_obj -> run();

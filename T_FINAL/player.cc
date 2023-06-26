@@ -38,6 +38,10 @@ int Player::get_kills(){
     return _kills;
 }
 
+int Player::get_health(){
+    return _health;
+}
+
 void Player::run() {
     while (true) {
         if (!_move_queue.empty()) {

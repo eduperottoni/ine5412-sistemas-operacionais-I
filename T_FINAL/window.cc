@@ -1,5 +1,6 @@
 #include "classes/window.h"
 #include "classes/player.h"
+#include "classes/game.h"
 
 __BEGIN_API
 
@@ -140,12 +141,18 @@ void Window::run()
 
         
         _sf_window.draw(*_screen -> get_sprite());
-        _sf_window.draw(*_ready -> get_sprite());
+        // _sf_window.draw(*_ready -> get_sprite());
         _sf_window.draw(*_score -> get_sprite());
         _sf_window.draw(*_player_obj -> get_sprite());
         _text_score_value.setString(std::to_string(_player_obj -> get_score()));
         _sf_window.draw(_text_score_value);
         _sf_window.draw(_text_level);
+        _text_level_value.setString(std::to_string(Game::get_level() + 1));
+        cout << "TAMANHO DA LISTA:" << std::to_string(Game::get_level()) << "\n";
+        _sf_window.draw(_text_level_value);
+        _text_health_value.setString(std::to_string(_player_obj -> get_health()));
+        _sf_window.draw(_text_health_value);
+        _sf_window.draw(_text_health);
         // _sf_window.display();
         // _sf_window.draw(*_enemies_sprites_list.front());
         
@@ -205,6 +212,12 @@ void Window::load_and_bind_textures()
     ready_path[Sprite::Orientation::STATIC] = "src/images/ui/ready.png";
     _ready = new StaticSprite(3, 0, ready_path, Sprite::Orientation::STATIC, x_start, y_start+200);
 
+    // map<Sprite::Orientation, string> ready_path;
+    // ready_path[Sprite::Orientation::STATIC] = "src/images/ui/hearth.png";
+    // for (int i = 0; i < 3; i++) {
+    //     _hearths = new StaticSprite(3, 0, ready_path, Sprite::Orientation::STATIC, x_start -10, y_start+10);
+    // }
+
     
     if (!_font.loadFromFile("src/fonts/Retro-Gaming.ttf"))
     {
@@ -212,18 +225,33 @@ void Window::load_and_bind_textures()
         db<Window>(ERR) << "[Window] Não foi possível carregar a fonte!\n";
     }
 
+    // CONFIGURING THE SCORE TEXT ON SCREEN
     _text_score_value.setFont(_font);
     _text_score_value.setCharacterSize(_game_config.get_font_size());
     _text_score_value.setFillColor(sf::Color::White);
-    _text_score_value.setPosition(TEXT_X, TEXT_Y);
+    _text_score_value.setPosition(x_start, y_start + 50);
 
+    // CONFIGURING THE LEVEL TEXT ON SCREEN
     _text_level.setPosition(x_start, y_start + 200);
     _text_level.setFont(_font);
     _text_level.setString("LEVEL");
-
-    _text_level_value.setPosition(TEXT_X, 250);
-    _text_speed.setPosition(TEXT_X, 250);
-    _text_speed_value.setPosition(TEXT_X, 250);
+    _text_level.setFillColor(sf::Color::Blue);
+    _text_level.setCharacterSize(_game_config.get_font_size() - 20);
+    _text_level_value.setFont(_font);
+    _text_level_value.setPosition(x_start, y_start + 250);
+    _text_level_value.setFillColor(sf::Color::Yellow);
+    _text_level_value.setCharacterSize(_game_config.get_font_size());
+    
+    // CONFIGURING HEALTH ON SCREEN
+    _text_health.setPosition(x_start, y_start + 350);
+    _text_health.setFont(_font);
+    _text_health.setString("HEALTH");
+    _text_health.setFillColor(sf::Color::Blue);
+    _text_health.setCharacterSize(_game_config.get_font_size() - 20);
+    _text_health_value.setFont(_font);
+    _text_health_value.setPosition(x_start, y_start + 400);
+    _text_health_value.setFillColor(sf::Color::Yellow);
+    _text_health_value.setCharacterSize(_game_config.get_font_size());
     
 
     // for(int i = 0; i < )

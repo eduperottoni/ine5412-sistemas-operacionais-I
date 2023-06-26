@@ -22,12 +22,24 @@ __BEGIN_API
 class Game
 {
 public:
+    enum Level{
+        LEVEL_1,
+        LEVEL_2,
+        LEVEL_3
+    };
 
-    Game() {};
+    Game() {
+        _level = Level::LEVEL_1;
+    };
     ~Game();
+
+
 
     static void run(void* name);
     static std::list<sf::Sprite*> get_enemies_sprites_list();
+    static void set_level(Level level);
+    static Level get_level();
+
 
 private:
 
@@ -46,6 +58,7 @@ private:
     static list<Thread*> _enemy_threads;
 
     static GameConfig* _game_config;
+    static Level _level;
 
     static void _window_run();
     static void _keyboard_run();

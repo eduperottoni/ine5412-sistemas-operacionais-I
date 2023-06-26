@@ -16,8 +16,14 @@ public:
     void set_window_title(const std::string& title);
     string get_window_title() const;
 
-    void set_frame_limit(unsigned int limit);
-    unsigned int get_frame_limit() const;
+    void set_frame_limit(int limit);
+    int get_frame_limit() const;
+
+    void set_kills_to_lvl_2(int limit);
+    int get_kills_to_lvl_2() const;
+
+    void set_kills_to_lvl_3(int limit);
+    int get_kills_to_lvl_3() const;
 
     void set_key_repeat_enabled(bool enabled);
     bool is_key_repeat_enabled() const;
@@ -52,6 +58,9 @@ public:
     void set_font_size(const float& font_size);
     float get_font_size() const;
 
+    void set_player_health(int player_health);
+    int get_player_health() const;
+
     // void set_usable_screen(const unsigned int x, const unsigned int y);
     // unsigned int get_usable_screen_x();
     // unsigned int get_usable_screen_y();
@@ -64,14 +73,17 @@ private:
     sf::VideoMode _video_mode;
     string _window_title;
     unsigned int _frame_limit;
+    unsigned int _kills_to_lvl_2;
+    unsigned int _kills_to_lvl_3;
     bool _key_repeat_enabled;
     string _texture_path;
     std::tuple<int, int> _video_size;
     float _sprites_scale;
-    float _enemies_speed_lvl_1;
-    float _enemies_speed_lvl_2;
-    float _enemies_speed_lvl_3;
+    int _enemies_speed_lvl_1;
+    int _enemies_speed_lvl_2;
+    int _enemies_speed_lvl_3;
     float _player_speed;
+    int _player_health;
     float _screen_sprite_scale;
     std::tuple<float, float> _start_panel;
     float _font_size;

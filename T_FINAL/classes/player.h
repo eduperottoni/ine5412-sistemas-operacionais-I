@@ -28,11 +28,11 @@ class Player : virtual public Spaceship {
 
     public:
         // Construtor de Classe
-        Player(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y, std::list<Bullet*>* bullet_list)
+        Player(int health, float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y, std::list<Bullet*>* bullet_list)
         : Spaceship(scale, size, speed, paths, initial_orientation, clock, x, y, bullet_list), MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y),
         Sprite(scale, size, paths, initial_orientation, x, y) {
             _kills = 0;
-            _health = 3;
+            _health = health;
             _score = 0;
         };
 
@@ -50,8 +50,7 @@ class Player : virtual public Spaceship {
 
         int get_kills();
 
-        
-        
+        int get_health();
 
         // sf::Sprite get_current_sprite();
 

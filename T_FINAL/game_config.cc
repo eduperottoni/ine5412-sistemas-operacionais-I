@@ -21,13 +21,27 @@ std::string GameConfig::get_window_title() const {
     return _window_title;
 }
 
-void GameConfig::set_frame_limit(unsigned int limit) {
+void GameConfig::set_frame_limit(int limit) {
     _frame_limit = limit;
 }
-
-unsigned int GameConfig::get_frame_limit() const {
+int GameConfig::get_frame_limit() const {
     return _frame_limit;
 }
+
+void GameConfig::set_kills_to_lvl_2(int limit) {
+    _kills_to_lvl_2 = limit;
+}
+int GameConfig::get_kills_to_lvl_2() const {
+    return _kills_to_lvl_2;
+}
+
+void GameConfig::set_kills_to_lvl_3(int limit) {
+    _kills_to_lvl_3 = limit;
+}
+int GameConfig::get_kills_to_lvl_3() const {
+    return _kills_to_lvl_3;
+}
+
 
 void GameConfig::set_key_repeat_enabled(bool enabled) {
     _key_repeat_enabled = enabled;
@@ -87,6 +101,13 @@ void GameConfig::set_player_speed(const float& player_speed){
 
 float GameConfig::get_player_speed() const{
     return _player_speed;
+}
+
+void GameConfig::set_player_health(int player_health){
+    _player_health = player_health;
+}
+int GameConfig::get_player_health() const{
+    return _player_health;
 }
 
 void GameConfig::set_screen_sprite_scale(const float& screen_sprite_scale){
