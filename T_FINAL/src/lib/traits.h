@@ -116,7 +116,7 @@ struct Traits<Controller>: public Traits<void>
 template<>
 struct Traits<CollisionChecker>: public Traits<void>
 {
-    static const bool debugged = false;
+    static const bool debugged = true;
 };
 
 template<>

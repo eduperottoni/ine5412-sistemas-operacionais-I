@@ -13,6 +13,7 @@
 #include "../classes/enemy_random.h"
 #include "../classes/static_sprite.h"
 #include "../classes/enemy_tracker.h"
+#include "../classes/collision_checker.h"
 #include <list>
 
 
@@ -35,10 +36,12 @@ private:
     static Window* _window_obj;
     static Keyboard* _keyboard_obj;
     static Player* _player_obj;
+    static CollisionChecker* _collision_checker_obj;
     static Thread* _window_thread;
     static Thread* _player_thread;
     static Thread* _keyboard_thread;
     static Thread* _controller_thread;
+    static Thread* _collision_checker_thread;
     static Controller* _controller_obj;
     static Clock* _clock_obj;
     static list<Enemy*> _enemy_objects;
@@ -51,6 +54,7 @@ private:
     static void _player_run();
     static void _controller_run();
     static void _enemy_run(int i);
+    static void _collision_checker_run();
 
     static std::list<Bullet*> _player_bullet_list;
     static std::list<Bullet*> _enemies_bullet_list;

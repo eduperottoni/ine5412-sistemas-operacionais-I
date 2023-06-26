@@ -8,9 +8,10 @@ Thread* Game::_window_thread;
 Thread* Game::_keyboard_thread;
 Thread* Game::_controller_thread;
 Thread* Game::_player_thread;
+Thread* Game::_collision_checker_thread;
 // Thread* Game::_collision_checker_thread;
 
-
+CollisionChecker* Game::_collision_checker_obj;
 Window* Game::_window_obj;
 Keyboard* Game::_keyboard_obj;
 Controller* Game::_controller_obj;
@@ -67,21 +68,21 @@ void Game::_enemy_run(int i) {
     sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/enemy_space_ship_down.png";;
     Enemy* new_enemy;
     if (i == 0){
-        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_bullet_list);
+        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list);
     } else if (i == 1) {
         // FIXME INSERIR AQUI O OUTRO TIPO DE INIMIGO
-        new_enemy = new EnemyTracker(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_bullet_list, _player_obj->get_sprite());
+        new_enemy = new EnemyTracker(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list, _player_obj->get_sprite());
     } else if (i == 2) {
-        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_bullet_list);
+        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list);
     } else {
-        new_enemy = new EnemyTracker(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_bullet_list, _player_obj->get_sprite());
+        new_enemy = new EnemyTracker(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list, _player_obj->get_sprite());
     }
     
     _enemy_objects.push_back(new_enemy);
     new_enemy->run();
 }
 
-std::list<sf::Sprite*> Game::get_enemies_sprites_list(){
+std::list<sf::Sprite*> Game::get_enemies_sprites_list() {
     std::list<sf::Sprite*> enemies_sprites_list;
     for (auto enemy : _enemy_objects) enemies_sprites_list.push_back(enemy -> get_sprite());
     return enemies_sprites_list;
@@ -90,9 +91,7 @@ std::list<sf::Sprite*> Game::get_enemies_sprites_list(){
 void Game::_collision_checker_run() {
     db<Game>(INF) << "[Game] Instanciando um collision checker\n";
     std::list<sf::Sprite*> enemies_sprites_list = get_enemies_sprites_list();
-    _collision_checker_obj = new CollisionChecker(_player_obj->get_sprite(), enemies_sprites_list);
-
-    list<Bullet*>* player_bullets_list, list<Bullet*>* enemies_bullets_list
+    _collision_checker_obj = new CollisionChecker(_player_obj->get_sprite(), &enemies_sprites_list, &_player_bullet_list, &_enemies_bullet_list);
     db<Game>(INF) << "[Game] Chamando método run do collision checker\n";
     _collision_checker_obj -> run();
 }
@@ -100,7 +99,7 @@ void Game::_collision_checker_run() {
 void Game::_window_run() {
     db<Game>(INF) << "[Game] Instanciando uma nova janela!\n";
     std::list<sf::Sprite*> enemies_sprites_list = get_enemies_sprites_list();
-    _window_obj = new Window(_player_obj->get_sprite(), enemies_sprites_list, &_bullet_list, _clock_obj);
+    _window_obj = new Window(_player_obj->get_sprite(), enemies_sprites_list, &_enemies_bullet_list, _clock_obj);
     db<Game>(INF) << "[Game] Chamando método run da janela!\n";
     _window_obj -> run();
 }
@@ -114,7 +113,7 @@ void Game::_keyboard_run() {
 
 void Game::_controller_run() {
     db<Game>(INF) << "[Game] Instanciando um novo controller!\n";
-    _controller_obj = new Controller(_player_thread, _enemy_threads, &_enemy_objects, _player_obj -> get_move_queue(), _player_obj, &_bullet_list);
+    _controller_obj = new Controller(_player_thread, _enemy_threads, &_enemy_objects, _player_obj -> get_move_queue(), _player_obj, &_player_bullet_list);
     db<Game>(INF) << "[Game] Chamando método run do controller!\n";
     _controller_obj -> run();
 }
@@ -158,6 +157,9 @@ void Game::run(void* name){
 
     db<Game>(INF) << "[Game] Iniciando a thread do teclado\n";
     _keyboard_thread = new Thread(_keyboard_run);
+
+    db<Game>(INF) << "[Game] Iniciando a thread do collision checker\n";
+    _collision_checker_thread = new Thread(_collision_checker_run);
 
     db<Game>(INF) << "[Game] Chamando join\n";
     _window_thread -> join();

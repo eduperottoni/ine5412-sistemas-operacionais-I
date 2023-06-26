@@ -12,9 +12,11 @@ using namespace std;
 class CollisionChecker
 {
 public:
-    CollisionChecker(sf::Sprite* player_sprite, list<sf::Sprite*> enemies_sprites_list, list<Bullet*>* player_bullets_list, list<Bullet*>* enemies_bullets_list){
+    CollisionChecker(sf::Sprite* player_sprite, list<sf::Sprite*>* enemies_sprites_list, list<Bullet*>* player_bullets_list, list<Bullet*>* enemies_bullets_list){
         _player_bullets_list = player_bullets_list;
         _enemies_bullets_list = enemies_bullets_list;
+        _enemies_sprites = enemies_sprites_list;
+        _player_sprite = player_sprite;
     };
 
     ~CollisionChecker();
@@ -27,7 +29,7 @@ public:
     static bool check_collision(const sf::Sprite* sprite1, const sf::Sprite* sprite2);
 private:
     static sf::Sprite* _player_sprite;
-    static list<sf::Sprite*> _enemies_sprites;
+    static list<sf::Sprite*>* _enemies_sprites;
     //Inserir também os sprites das balas
     static list<Bullet*>* _enemies_bullets_list;
     static list<Bullet*>* _player_bullets_list;
