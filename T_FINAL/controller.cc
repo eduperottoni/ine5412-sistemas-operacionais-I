@@ -6,7 +6,7 @@ __BEGIN_API
 std::queue<Keyboard::Move> Controller::_action_queue;
 Controller::State Controller::_game_state;
 std::queue<Keyboard::Move>* Controller::_player_queue;
-std::queue<CollisionChecker::Collision>* Controller::_collision_queue;
+std::queue<CollisionChecker::Collision*> Controller::_collision_queue;
 
 Thread* Controller::_player_thread;
 std::list<Thread*> Controller::_enemy_threads;
@@ -34,6 +34,38 @@ void Controller::_update_bullet_list(std::list<Bullet*>* bullet_list) {
 void Controller::run() {
     while (true) {
         if (_game_state == RUNNING) {
+            db<Controller>(TRC) << "[CONTROLLER]"  <<"\n";
+            db<Controller>(TRC) << "[CONTROLLER]vazia?" << !_collision_queue.empty() <<"\n";
+            if (!_collision_queue.empty()) {
+                CollisionChecker::Collision* collision = _collision_queue.front();
+                _collision_queue.pop();
+                db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE COLISÕES:" << _collision_queue.size() <<"\n";
+                db<Controller>(TRC) << "[CONTROLLER]id 1:" << collision->_obj_id1 <<"\n";
+                db<Controller>(TRC) << "[CONTROLLER]id 2:" << collision->_obj_id2 <<"\n";
+                db<Controller>(TRC) << "[CONTROLLER]CollisionType:" << collision->_collision_type <<"\n";
+                if (CollisionChecker::BULLET_ENEMY){
+                    db<Controller>(TRC) << "COLISÃO ENTRE BALA DO JOGADOR E INIMIGO" <<"\n";
+                    // Tirar a bala da posição
+                    // Adicionar o evento de colisão no inimigo:
+                    // O inimigo deve:
+                    // -> setar seu atributo de renderização como false
+                    // -> pegar tempo atual e guardar num atributo
+                    // -> a cada loop, se estiver como false, pegar tempo e ver se é maior que 2 seg.
+                    // ----> Se for maior que 2 seg, setar atributo como verdadeiro
+                    // ----> Se for menor, yield
+                    
+                } else if (CollisionChecker::PLAYER_ENEMY){
+                    db<Controller>(TRC) << "COLISÃO ENTRE PLAYER E INIMIGO" <<"\n";
+                    // 
+                } else if (CollisionChecker::ENEMY_ENEMY){
+                    db<Controller>(TRC) << "COLISÃO ENTRE INIMIGO E INIMIGO" <<"\n";
+                } else if (CollisionChecker::BULLET_PLAYER){
+                    db<Controller>(TRC) << "COLISÃO ENTRE BALA E JOGADOR" <<"\n";
+                } else if (CollisionChecker::BULLET_BULLET){
+                    db<Controller>(TRC) << "COLISÃO ENTRE BALA E BALA" << "\n";
+                }
+                delete collision;
+            }
             _update_bullet_list(_enemies_bullet_list);
             _update_bullet_list(_player_bullet_list);
         }
@@ -108,6 +140,11 @@ Controller::~Controller() {
 std::queue<Keyboard::Move>* Controller::get_action_queue(){
     //db<Controller>(TRC) << "[CONTROLLER] Entrei no getter do _action_queue! \n";
     return &_action_queue;
+}
+
+std::queue<CollisionChecker::Collision*>* Controller::get_collision_queue(){
+    // if (_collision_queue == nullptr) db<Controller>(TRC) << "[CONTROLLER] NULO CARALHO" << "\n";
+    return &_collision_queue;
 }
 
 __END_API

@@ -92,7 +92,7 @@ std::list<sf::Sprite*> Game::get_enemies_sprites_list() {
 void Game::_collision_checker_run() {
     db<Game>(INF) << "[Game] Instanciando um collision checker\n";
     std::list<sf::Sprite*> enemies_sprites_list = get_enemies_sprites_list();
-    _collision_checker_obj = new CollisionChecker(_player_obj->get_sprite(), &enemies_sprites_list, &_player_bullet_list, &_enemies_bullet_list);
+    _collision_checker_obj = new CollisionChecker(_player_obj->get_sprite(), &enemies_sprites_list, &_player_bullet_list, &_enemies_bullet_list, _controller_obj->get_collision_queue());
     db<Game>(INF) << "[Game] Chamando método run do collision checker\n";
     _collision_checker_obj -> run();
 }
@@ -146,8 +146,8 @@ void Game::run(void* name){
         _enemy_threads.push_back(new Thread(_enemy_run, i));
     }
     
-    db<Game>(INF) << "[Game] Iniciando a thread do collision checker\n";
-    _collision_checker_thread = new Thread(_collision_checker_run);
+    // db<Game>(INF) << "[Game] Iniciando a thread do collision checker\n";
+    // _collision_checker_thread = new Thread(_collision_checker_run);
 
     db<Game>(INF) << "[Game] Iniciando a thread da janela\n";
     _window_thread = new Thread(_window_run);

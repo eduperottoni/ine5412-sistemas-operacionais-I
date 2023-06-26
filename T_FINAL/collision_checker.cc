@@ -7,6 +7,7 @@ sf::Sprite* CollisionChecker::_player_sprite;
 list<sf::Sprite*>* CollisionChecker::_enemies_sprites;
 list<Bullet*>* CollisionChecker::_enemies_bullets_list;
 list<Bullet*>* CollisionChecker::_player_bullets_list;
+queue<CollisionChecker::Collision*>* CollisionChecker::_collision_queue;
 
 bool CollisionChecker::check_collision(const sf::Sprite* sprite1, const sf::Sprite* sprite2){
     sf::FloatRect rect1 = sprite1 -> getGlobalBounds();
@@ -17,25 +18,40 @@ bool CollisionChecker::check_collision(const sf::Sprite* sprite1, const sf::Spri
 
 bool CollisionChecker::check_bullet_enemy_collision() {
     bool collision = false;
+    unsigned int counter_bullet = 0;
     db<CollisionChecker>(INF) << "[CollisionChecker] ENTREI NO CHECK_BULLET_ENEMY_COLLISION!\n";
+    unsigned int counter_enemy = 0;
     for (auto enemy_sprite : *_enemies_sprites) {
         for (auto bullet : *_player_bullets_list) {
             if  (check_collision(bullet -> get_sprite(), enemy_sprite)){
                 db<CollisionChecker>(INF) << "[CollisionChecker] COLISÃO BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n";
+                _collision_queue->push(new Collision(CollisionType::BULLET_ENEMY, counter_bullet, counter_enemy));
                 collision = true;
             }
+            counter_bullet++;
         }
+        counter_enemy++;
     }
     return collision;
 }
 
 bool CollisionChecker::check_enemy_player_collision(){
     db<CollisionChecker>(INF) << "[CollisionChecker] ENTREI NO CHECK_ENEMY_PLAYER_COLLISION!\n";
+    unsigned int counter_enemy = 0;
     for (auto enemy_sprite : *_enemies_sprites) {
         if (check_collision(enemy_sprite, _player_sprite)) {
             db<CollisionChecker>(INF) << "[CollisionChecker] COLISAO PLAYER E NAVE INIMIGA!\n";
+            Collision* colisao = new Collision(CollisionType::PLAYER_ENEMY, -1, counter_enemy);
+            db<CollisionChecker>(INF) << "[CollisionChecker] COLISAO CRIADA!\n";
+            if (_collision_queue == nullptr) {
+                db<CollisionChecker>(INF) << "[CollisionChecker] NULL POINTER!\n";
+            }
+            _collision_queue->push(colisao);
+            
+            db<CollisionChecker>(INF) << "[CollisionChecker] PUSH NA COLLISION QUEUE!\n";
             return true;
         }
+        counter_enemy++;
     }
     return false;
 };

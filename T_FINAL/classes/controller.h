@@ -38,6 +38,7 @@ public:
     ~Controller();
     void run();
     std::queue<Keyboard::Move>* get_action_queue();
+    std::queue<CollisionChecker::Collision*>* get_collision_queue();
     
 
     //static State* get_state();
@@ -48,7 +49,7 @@ private:
 
     static std::queue<Keyboard::Move> _action_queue;
     static std::queue<Keyboard::Move>* _player_queue;
-    static std::queue<CollisionChecker::Collision>* _collision_queue;
+    static std::queue<CollisionChecker::Collision*> _collision_queue;
     static Thread* _player_thread;
     static std::list<Thread*> _enemy_threads;
     static State _game_state;
