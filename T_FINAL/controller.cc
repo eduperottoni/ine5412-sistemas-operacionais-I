@@ -80,11 +80,11 @@ void Controller::handle_bullet_enemy_collision(int id_bullet, int id_enemy){
 
 void Controller::handle_bullet_player_collision(int id_player, int id_bullet) {
     db<Controller>(TRC) << "COLISÃO ENTRE BALA DO INIMIGO E JOGADOR" <<"\n";
-    if (id_bullet >= 0 && id_bullet < _player_bullet_list->size()) {
-        auto it = _player_bullet_list->begin();
+    if (id_bullet >= 0 && id_bullet < _enemies_bullet_list->size()) {
+        auto it = _enemies_bullet_list->begin();
         std::advance(it, id_bullet); // Avança para o índice desejado
         delete *it;
-        _player_bullet_list->erase(it);
+        _enemies_bullet_list->erase(it);
         _player_object->decrement_health();
         db<Controller>(TRC) << "PERDEU VIDA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SOCORRO" <<"\n";
     } else {
