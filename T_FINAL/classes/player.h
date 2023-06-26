@@ -42,9 +42,13 @@ class Player : virtual public Spaceship {
 
         void increment_score(int value);
 
+        void decrement_health();
+
         void increment_kill();
 
         int get_score();
+
+        int get_kills();
 
         
         

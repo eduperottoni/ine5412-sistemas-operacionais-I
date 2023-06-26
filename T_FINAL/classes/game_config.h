@@ -31,8 +31,14 @@ public:
     void set_sprites_scale(const float& scale);
     float get_sprites_scale() const;
 
-    void set_enemies_speed(const float& enemies_speed);
-    float get_enemies_speed() const;
+    void set_enemies_speed_lvl_1(const float& enemies_speed);
+    float get_enemies_speed_lvl_1() const;
+
+    void set_enemies_speed_lvl_2(const float& enemies_speed);
+    float get_enemies_speed_lvl_2() const;
+
+    void set_enemies_speed_lvl_3(const float& enemies_speed);
+    float get_enemies_speed_lvl_3() const;
 
     void set_player_speed(const float& player_speed);
     float get_player_speed() const;
@@ -62,7 +68,9 @@ private:
     string _texture_path;
     std::tuple<int, int> _video_size;
     float _sprites_scale;
-    float _enemies_speed;
+    float _enemies_speed_lvl_1;
+    float _enemies_speed_lvl_2;
+    float _enemies_speed_lvl_3;
     float _player_speed;
     float _screen_sprite_scale;
     std::tuple<float, float> _start_panel;

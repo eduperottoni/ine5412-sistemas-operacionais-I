@@ -29,6 +29,8 @@ class MovingSprite : virtual public Sprite {
         // Enable/disable the Sprite
         void set_can_render(bool can_render);
 
+        void set_speed(float speed);
+
     protected:
         float _speed;
         bool _can_render;

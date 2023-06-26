@@ -42,6 +42,7 @@ public:
     // void remove_from_index(int index_to_remove, std::list* list);
     void handle_bullet_enemy_collision(int id_bullet, int id_enemy);
     void handle_bullet_bullet_collision(int id_player_bullet, int id_enemy_bullet);
+    void handle_bullet_player_collision(int id_player, int id_enemy);
 
     //static State* get_state();
 

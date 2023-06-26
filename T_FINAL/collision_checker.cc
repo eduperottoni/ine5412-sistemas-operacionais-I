@@ -56,6 +56,24 @@ bool CollisionChecker::check_bullet_bullet_collision() {
     return collision;
 }
 
+bool CollisionChecker::check_bullet_player_collision() {
+    bool collision = false;
+    db<CollisionChecker>(INF) << "[CollisionChecker] ENTREI NO CHECK_BULLET_BULLET_COLLISION!\n";
+    unsigned int counter_enemy_bullet = 0;
+    for (auto enemy_bullet : *_enemies_bullets_list) {
+        if (check_collision(_player_sprite, enemy_bullet -> get_sprite())){
+            Collision* colisao = new Collision(CollisionType::BULLET_PLAYER, -1, counter_enemy_bullet);
+            db<CollisionChecker>(INF) << "[CollisionChecker] COLISÃO CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n";
+            db<CollisionChecker>(INF) << "[CollisionChecker] COLISÃO CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n";
+            _collision_queue->push(colisao);
+            collision = true;
+            break;
+        }
+        counter_enemy_bullet++;
+    }
+    return collision;
+}
+
 bool CollisionChecker::check_enemy_player_collision(){
     db<CollisionChecker>(INF) << "[CollisionChecker] ENTREI NO CHECK_ENEMY_PLAYER_COLLISION!\n";
     unsigned int counter_enemy = 0;
@@ -92,6 +110,9 @@ void CollisionChecker::run(){
         }
         if (check_bullet_bullet_collision()){
             db<CollisionChecker>(INF) << "[CollisionChecker] BULLET_BULLET_COLLISION\n";
+        }
+        if (check_bullet_player_collision()){
+            db<CollisionChecker>(INF) << "[CollisionChecker] BULLET_PLAYER_COLLISION\n";
         }
         db<CollisionChecker>(INF) << "[CollisionChecker] AQUI\n";
 

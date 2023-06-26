@@ -26,8 +26,16 @@ void Player::increment_kill(){
     _kills++;
 }
 
+void Player::decrement_health() {
+    _health--;
+}
+
 int Player::get_score(){
     return _score;
+}
+
+int Player::get_kills(){
+    return _kills;
 }
 
 void Player::run() {

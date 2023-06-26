@@ -44,6 +44,11 @@ void MovingSprite::set_can_render(bool can_render){
     }
 }
 
+void MovingSprite::set_speed(float speed){ 
+    _speed = speed;
+}
+
+
 
 void MovingSprite::move(Orientation orientation)
 { 

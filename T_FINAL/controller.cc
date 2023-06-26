@@ -1,5 +1,6 @@
 #include "classes/controller.h"
 #include "classes/bullet.h"
+#include "classes/game_config.h"
 
 __BEGIN_API
 
@@ -76,6 +77,20 @@ void Controller::handle_bullet_enemy_collision(int id_bullet, int id_enemy){
     }
 }
 
+void Controller::handle_bullet_player_collision(int id_player, int id_bullet) {
+    db<Controller>(TRC) << "COLISÃO ENTRE BALA DO INIMIGO E JOGADOR" <<"\n";
+    if (id_bullet >= 0 && id_bullet < _player_bullet_list->size()) {
+        auto it = _player_bullet_list->begin();
+        std::advance(it, id_bullet); // Avança para o índice desejado
+        delete *it;
+        _player_bullet_list->erase(it);
+        _player_object->decrement_health();
+        db<Controller>(TRC) << "PERDEU VIDA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SOCORRO" <<"\n";
+    } else {
+        std::cout << "Índice inválido!" << std::endl;
+    }
+}
+
 void Controller::run() {
     while (true) {
         if (_game_state == RUNNING) {
@@ -96,6 +111,7 @@ void Controller::run() {
                 } else if (collision->_collision_type == CollisionChecker::ENEMY_ENEMY){
                     db<Controller>(TRC) << "COLISÃO ENTRE INIMIGO E INIMIGO" <<"\n";
                 } else if (collision->_collision_type == CollisionChecker::BULLET_PLAYER){
+                    handle_bullet_player_collision(collision->_obj_id1, collision->_obj_id2);
                     db<Controller>(TRC) << "COLISÃO ENTRE BALA E JOGADOR" <<"\n";
                 } else if (collision->_collision_type == CollisionChecker::BULLET_BULLET){
                     handle_bullet_bullet_collision(collision->_obj_id1, collision->_obj_id2);
@@ -131,6 +147,20 @@ void Controller::run() {
         //         ++enemy;
         //     }
         // }
+
+        GameConfig* game_config;
+        game_config = &GameConfig::get_instance();
+        if (_player_object->get_kills() == 5) {
+            for (auto enemy : *_enemy_objects) {
+                enemy->set_speed(game_config->get_enemies_speed_lvl_2());
+            }
+        }
+
+        if (_player_object->get_kills() == 10) {
+            for (auto enemy : *_enemy_objects) {
+                enemy->set_speed(game_config->get_enemies_speed_lvl_3());
+            }
+        }
         if (!_action_queue.empty()) {
             Keyboard::Move move = _action_queue.front();
             _action_queue.pop();

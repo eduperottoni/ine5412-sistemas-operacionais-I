@@ -53,17 +53,38 @@ float GameConfig::get_sprites_scale() const{
     return _sprites_scale;
 }
 
-void GameConfig::set_enemies_speed(const float& enemies_speed){
-    _enemies_speed = enemies_speed;
+void GameConfig::set_enemies_speed_lvl_1(const float& enemies_speed){
+    _enemies_speed_lvl_1 = enemies_speed;
 }
 
-float GameConfig::get_enemies_speed() const{
-    return _enemies_speed;
+
+void GameConfig::set_enemies_speed_lvl_2(const float& enemies_speed){
+    _enemies_speed_lvl_2 = enemies_speed;
 }
+
+
+void GameConfig::set_enemies_speed_lvl_3(const float& enemies_speed){
+    _enemies_speed_lvl_3 = enemies_speed;
+}
+
+float GameConfig::get_enemies_speed_lvl_1() const{
+    return _enemies_speed_lvl_1;
+}
+
+float GameConfig::get_enemies_speed_lvl_2() const{
+    return _enemies_speed_lvl_2;
+}
+
+
+float GameConfig::get_enemies_speed_lvl_3() const{
+    return _enemies_speed_lvl_3;
+}
+
 
 void GameConfig::set_player_speed(const float& player_speed){
     _player_speed = player_speed;
 }
+
 float GameConfig::get_player_speed() const{
     return _player_speed;
 }

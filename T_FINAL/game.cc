@@ -39,7 +39,9 @@ void Game::_configure(){
     _game_config -> set_video_size(std::make_tuple(1086, 746));
     _game_config -> set_window_title("Spaceships Game");
     _game_config -> set_sprites_scale(0.75);
-    _game_config -> set_enemies_speed(100.f);
+    _game_config -> set_enemies_speed_lvl_1(100.f);
+    _game_config -> set_enemies_speed_lvl_2(125.f);
+    _game_config -> set_enemies_speed_lvl_3(150.f);
     _game_config -> set_screen_sprite_scale(2);
     _game_config -> set_start_panel(std::make_tuple(850, 100));
     _game_config -> set_player_speed(200.f);
@@ -77,15 +79,15 @@ void Game::_enemy_run(int i) {
     sprites[Sprite::Orientation::UP] = "src/images/space_ships/enemy_space_ship_up.png";
     sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/enemy_space_ship_down.png";
     Enemy* new_enemy;
-    if (i == 0){
-        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list);
+    if (i == 0) {
+        new_enemy = new EnemyRandom(SCALE, 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list);
     } else if (i == 1) {
         // FIXME INSERIR AQUI O OUTRO TIPO DE INIMIGO
-        new_enemy = new EnemyTracker(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list, _player_obj->get_sprite());
+        new_enemy = new EnemyTracker(SCALE, 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 400, 400, &_enemies_bullet_list, _player_obj->get_sprite());
     } else if (i == 2) {
-        new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list);
+        new_enemy = new EnemyRandom(SCALE, 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 200, 200, &_enemies_bullet_list);
     } else {
-        new_enemy = new EnemyTracker(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list, _player_obj->get_sprite());
+        new_enemy = new EnemyTracker(SCALE, 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 600, 600, &_enemies_bullet_list, _player_obj->get_sprite());
     }
     
     _enemy_objects.push_back(new_enemy);
