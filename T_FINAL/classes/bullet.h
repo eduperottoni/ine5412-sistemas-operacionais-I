@@ -21,7 +21,6 @@ public:
     // Returns if the sprite is out of screen
     bool out_of_screen();
 private:
-    static unsigned int id_counter;
 };
 
 

@@ -9,6 +9,7 @@
 #include "clock.h"
 #include "static_sprite.h"
 #include "bullet.h"
+#include "game_config.h"
 #include <list>
 
 __BEGIN_API
@@ -17,7 +18,7 @@ class Window
 {
 friend class Player;
 public:
-    Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, std::list<Bullet*>* bullet_list, Clock* clock);
+    Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, std::list<Bullet*>* player_bullet_list, std::list<Bullet*>* enemies_bullet_list, Clock* clock);
     ~Window();
     void run();
 
@@ -30,7 +31,10 @@ protected:
     void load_and_bind_textures();
 
 private:
-    static std::list<Bullet*>* _bullet_list;
+    static std::list<Bullet*>* _player_bullet_list;
+    static std::list<Bullet*>* _enemies_bullet_list;
+
+    std::list<sf::Sprite*> enemies_sprites_list;
     sf::Sprite* _player_sprite;
     sf::Sprite* _screen_sprite;
     static StaticSprite* _screen;
@@ -40,6 +44,8 @@ private:
     sf::Font _font;
     std::list<sf::Sprite*> _enemies_sprites_list;
     sf::RenderWindow _sf_window;
+
+    GameConfig& _game_config = GameConfig::get_instance();
 
     Clock* _clock;
 

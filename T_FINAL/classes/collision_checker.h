@@ -12,6 +12,21 @@ using namespace std;
 class CollisionChecker
 {
 public:
+    enum CollisionType{
+        BULLET_ENEMY,
+        ENEMY_ENEMY,
+        PLAYER_ENEMY,
+        BULLET_PLAYER,
+    };
+    class Collision {
+    public:
+        Collision(CollisionType type, int id1, int id2)
+            : _collision_type(type), _obj_id1(id1), _obj_id2(id2) {};
+    private:
+        CollisionType _collision_type;
+        int _obj_id1;
+        int _obj_id2;
+    };
     CollisionChecker(sf::Sprite* player_sprite, list<sf::Sprite*>* enemies_sprites_list, list<Bullet*>* player_bullets_list, list<Bullet*>* enemies_bullets_list){
         _player_bullets_list = player_bullets_list;
         _enemies_bullets_list = enemies_bullets_list;

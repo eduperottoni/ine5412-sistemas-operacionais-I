@@ -18,7 +18,6 @@ Controller* Game::_controller_obj;
 Player* Game::_player_obj;
 std::list<Enemy*> Game::_enemy_objects;
 std::list<Thread*> Game::_enemy_threads;
-// CollisionChecker* Game::_collision_checker_obj;
 
 GameConfig* Game::_game_config;
 
@@ -33,8 +32,10 @@ float ENEMIES_SPEED = 100.f;
 float PLAYER_SPEED = 150.f;
 float SCREEN_SCALE = 1.5f;
 
-void Game::configure(){
+void Game::_configure(){
     _game_config = &GameConfig::get_instance();
+    _game_config -> set_frame_limit(50);
+    _game_config -> set_key_repeat_enabled(true);
     //TODO -> Aqui, inicializar as configurações utilizando os setters de GameConfig.
 }
 
@@ -65,7 +66,7 @@ void Game::_enemy_run(int i) {
     sprites[Sprite::Orientation::RIGHT] = "src/images/space_ships/enemy_space_ship_right.png";
     sprites[Sprite::Orientation::LEFT] = "src/images/space_ships/enemy_space_ship_left.png";
     sprites[Sprite::Orientation::UP] = "src/images/space_ships/enemy_space_ship_up.png";
-    sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/enemy_space_ship_down.png";;
+    sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/enemy_space_ship_down.png";
     Enemy* new_enemy;
     if (i == 0){
         new_enemy = new EnemyRandom(SCALE, 0, ENEMIES_SPEED, sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list);
@@ -99,7 +100,7 @@ void Game::_collision_checker_run() {
 void Game::_window_run() {
     db<Game>(INF) << "[Game] Instanciando uma nova janela!\n";
     std::list<sf::Sprite*> enemies_sprites_list = get_enemies_sprites_list();
-    _window_obj = new Window(_player_obj->get_sprite(), enemies_sprites_list, &_enemies_bullet_list, _clock_obj);
+    _window_obj = new Window(_player_obj->get_sprite(), enemies_sprites_list, &_player_bullet_list, &_enemies_bullet_list, _clock_obj);
     db<Game>(INF) << "[Game] Chamando método run da janela!\n";
     _window_obj -> run();
 }
@@ -113,7 +114,7 @@ void Game::_keyboard_run() {
 
 void Game::_controller_run() {
     db<Game>(INF) << "[Game] Instanciando um novo controller!\n";
-    _controller_obj = new Controller(_player_thread, _enemy_threads, &_enemy_objects, _player_obj -> get_move_queue(), _player_obj, &_player_bullet_list);
+    _controller_obj = new Controller(_player_thread, _enemy_threads, &_enemy_objects, _player_obj -> get_move_queue(), _player_obj, &_player_bullet_list, &_enemies_bullet_list);
     db<Game>(INF) << "[Game] Chamando método run do controller!\n";
     _controller_obj -> run();
 }
@@ -132,6 +133,7 @@ void Game::_player_run() {
 }
 
 void Game::run(void* name){
+    _configure();
     //Instancia um clock
     _clock_obj = new Clock();
 
@@ -143,8 +145,9 @@ void Game::run(void* name){
     for (int i = 0; i < NUMBER_OF_ENEMIES; i++){
         _enemy_threads.push_back(new Thread(_enemy_run, i));
     }
-    // db<Game>(INF) << "[Game] Iniciando a thread do collision checker\n";
-    // _collision_checker_thread = new Thread(_collision_checker_run);
+    
+    db<Game>(INF) << "[Game] Iniciando a thread do collision checker\n";
+    _collision_checker_thread = new Thread(_collision_checker_run);
 
     db<Game>(INF) << "[Game] Iniciando a thread da janela\n";
     _window_thread = new Thread(_window_run);

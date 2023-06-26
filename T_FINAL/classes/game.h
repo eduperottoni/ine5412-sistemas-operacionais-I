@@ -25,8 +25,6 @@ public:
 
     Game() {};
     ~Game();
-    
-    static void configure();
 
     static void run(void* name);
     static std::list<sf::Sprite*> get_enemies_sprites_list();
@@ -55,6 +53,7 @@ private:
     static void _controller_run();
     static void _enemy_run(int i);
     static void _collision_checker_run();
+    static void _configure();
 
     static std::list<Bullet*> _player_bullet_list;
     static std::list<Bullet*> _enemies_bullet_list;

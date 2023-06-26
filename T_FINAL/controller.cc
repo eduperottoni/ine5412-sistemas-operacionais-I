@@ -6,42 +6,61 @@ __BEGIN_API
 std::queue<Keyboard::Move> Controller::_action_queue;
 Controller::State Controller::_game_state;
 std::queue<Keyboard::Move>* Controller::_player_queue;
+std::queue<CollisionChecker::Collision>* Controller::_collision_queue;
 
 Thread* Controller::_player_thread;
 std::list<Thread*> Controller::_enemy_threads;
 
 std::list<Enemy*>* Controller:: _enemy_objects;
 Player* Controller:: _player_object;
-std::list<Bullet*>* Controller:: _bullet_list;
+std::list<Bullet*>* Controller:: _player_bullet_list;
+std::list<Bullet*>* Controller:: _enemies_bullet_list;
 // std::list<Bullet>* Controller::_bullet_list;
+
+void Controller::_update_bullet_list(std::list<Bullet*>* bullet_list) {
+    auto it = bullet_list->begin();
+    while (it != bullet_list->end()) {
+        if ((*it)->out_of_screen()) {
+            delete *it;
+            db<Controller>(TRC) << "[CONTROLLER] DELETEI BALA" << "\n";
+            it = bullet_list->erase(it);
+        } else {
+            (*it)->update();
+            ++it;
+        }
+    }
+}
 
 void Controller::run() {
     while (true) {
         if (_game_state == RUNNING) {
-            auto it = _bullet_list->begin();
-            while (it != _bullet_list->end()) {
-                if ((*it)->out_of_screen()) {
-                    //db<Controller>(TRC) << "[CONTROLLER] ENTREI NO LOOP" << "\n";
-                    delete *it;
-                    it = _bullet_list->erase(it);
-                } else {
-                    (*it)->update();
-                    ++it;
-                }
-            }
+            _update_bullet_list(_enemies_bullet_list);
+            _update_bullet_list(_player_bullet_list);
         }
-        sf::FloatRect player_bounds = _player_object->get_sprite()->getGlobalBounds();
-        auto enemy = _enemy_objects->begin();
-        while (enemy != _enemy_objects->end()) {
-            sf::FloatRect enemy_bounds = (*enemy)->get_sprite()->getGlobalBounds();
-            if(player_bounds.intersects(enemy_bounds)) {
-                db<Controller>(TRC) << "[CONTROLLER] COLLIDING!!!";
-                //db<Controller>(TRC) << "[CONTROLLER] ENTREI NO LOOP" << "\n";
-                enemy = _enemy_objects->erase(enemy);
-            } else {
-                ++enemy;
-            }
-        }
+        // sf::FloatRect player_bounds = _player_object->get_sprite()->getGlobalBounds();
+        // auto enemy = _enemy_objects->begin();
+        // while (enemy != _enemy_objects->end()) {
+        //     sf::FloatRect enemy_bounds = (*enemy)->get_sprite()->getGlobalBounds();
+        //     if(player_bounds.intersects(enemy_bounds)) {
+        //         db<Controller>(TRC) << "[CONTROLLER] COLLIDING!!!";
+        //         //db<Controller>(TRC) << "[CONTROLLER] ENTREI NO LOOP" << "\n";
+        //         // enemy = _enemy_objects->erase(enemy);
+        //     } else {
+        //         ++enemy;
+        //     }
+        // }
+        // sf::FloatRect player_bounds = _player_object->get_sprite()->getGlobalBounds();
+        // auto enemy = _enemy_objects->begin();
+        // while (enemy != _enemy_objects->end()) {
+        //     sf::FloatRect enemy_bounds = (*enemy)->get_sprite()->getGlobalBounds();
+        //     if(player_bounds.intersects(enemy_bounds)) {
+        //         db<Controller>(TRC) << "[CONTROLLER] COLLIDING!!!";
+        //         //db<Controller>(TRC) << "[CONTROLLER] ENTREI NO LOOP" << "\n";
+        //         enemy = _enemy_objects->erase(enemy);
+        //     } else {
+        //         ++enemy;
+        //     }
+        // }
         if (!_action_queue.empty()) {
             Keyboard::Move move = _action_queue.front();
             _action_queue.pop();

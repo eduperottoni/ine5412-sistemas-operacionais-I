@@ -6,9 +6,10 @@ __BEGIN_API
 StaticSprite* Window::_screen;
 StaticSprite* Window::_ready;
 StaticSprite* Window::_score;
-std::list<Bullet*>* Window::_bullet_list;
+std::list<Bullet*>* Window::_player_bullet_list;
+std::list<Bullet*>* Window::_enemies_bullet_list;
 
-Window::Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, std::list<Bullet*>* bullet_list, Clock* clock)
+Window::Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, std::list<Bullet*>* player_bullet_list, std::list<Bullet*>* enemies_bullet_list, Clock* clock)
 {
     _sf_window.create(sf::VideoMode(1086, 746), "Brick Game");
     //_sf_window = window;
@@ -19,7 +20,8 @@ Window::Window(sf::Sprite* sprite, std::list<sf::Sprite*> enemies_sprites_list, 
     for (auto enemy_sprite : enemies_sprites_list){
         _enemies_sprites_list.push_back(enemy_sprite);
     }
-    _bullet_list = bullet_list;
+    _player_bullet_list = player_bullet_list;
+    _enemies_bullet_list = enemies_bullet_list;
     // _enemies_sprites_list = enemies_sprites_list;
     _clock = clock;
     load_and_bind_textures();
@@ -43,12 +45,12 @@ void Window::run()
     db<Window>(TRC) << "[Window] Renderizando a janela !\n";
     
     // FIXME ESSE VALOR DEVE VIR DE UMA CLASSE DE CONFIGURAÇÃO
-    _sf_window.setFramerateLimit(50);
+    _sf_window.setFramerateLimit(10);
     db<Window>(TRC) << "[Window] oiii !\n";
     //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
     //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
     // FIXME ESSE VALOR DEVE VIR DE UMA CLASSE DE CONFIGURAÇÃO
-    _sf_window.setKeyRepeatEnabled(true);
+    _sf_window.setKeyRepeatEnabled(_game_config.is_key_repeat_enabled());
 
     
 
@@ -151,7 +153,8 @@ void Window::run()
         // _sf_window.display();
         // _sf_window.draw(*_enemies_sprites_list.front());
         
-        cout << "TAMANHO DA LISTA:" << _bullet_list->size() << "\n";
+        cout << "TAMANHO DA LISTA:" << _player_bullet_list->size() << "\n";
+        cout << "TAMANHO DA LISTA:" << _enemies_bullet_list->size() << "\n";
         for (auto enemy_sprite : _enemies_sprites_list){
             // std::cout << "Type: " << typeid(*enemy_sprite).name() << std::endl;
             // cout << "POSIÇÃO DO INIMIGO EM X:" << enemy_sprite->getPosition().x << "\n";
@@ -159,11 +162,14 @@ void Window::run()
             _sf_window.draw(*enemy_sprite);
         }
 
-        for (auto bullet : *_bullet_list){
+        for (auto bullet : *_player_bullet_list){
             // bullet->update();
             // db<Window>(TRC) << "[Window] DESENHANDO BULLET!\n";
             _sf_window.draw(*bullet->get_sprite());
             // db<Window>(TRC) << "[Window] DESENHEI BULLET!\n";
+        }
+        for (auto bullet : *_enemies_bullet_list){
+            _sf_window.draw(*bullet->get_sprite());
         }
         _sf_window.display();
 
