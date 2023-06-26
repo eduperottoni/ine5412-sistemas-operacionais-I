@@ -16,6 +16,7 @@ std::list<Enemy*>* Controller:: _enemy_objects;
 Player* Controller:: _player_object;
 std::list<Bullet*>* Controller:: _player_bullet_list;
 std::list<Bullet*>* Controller:: _enemies_bullet_list;
+
 // std::list<Bullet>* Controller::_bullet_list;
 
 void Controller::_update_bullet_list(std::list<Bullet*>* bullet_list) {
@@ -93,6 +94,9 @@ void Controller::handle_bullet_player_collision(int id_player, int id_bullet) {
 
 void Controller::run() {
     while (true) {
+        if (*_game_config->get_game_state() == GameConfig::State::OVER){
+            break;
+        }
         if (*_game_config->get_game_state() == GameConfig::State::RUNNING) {
             db<Controller>(TRC) << "[CONTROLLER]vazia?" << !_collision_queue.empty() <<"\n";
             db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE COLISÕES:" << _collision_queue.size() <<"\n";
@@ -175,10 +179,6 @@ void Controller::run() {
             } else {
                 // MOVIMENTO DE CONTROLE DO JOGO
                 switch (move) {
-                case Keyboard::Move::EXIT:
-                    
-                    //db<Controller>(TRC) << "[CONTROLLER] EXIT \n";
-                    break;
                 case Keyboard::Move::P:
                     //db<Controller>(TRC) << "[CONTROLLER] PAUSE PRESSIONADO \n";
                     if (*_game_config->get_game_state() == GameConfig::State::RUNNING) {
@@ -196,6 +196,9 @@ void Controller::run() {
                         _game_config->set_game_state(GameConfig::State::RUNNING);
                         //db<Controller>(TRC) << "[CONTROLLER] UNPAUSE \n";
                     }
+                    break;
+                case Keyboard::Move::QUIT:
+                    _game_config->set_game_state(GameConfig::State::OVER);
                     break;
                 default:
                 break;

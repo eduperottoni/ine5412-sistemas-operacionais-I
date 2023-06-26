@@ -5,6 +5,7 @@
 #include <list>
 #include <queue>
 #include "../src/lib/thread.h"
+#include "../classes/game_config.h"
 
 
 __BEGIN_API
@@ -50,7 +51,7 @@ public:
         _collision_queue = collision_queue;
     };
 
-    ~CollisionChecker();
+    ~CollisionChecker(){};
     
     static void run();
 

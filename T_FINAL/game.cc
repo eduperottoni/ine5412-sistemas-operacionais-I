@@ -84,20 +84,24 @@ void Game::_enemy_run(int i) {
     sprites[Sprite::Orientation::LEFT] = "src/images/space_ships/enemy_space_ship_left.png";
     sprites[Sprite::Orientation::UP] = "src/images/space_ships/enemy_space_ship_up.png";
     sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/enemy_space_ship_down.png";
-    Enemy* new_enemy;
+    Enemy* new_enemy_obj;
     if (i == 0) {
-        new_enemy = new EnemyRandom(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list);
+        new_enemy_obj = new EnemyRandom(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 0, 0, &_enemies_bullet_list);
     } else if (i == 1) {
         // FIXME INSERIR AQUI O OUTRO TIPO DE INIMIGO
-        new_enemy = new EnemyTracker(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 400, 400, &_enemies_bullet_list, _player_obj->get_sprite());
+        new_enemy_obj = new EnemyTracker(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 400, 400, &_enemies_bullet_list, _player_obj->get_sprite());
     } else if (i == 2) {
-        new_enemy = new EnemyRandom(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 200, 200, &_enemies_bullet_list);
+        new_enemy_obj = new EnemyRandom(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 200, 200, &_enemies_bullet_list);
     } else {
-        new_enemy = new EnemyTracker(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 600, 600, &_enemies_bullet_list, _player_obj->get_sprite());
+        new_enemy_obj = new EnemyTracker(_game_config->get_sprites_scale(), 0, _game_config -> get_enemies_speed_lvl_1(), sprites, Sprite::Orientation::UP, _clock_obj, 600, 600, &_enemies_bullet_list, _player_obj->get_sprite());
     }
     
-    _enemy_objects.push_back(new_enemy);
-    new_enemy->run();
+    _enemy_objects.push_back(new_enemy_obj);
+    new_enemy_obj -> run();
+    delete new_enemy_obj;
+    Thread* enemy_thread = _enemy_threads.front();
+    _enemy_threads.pop_front();
+    enemy_thread -> thread_exit(0);
 }
 
 std::list<sf::Sprite*> Game::get_enemies_sprites_list() {
@@ -112,6 +116,8 @@ void Game::_collision_checker_run() {
     _collision_checker_obj = new CollisionChecker(_player_obj->get_sprite(), &enemies_sprites_list, &_player_bullet_list, &_enemies_bullet_list, _controller_obj->get_collision_queue());
     db<Game>(INF) << "[Game] Chamando método run do collision checker\n";
     _collision_checker_obj -> run();
+    delete _collision_checker_obj;
+    _collision_checker_thread -> thread_exit(0);
 }
 
 void Game::_window_run() {
@@ -120,6 +126,8 @@ void Game::_window_run() {
     _window_obj = new Window(_player_obj, enemies_sprites_list, &_player_bullet_list, &_enemies_bullet_list, _clock_obj);
     db<Game>(INF) << "[Game] Chamando método run da janela!\n";
     _window_obj -> run();
+    delete _window_obj;
+    _window_thread -> thread_exit(0);
 }
 
 void Game::_keyboard_run() {
@@ -127,6 +135,8 @@ void Game::_keyboard_run() {
     _keyboard_obj = new Keyboard(_window_obj, _controller_obj);
     db<Game>(INF) << "[Game] Chamando método run do teclado!\n";
     _keyboard_obj -> run();
+    delete _keyboard_obj;
+    _keyboard_thread -> thread_exit(0);
 }
 
 void Game::_controller_run() {
@@ -134,6 +144,8 @@ void Game::_controller_run() {
     _controller_obj = new Controller(_player_thread, _enemy_threads, &_enemy_objects, _player_obj -> get_move_queue(), _player_obj, &_player_bullet_list, &_enemies_bullet_list);
     db<Game>(INF) << "[Game] Chamando método run do controller!\n";
     _controller_obj -> run();
+    delete _controller_obj;
+    _controller_thread -> thread_exit(0);
 }
 
 void Game::_player_run() {
@@ -157,6 +169,8 @@ void Game::_player_run() {
     // _player_obj = new Player(scale, size, speed, paths, sprites, clock);
     db<Game>(INF) << "[Game] Chamando método run do player!\n";
     _player_obj -> run();
+    delete _player_obj;
+    _player_thread -> thread_exit(0);
 }
 
 void Game::run(void* name){
@@ -199,12 +213,18 @@ void Game::run(void* name){
     for (auto enemy_thread : _enemy_threads){
         enemy_thread -> join(); 
     }
+    _collision_checker_thread -> join();
     // realizar chamada da Thread Player
 }
 
 Game::~Game() {
-    delete _window_obj;
-    delete _window_thread;
+    db<Game>(INF) << "[Game] SENDO DELETADOOOOOOOOOOOOOO\n";
+    db<Game>(INF) << "[Game] SENDO DELETADOOOOOOOOOOOOOO\n";
+    db<Game>(INF) << "[Game] SENDO DELETADOOOOOOOOOOOOOO\n";
+    db<Game>(INF) << "[Game] SENDO DELETADOOOOOOOOOOOOOO\n";
+    // delete _window_thread;
+    // delete _player_thread;
+    // delete _controller_thread;
 }
 
 __END_API

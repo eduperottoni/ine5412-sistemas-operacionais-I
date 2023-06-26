@@ -87,7 +87,7 @@ void Keyboard::run()
                 } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
                     _action_queue -> push(Move::P);
                 } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-                    _action_queue -> push(Move::EXIT);
+                    _action_queue -> push(Move::QUIT);
                 } else {
                     std::cout << "Keyboard pressed = " << event.key.code << std::endl;
                 }

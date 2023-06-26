@@ -37,6 +37,8 @@ class Player : virtual public Spaceship {
             _score = 0;
         };
 
+        ~Player()
+
         void run();
 
         std::queue<Keyboard::Move>* get_move_queue();
@@ -52,26 +54,6 @@ class Player : virtual public Spaceship {
         int get_kills();
 
         int get_health();
-
-        // sf::Sprite get_current_sprite();
-
-        // sf::Sprite get_sprite(Sprite::Orientation orientation){
-        //     return 
-        // }
-        // // Destrutor da classe
-        // ~Player();
-        // // Método para movimentar o personagem
-        // void move(const std::string direction);
-        // // Método para rotacionar o personagem
-        // void rotate(const std::string direction);
-        // // Método para inciar o jogador
-        // void init();
-        // // Método para desenhar o jogador em uma determinada posição da tela
-        // static void spawn(int x, int y);
-        // // Obtendo a posição do jogador
-        // int getposition(int x, int y);
-        // // Seta a posição do jogador
-        // void setposition(int x, int y);
 };
 
 

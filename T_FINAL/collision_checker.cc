@@ -100,7 +100,8 @@ bool CollisionChecker::check_enemy_player_collision(){
 // };
 
 void CollisionChecker::run(){
-    while (true) {
+    GameConfig* game_config = &GameConfig::get_instance();
+    while (*game_config -> get_game_state() != GameConfig::State::OVER) {
         db<CollisionChecker>(INF) << "[CollisionChecker] CollisionChecker dá oi!\n";
         if (check_bullet_enemy_collision()){
             db<CollisionChecker>(INF) << "[CollisionChecker] BULLET_ENEMY_COLLISION\n";

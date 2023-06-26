@@ -59,7 +59,7 @@ void Window::run()
 
     // db<Window>(TRC) << "[Window] Jogador construido !\n";
 
-    while (_sf_window.isOpen())
+    while (*_game_config.get_game_state() != GameConfig::State::OVER)
     {   
 
         // AQUI:
@@ -73,6 +73,7 @@ void Window::run()
         _clock->set_delta_time();
         db<Window>(TRC) << "[Window] Entrei no loop!\n";
         _sf_window.clear();
+
         // _sf_window.draw(maze_sprite);
         
         
