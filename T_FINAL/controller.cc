@@ -1,11 +1,11 @@
 #include "classes/controller.h"
 #include "classes/bullet.h"
 #include "classes/game_config.h"
+#include "classes/game.h"
 
 __BEGIN_API
 
 std::queue<Keyboard::Move> Controller::_action_queue;
-Controller::State Controller::*_current_state;
 std::queue<Keyboard::Move>* Controller::_player_queue;
 std::queue<CollisionChecker::Collision*> Controller::_collision_queue;
 
@@ -92,9 +92,8 @@ void Controller::handle_bullet_player_collision(int id_player, int id_bullet) {
 }
 
 void Controller::run() {
-    GameConfig* Game_config = &GameConfig::get_instance();
     while (true) {
-        if (*_current_state == RUNNING) {
+        if (*_game_config->get_game_state() == GameConfig::State::RUNNING) {
             db<Controller>(TRC) << "[CONTROLLER]vazia?" << !_collision_queue.empty() <<"\n";
             db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE COLISÕES:" << _collision_queue.size() <<"\n";
             while (!_collision_queue.empty()) {
@@ -123,6 +122,9 @@ void Controller::run() {
             }
             _update_bullet_list(_enemies_bullet_list);
             _update_bullet_list(_player_bullet_list);
+        } else{
+            db<Controller>(TRC) << "FALSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE " << *_game_config->get_game_state() <<  "\n";
+            db<Controller>(TRC) << "FALSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE " << GameConfig::State::RUNNING <<  "\n";
         }
         // sf::FloatRect player_bounds = _player_object->get_sprite()->getGlobalBounds();
         // auto enemy = _enemy_objects->begin();
@@ -149,16 +151,16 @@ void Controller::run() {
         //     }
         // }
 
-        if (_player_object->get_kills() == _game_config.get_kills_to_lvl_2()) {
+        if (_player_object->get_kills() == _game_config->get_kills_to_lvl_2()) {
             for (auto enemy : *_enemy_objects) {
-                enemy->set_speed(_game_config.get_enemies_speed_lvl_2());
+                enemy->set_speed(_game_config->get_enemies_speed_lvl_2());
                 Game::set_level(Game::Level::LEVEL_2);
             }
         }
 
-        if (_player_object->get_kills() == _game_config.get_kills_to_lvl_3()) {
+        if (_player_object->get_kills() == _game_config->get_kills_to_lvl_3()) {
             for (auto enemy : *_enemy_objects) {
-                enemy->set_speed(_game_config.get_enemies_speed_lvl_3());
+                enemy->set_speed(_game_config->get_enemies_speed_lvl_3());
                 Game::set_level(Game::Level::LEVEL_3);
             }
         }
@@ -169,7 +171,7 @@ void Controller::run() {
             //db<Controller>(TRC) << "[CONTROLLER] NOT EMPTY" << move << "\n";
             // MOVIMENTO DO JOGADOR
             if (move == Keyboard::Move::DOWN || move == Keyboard::Move::LEFT || move == Keyboard::Move::RIGHT || move == Keyboard::Move::UP || move == Keyboard::Move::SHOOT) {
-                if (*_current_state == RUNNING) _player_queue -> push(move);
+                if (*_game_config->get_game_state() == GameConfig::State::RUNNING) _player_queue -> push(move);
             } else {
                 // MOVIMENTO DE CONTROLE DO JOGO
                 switch (move) {
@@ -179,16 +181,19 @@ void Controller::run() {
                     break;
                 case Keyboard::Move::P:
                     //db<Controller>(TRC) << "[CONTROLLER] PAUSE PRESSIONADO \n";
-                    if (*_current_state == RUNNING) {
+                    if (*_game_config->get_game_state() == GameConfig::State::RUNNING) {
                         //db<Controller>(TRC) << "[CONTROLLER] PAUSE \n";
                         // SUPEND EM TODAS, EXCETO WINDOW E KEYBOARD
                     for (auto thread : _enemy_threads) thread -> suspend();
                         _player_thread -> suspend();
-                        *_current_state = PAUSED;
-                    } else if (*_current_state == PAUSED) {
+                        //*_game_config->get_game_state() == GameConfig::State::RUNNING
+                        _game_config->set_game_state(GameConfig::State::PAUSED);
+                        //*_current_state = PAUSED;
+                    } else if (*_game_config->get_game_state() == GameConfig::State::PAUSED) {
                         for (auto thread : _enemy_threads) thread -> resume();
                         _player_thread -> resume();
-                        *_current_state = RUNNING;
+                        //*_current_state = RUNNING;
+                        _game_config->set_game_state(GameConfig::State::RUNNING);
                         //db<Controller>(TRC) << "[CONTROLLER] UNPAUSE \n";
                     }
                     break;
@@ -216,11 +221,6 @@ std::queue<Keyboard::Move>* Controller::get_action_queue(){
 std::queue<CollisionChecker::Collision*>* Controller::get_collision_queue(){
     // if (_collision_queue == nullptr) db<Controller>(TRC) << "[CONTROLLER] NULO CARALHO" << "\n";
     return &_collision_queue;
-}
-
-Controller::State* Controller::get_game_state(){
-    // if (_collision_queue == nullptr) db<Controller>(TRC) << "[CONTROLLER] NULO CARALHO" << "\n";
-    return &_game_state;
 }
 
 __END_API

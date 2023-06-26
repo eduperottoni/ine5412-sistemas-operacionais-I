@@ -51,6 +51,7 @@ void Game::_configure(){
     _game_config -> set_kills_to_lvl_3(8);
     _game_config -> set_player_health(3);
     _game_config -> set_number_of_enemies(4);
+    _game_config -> set_game_state(GameConfig::State::RUNNING);
 
     //TODO -> Aqui, inicializar as configurações utilizando os setters de GameConfig.
 }
@@ -132,7 +133,6 @@ void Game::_controller_run() {
     db<Game>(INF) << "[Game] Instanciando um novo controller!\n";
     _controller_obj = new Controller(_player_thread, _enemy_threads, &_enemy_objects, _player_obj -> get_move_queue(), _player_obj, &_player_bullet_list, &_enemies_bullet_list);
     db<Game>(INF) << "[Game] Chamando método run do controller!\n";
-    _game_config.set_game_state(_controller_obj->get_state());
     _controller_obj -> run();
 }
 

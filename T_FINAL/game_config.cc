@@ -142,7 +142,7 @@ void GameConfig::set_game_state(State state){
     _game_state = state;
 }
 
-State* GameConfig::get_game_state() {
+GameConfig::State* GameConfig::get_game_state() {
     return &_game_state;
 }
 
