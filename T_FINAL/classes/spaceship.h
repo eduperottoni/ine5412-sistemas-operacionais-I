@@ -11,8 +11,8 @@ __BEGIN_API
 
 class Spaceship : virtual public MovingSprite {
     public:
-        Spaceship(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y, std::list<Bullet*>* bullet_list)
-        : MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y), Sprite(scale, size, paths, initial_orientation, x, y) {
+        Spaceship(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y, std::list<Bullet*>* bullet_list, int quadrante)
+        : MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y, quadrante), Sprite(scale, size, paths, initial_orientation, x, y) {
             db<Spaceship>(TRC) << "[SPACESHIP] SHOOTING!!! \n";
             _ready_to_shoot = true;
             _bullet_list = bullet_list;

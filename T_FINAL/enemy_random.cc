@@ -12,13 +12,13 @@ int EnemyRandom::get_random_num(){
 }
 
 
-void EnemyRandom::run(){
+void EnemyRandom::run() {
     GameConfig* game_config = &GameConfig::get_instance();
     int timer = 100;
-    int timer_shoot = 30;
+    int timer_shoot = 80;
     int counter = 0;
     int counter_shoot = 0;
-    while (*game_config -> get_game_state() != GameConfig::State::OVER) {
+    while (*game_config -> get_game_state() != GameConfig::State::FINISHING) {
         if (_can_render){
             db<EnemyRandom>(INF) << "[EnemyRandom] GET CLOCK !" << counter << "\n";
             // verificar se o movimento está dentro da tela, com o tamanho da tela atual: TODO --> puxar o tamanho da tela por um metodo da classe 
@@ -33,7 +33,6 @@ void EnemyRandom::run(){
             if (counter > timer) {
                 counter = 0;
                 int random_int = get_random_num();
-                db<EnemyRandom>(INF) << "[Enemy] Chamada de run com int = " << random_int << "\n";
                 switch (random_int)
                 {
                 case 2:
@@ -78,6 +77,7 @@ void EnemyRandom::run(){
         // Chamando yield ao final da chamada
         Thread::yield();
     }
+    db<EnemyRandom>(INF) << "[Enemy] SAINDO DO RUN DO INIMIGO" << "\n";
 }
 
 __END_API

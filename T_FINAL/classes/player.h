@@ -29,21 +29,29 @@ class Player : virtual public Spaceship {
 
     public:
         // Construtor de Classe
-        Player(int health, float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y, std::list<Bullet*>* bullet_list)
-        : Spaceship(scale, size, speed, paths, initial_orientation, clock, x, y, bullet_list), MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y),
+        Player(int health, float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y, std::list<Bullet*>* bullet_list, int quadrante)
+        : Spaceship(scale, size, speed, paths, initial_orientation, clock, x, y, bullet_list, quadrante), MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y, quadrante),
         Sprite(scale, size, paths, initial_orientation, x, y) {
             _kills = 0;
             _health = health;
             _score = 0;
         };
 
-        ~Player(){};
+        ~Player(){
+            db<Player>(INF) << "[Player] Destruindo\n";
+        };
 
         void run();
 
         std::queue<Keyboard::Move>* get_move_queue();
 
         void increment_score(int value);
+
+        void set_health(int health);
+
+        void set_kills(int kills);
+
+        void set_score(int score);
 
         void decrement_health();
 

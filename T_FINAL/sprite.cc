@@ -24,10 +24,14 @@ Sprite::Sprite(float scale, int size, const map<Orientation, string>& paths, Ori
     _scale = scale;
     _sprite.setTexture(_textures.at(initial_orientation));
     _sprite.setPosition(x, y);
+    _position = std::make_tuple(x, y);
     _sprite.scale(scale, scale);
     _current_orientation = initial_orientation;
     cout << "Sprite construído";
 }
 
+void Sprite::reset_position() {
+    _sprite.setPosition(std::get<0>(_position), std::get<1>(_position));
+}
 __END_API
 

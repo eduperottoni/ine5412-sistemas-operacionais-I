@@ -12,7 +12,8 @@ public:
         READY,
         RUNNING,
         PAUSED,
-        OVER
+        OVER,
+        FINISHING
     };
 
     static GameConfig& get_instance();

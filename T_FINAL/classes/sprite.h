@@ -35,11 +35,13 @@ class Sprite {
             // Libera a memória do sprite
             _sprite.~Sprite();
         }
+
+        void reset_position();
     protected:
         Orientation _current_orientation;
         float _scale;
         int _size;
-        std::tuple<int, int> position;
+        std::tuple<int, int> _position;
         sf::Sprite _sprite;
         map<Orientation, sf::Texture> _textures;
 };

@@ -29,6 +29,7 @@ public:
         _player_bullet_list = player_bullet_list;
         _enemy_objects = enemy_objects;
         _player_object = player_object;
+        _game_config = &GameConfig::get_instance();
     };
     
     ~Controller();
@@ -55,7 +56,15 @@ private:
     static std::list<Bullet*>* _player_bullet_list;
     static std::list<Bullet*>* _enemies_bullet_list;
 
-    GameConfig* _game_config = &GameConfig::get_instance();
+    static void clear();
+
+    static void reset();
+
+    void _update_level();
+    static void _resume_threads();
+    static void _suspend_threads();
+
+    static GameConfig* _game_config;
 
     static void _update_bullet_list(std::list<Bullet*>* bullet_list);
 };

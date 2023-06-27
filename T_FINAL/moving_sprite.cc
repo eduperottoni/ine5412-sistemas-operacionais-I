@@ -91,11 +91,11 @@ void MovingSprite::move(Orientation orientation)
     // _sprite.setPosition(x_position, y_position);
 
     sf::FloatRect bounds = _sprite.getGlobalBounds();
-    if (x_position < 0.f) _sprite.setPosition(0.f, y_position);
-    else if (y_position < 0.f) _sprite.setPosition(x_position, 0.f);
+    if (x_position < _limit_left) _sprite.setPosition(_limit_left, y_position);
+    else if (y_position < _limit_up) _sprite.setPosition(x_position, _limit_up);
     // TODO ARRUMAR ISSO AQUI
-    else if (x_position + bounds.width > 1086 - 320) _sprite.setPosition(1086 - 320 - bounds.width, y_position);
-    else if (y_position + bounds.height > 760) _sprite.setPosition(x_position, 760 - bounds.height);
+    else if (x_position + bounds.width > _limit_right) _sprite.setPosition(_limit_right - bounds.width, y_position);
+    else if (y_position + bounds.height > _limit_down) _sprite.setPosition(x_position, _limit_down - bounds.height);
     else{
         _sprite.move(_movement);
     }

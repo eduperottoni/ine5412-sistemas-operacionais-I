@@ -11,8 +11,8 @@ __BEGIN_API
 
 class Bullet : public MovingSprite {
 public:
-    Bullet(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y)
-        : MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y), Sprite(scale, size, paths, initial_orientation, x, y){
+    Bullet(float scale, int size, float speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock, int x, int y, int quadrante)
+        : MovingSprite(scale, size, speed, paths, initial_orientation, clock, x, y, quadrante), Sprite(scale, size, paths, initial_orientation, x, y){
 
         };
     
