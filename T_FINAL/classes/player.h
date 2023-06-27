@@ -37,7 +37,7 @@ class Player : virtual public Spaceship {
             _score = 0;
         };
 
-        ~Player()
+        ~Player(){};
 
         void run();
 

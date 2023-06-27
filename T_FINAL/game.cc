@@ -141,7 +141,7 @@ void Game::_keyboard_run() {
 
 void Game::_controller_run() {
     db<Game>(INF) << "[Game] Instanciando um novo controller!\n";
-    _controller_obj = new Controller(_player_thread, _enemy_threads, &_enemy_objects, _player_obj -> get_move_queue(), _player_obj, &_player_bullet_list, &_enemies_bullet_list);
+    _controller_obj = new Controller(_player_thread, _enemy_threads, &_enemy_objects, _player_obj -> get_move_queue(), _player_obj, &_player_bullet_list, &_enemies_bullet_list, _collision_checker_thread, _window_thread);
     db<Game>(INF) << "[Game] Chamando método run do controller!\n";
     _controller_obj -> run();
     delete _controller_obj;
@@ -193,6 +193,10 @@ void Game::run(void* name){
     db<Game>(INF) << "[Game] Iniciando a thread da janela\n";
     _window_thread = new Thread(_window_run);
 
+
+    db<Game>(INF) << "[Game] Iniciando a thread do collision checker\n";
+    _collision_checker_thread = new Thread(_collision_checker_run);
+
     db<Game>(INF) << "[Game] Iniciando a thread do controller\n";
     _controller_thread = new Thread(_controller_run);
 
@@ -202,18 +206,24 @@ void Game::run(void* name){
     db<Game>(INF) << "[Game] Iniciando a thread do teclado\n";
     _keyboard_thread = new Thread(_keyboard_run);
 
-    db<Game>(INF) << "[Game] Iniciando a thread do collision checker\n";
-    _collision_checker_thread = new Thread(_collision_checker_run);
-
     db<Game>(INF) << "[Game] Chamando join\n";
     _window_thread -> join();
     _controller_thread -> join();
     _keyboard_thread -> join();
     _player_thread -> join();
     for (auto enemy_thread : _enemy_threads){
-        enemy_thread -> join(); 
+        enemy_thread -> join();
     }
     _collision_checker_thread -> join();
+
+    delete _window_thread;
+    delete _controller_thread;
+    delete _keyboard_thread;
+    delete _player_thread;
+    for (auto enemy_thread : _enemy_threads) {
+        delete enemy_thread;
+    }
+    delete _collision_checker_thread;
     // realizar chamada da Thread Player
 }
 
@@ -222,9 +232,6 @@ Game::~Game() {
     db<Game>(INF) << "[Game] SENDO DELETADOOOOOOOOOOOOOO\n";
     db<Game>(INF) << "[Game] SENDO DELETADOOOOOOOOOOOOOO\n";
     db<Game>(INF) << "[Game] SENDO DELETADOOOOOOOOOOOOOO\n";
-    // delete _window_thread;
-    // delete _player_thread;
-    // delete _controller_thread;
 }
 
 __END_API

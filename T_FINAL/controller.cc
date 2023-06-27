@@ -10,6 +10,8 @@ std::queue<Keyboard::Move>* Controller::_player_queue;
 std::queue<CollisionChecker::Collision*> Controller::_collision_queue;
 
 Thread* Controller::_player_thread;
+Thread* Controller::_collision_thread;
+Thread* Controller::_window_thread;
 std::list<Thread*> Controller::_enemy_threads;
 
 std::list<Enemy*>* Controller:: _enemy_objects;
@@ -94,26 +96,53 @@ void Controller::handle_bullet_player_collision(int id_player, int id_bullet) {
 
 void Controller::run() {
     while (true) {
-        if (*_game_config->get_game_state() == GameConfig::State::OVER){
-            break;
+        if (*_game_config->get_game_state() == GameConfig::State::OVER) {
+            _player_thread->suspend();
+            db<Controller>(TRC) << "[CONTROLLER] PLAYER SUSPENSA!!!!!!" <<"\n";
+            for (auto enemy : _enemy_threads) {
+                enemy->suspend();
+                db<Controller>(TRC) << "[CONTROLLER] ENEMY SUSPENSA!!!!!!" <<"\n";
+            }
+            _collision_thread->suspend();
+            // _window_thread->suspend();
+            db<Controller>(TRC) << "[CONTROLLER] COLLISION CHECKER SUSPENSA!!!!!!" <<"\n";
+            while (*_game_config->get_game_state() == GameConfig::State::OVER) {
+                db<Controller>(TRC) << "[CONTROLLER] LOOP DE FIM DE JOGO" <<"\n";
+                if (!_action_queue.empty()) {
+                    db<Controller>(TRC) << "[CONTROLLER] ACTION QUEUE TEM ALGO DENTRO" <<"\n";
+                    Keyboard::Move move = _action_queue.front();
+                    _action_queue.pop();
+                    if (move == Keyboard::RESET) {
+                        //reset();
+                        db<Controller>(TRC) << "[CONTROLLER] FAZEMOS O RESET DO JOGO" <<"\n";
+                        // reseta o jogo
+                    } else if (move == Keyboard::QUIT) {
+                        // termina o jogo
+                        db<Controller>(TRC) << "[CONTROLLER] FECHAMOS O JOGO" <<"\n";
+                        break;
+                    }
+                }
+                Thread::yield();
+            }
         }
         if (*_game_config->get_game_state() == GameConfig::State::RUNNING) {
+            if (_player_object->get_health() <= 0) {
+                db<Controller>(TRC) << "[CONTROLLER] PLAYER MORREU!!!!!!" <<"\n";
+                _game_config->set_game_state(GameConfig::State::OVER);
+                continue;
+                db<Controller>(TRC) << "[CONTROLLER] PLAYER MORREU!!!!!!" <<"\n";
+            }
             db<Controller>(TRC) << "[CONTROLLER]vazia?" << !_collision_queue.empty() <<"\n";
             db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE COLISÕES:" << _collision_queue.size() <<"\n";
             while (!_collision_queue.empty()) {
                 CollisionChecker::Collision* collision = _collision_queue.front();
                 _collision_queue.pop();
                 db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE COLISÕES:" << _collision_queue.size() <<"\n";
-                db<Controller>(TRC) << "[CONTROLLER]id 1:" << collision->_obj_id1 <<"\n";
-                db<Controller>(TRC) << "[CONTROLLER]id 2:" << collision->_obj_id2 <<"\n";
-                db<Controller>(TRC) << "[CONTROLLER]CollisionType:" << collision->_collision_type <<"\n";
                 if (collision->_collision_type == CollisionChecker::BULLET_ENEMY){
                     handle_bullet_enemy_collision(collision->_obj_id1, collision->_obj_id2);   
                 } else if (collision->_collision_type == CollisionChecker::PLAYER_ENEMY){
                     db<Controller>(TRC) << "COLISÃO ENTRE PLAYER E INIMIGO" <<"\n";
-                    // 
-                } else if (collision->_collision_type == CollisionChecker::ENEMY_ENEMY){
-                    db<Controller>(TRC) << "COLISÃO ENTRE INIMIGO E INIMIGO" <<"\n";
+
                 } else if (collision->_collision_type == CollisionChecker::BULLET_PLAYER){
                     handle_bullet_player_collision(collision->_obj_id1, collision->_obj_id2);
                     db<Controller>(TRC) << "COLISÃO ENTRE BALA E JOGADOR" <<"\n";
@@ -126,34 +155,7 @@ void Controller::run() {
             }
             _update_bullet_list(_enemies_bullet_list);
             _update_bullet_list(_player_bullet_list);
-        } else{
-            db<Controller>(TRC) << "FALSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE " << *_game_config->get_game_state() <<  "\n";
-            db<Controller>(TRC) << "FALSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE " << GameConfig::State::RUNNING <<  "\n";
         }
-        // sf::FloatRect player_bounds = _player_object->get_sprite()->getGlobalBounds();
-        // auto enemy = _enemy_objects->begin();
-        // while (enemy != _enemy_objects->end()) {
-        //     sf::FloatRect enemy_bounds = (*enemy)->get_sprite()->getGlobalBounds();
-        //     if(player_bounds.intersects(enemy_bounds)) {
-        //         db<Controller>(TRC) << "[CONTROLLER] COLLIDING!!!";
-        //         //db<Controller>(TRC) << "[CONTROLLER] ENTREI NO LOOP" << "\n";
-        //         // enemy = _enemy_objects->erase(enemy);
-        //     } else {
-        //         ++enemy;
-        //     }
-        // }
-        // sf::FloatRect player_bounds = _player_object->get_sprite()->getGlobalBounds();
-        // auto enemy = _enemy_objects->begin();
-        // while (enemy != _enemy_objects->end()) {
-        //     sf::FloatRect enemy_bounds = (*enemy)->get_sprite()->getGlobalBounds();
-        //     if(player_bounds.intersects(enemy_bounds)) {
-        //         db<Controller>(TRC) << "[CONTROLLER] COLLIDING!!!";
-        //         //db<Controller>(TRC) << "[CONTROLLER] ENTREI NO LOOP" << "\n";
-        //         enemy = _enemy_objects->erase(enemy);
-        //     } else {
-        //         ++enemy;
-        //     }
-        // }
 
         if (_player_object->get_kills() == _game_config->get_kills_to_lvl_2()) {
             for (auto enemy : *_enemy_objects) {
@@ -199,6 +201,7 @@ void Controller::run() {
                     break;
                 case Keyboard::Move::QUIT:
                     _game_config->set_game_state(GameConfig::State::OVER);
+                    //CHAMAMOS O RESET
                     break;
                 default:
                 break;
@@ -210,18 +213,36 @@ void Controller::run() {
         }
         Thread::yield();
     }
+    while (!_enemies_bullet_list->empty()) {
+        Bullet* bullet = _enemies_bullet_list->front();
+        _enemies_bullet_list->pop_front();
+        delete bullet;
+        db<Controller>(TRC) << "[CONTROLLER] DELETANDO BULLET DA LISTA DO INIMIGO!" <<"\n";
+    }
+    while (!_player_bullet_list->empty()) {
+        Bullet* bullet = _player_bullet_list->front();
+        _player_bullet_list->pop_front();
+        delete bullet;
+        db<Controller>(TRC) << "[CONTROLLER] DELETANDO BULLET DA LISTA DO PLAYER!" <<"\n";
+    }
+    while (!_collision_queue.empty()) {
+        CollisionChecker::Collision* collision = _collision_queue.front();
+        _collision_queue.pop();
+        delete collision;
+        db<Controller>(TRC) << "[CONTROLLER] DELETANDO COLISAO!" <<"\n";
+    }
 }
 
 
 Controller::~Controller() {
 }
 
-std::queue<Keyboard::Move>* Controller::get_action_queue(){
+std::queue<Keyboard::Move>* Controller::get_action_queue() {
     //db<Controller>(TRC) << "[CONTROLLER] Entrei no getter do _action_queue! \n";
     return &_action_queue;
 }
 
-std::queue<CollisionChecker::Collision*>* Controller::get_collision_queue(){
+std::queue<CollisionChecker::Collision*>* Controller::get_collision_queue() {
     // if (_collision_queue == nullptr) db<Controller>(TRC) << "[CONTROLLER] NULO CARALHO" << "\n";
     return &_collision_queue;
 }

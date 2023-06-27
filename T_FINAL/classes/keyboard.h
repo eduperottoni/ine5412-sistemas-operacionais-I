@@ -25,7 +25,8 @@ public:
         RIGHT,
         SHOOT,
         P,
-        QUIT
+        QUIT,
+        RESET
     };
 
     Keyboard(Window* window, Controller* controller);

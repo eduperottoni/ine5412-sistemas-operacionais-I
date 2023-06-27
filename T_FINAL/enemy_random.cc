@@ -18,7 +18,7 @@ void EnemyRandom::run(){
     int timer_shoot = 30;
     int counter = 0;
     int counter_shoot = 0;
-    while (true) {
+    while (*game_config -> get_game_state() != GameConfig::State::OVER) {
         if (_can_render){
             db<EnemyRandom>(INF) << "[EnemyRandom] GET CLOCK !" << counter << "\n";
             // verificar se o movimento está dentro da tela, com o tamanho da tela atual: TODO --> puxar o tamanho da tela por um metodo da classe 

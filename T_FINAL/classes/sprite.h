@@ -27,6 +27,14 @@ class Sprite {
         sf::Sprite* get_sprite();
         Sprite(float scale, int size, const map<Orientation, string>& paths, Sprite::Orientation initial_orientation, int x, int y);
 
+        ~Sprite(){
+            for (auto& pair : _textures) {
+                sf::Texture& texture = pair.second;
+                texture.~Texture();
+            }
+            // Libera a memória do sprite
+            _sprite.~Sprite();
+        }
     protected:
         Orientation _current_orientation;
         float _scale;

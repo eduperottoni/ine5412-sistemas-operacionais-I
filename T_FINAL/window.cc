@@ -44,7 +44,7 @@ void Window::run()
 {
     db<Window>(TRC) << "[Window] Renderizando a janela !\n";
     
-    _sf_window.setFramerateLimit(10);
+    _sf_window.setFramerateLimit(_game_config.get_frame_limit());
     //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
     //https://www.sfml-dev.org/documentation/2.5.1/classsf_1_1Keyboard.php
     _sf_window.setKeyRepeatEnabled(_game_config.is_key_repeat_enabled());
@@ -59,7 +59,7 @@ void Window::run()
 
     // db<Window>(TRC) << "[Window] Jogador construido !\n";
 
-    while (*_game_config.get_game_state() != GameConfig::State::OVER)
+    while (true)
     {   
 
         // AQUI:
