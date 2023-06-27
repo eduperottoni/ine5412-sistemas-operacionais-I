@@ -107,12 +107,6 @@ void Window::run()
 
 void Window::load_and_bind_textures()
 {
-    float SCALE = 0.75;
-    float ENEMIES_SPEED = 100.f;
-    float SCREEN_SCALE = 2.f;
-    float TEXT_X = 850;
-    float TEXT_Y = 100;
-
     float x_start = std::get<0>(_game_config.get_start_panel());
     float y_start = std::get<1>(_game_config.get_start_panel());
 

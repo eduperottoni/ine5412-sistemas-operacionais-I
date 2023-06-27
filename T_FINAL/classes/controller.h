@@ -40,6 +40,8 @@ public:
     void handle_bullet_enemy_collision(int id_bullet, int id_enemy);
     void handle_bullet_bullet_collision(int id_player_bullet, int id_enemy_bullet);
     void handle_bullet_player_collision(int id_player, int id_enemy);
+    void handle_player_enemy_collision(int id_player, int id_enemy);
+
 
 private:
 
@@ -55,6 +57,7 @@ private:
 
     static std::list<Bullet*>* _player_bullet_list;
     static std::list<Bullet*>* _enemies_bullet_list;
+
 
     static void clear();
 
