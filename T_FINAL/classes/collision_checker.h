@@ -32,16 +32,6 @@ public:
         int _obj_id1;
         int _obj_id2;
         ~Collision(){};
-        // int get_id1(){
-        //     return _obj_id1;
-        // };
-        // int get_id2(){
-        //     return _obj_id2;
-        // };
-        // CollisionType get_collision_type(){
-        //     return _collision_type;
-        // };
-    // private:
     };
     CollisionChecker(sf::Sprite* player_sprite, list<sf::Sprite*>* enemies_sprites_list, list<Bullet*>* player_bullets_list, list<Bullet*>* enemies_bullets_list, queue<CollisionChecker::Collision*>* collision_queue){
         _player_bullets_list = player_bullets_list;
@@ -57,7 +47,6 @@ public:
 
     static bool check_bullet_enemy_collision();
     static bool check_enemy_player_collision();
-    // static bool check_enemy_enemy_collision();
     static bool check_bullet_bullet_collision();
     static bool check_bullet_player_collision();
     static bool check_collision(const sf::Sprite* sprite1, const sf::Sprite* sprite2);
@@ -69,7 +58,6 @@ private:
     static list<Bullet*>* _player_bullets_list;
     static queue<CollisionChecker::Collision*>* _collision_queue;
 
-    // static Game::State* _game_state;
 };
 
 

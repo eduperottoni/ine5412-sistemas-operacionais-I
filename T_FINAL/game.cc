@@ -85,7 +85,6 @@ void Game::_enemy_run(int i) {
     if (it != _enemy_threads.end()) {
         (*it) -> thread_exit(0);
     }
-    db<Game>(INF) << "[Game] EXIT DO ENEMY\n";
 }
 
 std::list<sf::Sprite*> Game::get_enemies_sprites_list() {
@@ -95,44 +94,33 @@ std::list<sf::Sprite*> Game::get_enemies_sprites_list() {
 }
 
 void Game::_collision_checker_run() {
-    db<Game>(INF) << "[Game] Instanciando um collision checker\n";
     std::list<sf::Sprite*> enemies_sprites_list = get_enemies_sprites_list();
     _collision_checker_obj = new CollisionChecker(_player_obj->get_sprite(), &enemies_sprites_list, &_player_bullet_list, &_enemies_bullet_list, _controller_obj->get_collision_queue());
-    db<Game>(INF) << "[Game] Chamando método run do collision checker\n";
     _collision_checker_obj -> run();
     delete _collision_checker_obj;
-    db<Game>(INF) << "[Game] EXIT DO COLLISION CHECKER\n";
     _collision_checker_thread -> thread_exit(0);
 }
 
 void Game::_window_run() {
-    db<Game>(INF) << "[Game] Instanciando uma nova janela!\n";
     std::list<sf::Sprite*> enemies_sprites_list = get_enemies_sprites_list();
     _window_obj = new Window(_player_obj, enemies_sprites_list, &_player_bullet_list, &_enemies_bullet_list, _clock_obj);
-    db<Game>(INF) << "[Game] Chamando método run da janela!\n";
     _window_obj -> run();
     delete _window_obj;
-    db<Game>(INF) << "[Game] EXIT DO WINDOW\n";
     _window_thread -> thread_exit(0);
 }
 
 void Game::_keyboard_run() {
-    db<Game>(INF) << "[Game] Instanciando um novo teclado!\n";
     _keyboard_obj = new Keyboard(_window_obj, _controller_obj);
     db<Game>(INF) << "[Game] Chamando método run do teclado!\n";
     _keyboard_obj -> run();
     delete _keyboard_obj;
-    db<Game>(INF) << "[Game] EXIT DO KEYBOARD\n";
     _keyboard_thread -> thread_exit(0);
 }
 
 void Game::_controller_run() {
-    db<Game>(INF) << "[Game] Instanciando um novo controller!\n";
     _controller_obj = new Controller(_player_thread, _enemy_threads, &_enemy_objects, _player_obj -> get_move_queue(), _player_obj, &_player_bullet_list, &_enemies_bullet_list, _collision_checker_thread, _window_thread);
-    db<Game>(INF) << "[Game] Chamando método run do controller!\n";
     _controller_obj -> run();
     delete _controller_obj;
-    db<Game>(INF) << "[Game] EXIT DO CONTROLLER\n";
     _controller_thread -> thread_exit(0);
 }
 
@@ -142,7 +130,6 @@ void Game::_player_run() {
     sprites[Sprite::Orientation::LEFT] = "src/images/space_ships/space_ship_left.png";
     sprites[Sprite::Orientation::UP] = "src/images/space_ships/space_ship_up.png";
     sprites[Sprite::Orientation::DOWN] = "src/images/space_ships/space_ship_down.png";
-    db<Game>(INF) << "[Game] Instanciando um novo player!\n";
     _player_obj = new Player(
         _game_config -> get_player_health(),
         _game_config -> get_sprites_scale(),
@@ -157,9 +144,7 @@ void Game::_player_run() {
         0);
     // _player_obj = new Player(scale, size, speed, paths, sprites, clock);
     _player_obj -> run();
-    db<Game>(INF) << "[Game] Vou deletar o objeto do player\n";
     delete _player_obj;
-    db<Game>(INF) << "[Game] EXIT DO PLAYER\n";
     _player_thread -> thread_exit(0);
 }
 
@@ -169,10 +154,8 @@ void Game::run(void* name){
     _clock_obj = new Clock();
 
     // _window_thread = new Window(_window_run(_player_object, _enemy_object, ...))
-    db<Game>(INF) << "[Game] Iniciando a thread do player\n";
     _player_thread = new Thread(_player_run);
 
-    db<Game>(INF) << "[Game] Iniciando a thread dos inimigos\n";
     for (int i = 0; i < _game_config->get_number_of_enemies(); i++){
         _enemy_threads.push_back(new Thread(_enemy_run, i));
     }
@@ -180,58 +163,34 @@ void Game::run(void* name){
     // db<Game>(INF) << "[Game] Iniciando a thread do collision checker\n";
     // _collision_checker_thread = new Thread(_collision_checker_run);
 
-    db<Game>(INF) << "[Game] Iniciando a thread da janela\n";
     _window_thread = new Thread(_window_run);
 
-
-    db<Game>(INF) << "[Game] Iniciando a thread do collision checker\n";
     _collision_checker_thread = new Thread(_collision_checker_run);
 
-    db<Game>(INF) << "[Game] Iniciando a thread do controller\n";
     _controller_thread = new Thread(_controller_run);
 
-    // db<Game>(INF) << "[Game] Iniciando a thread do player\n";
-    // _player_thread = new Thread(_player_run);
-
-    db<Game>(INF) << "[Game] Iniciando a thread do teclado\n";
     _keyboard_thread = new Thread(_keyboard_run);
 
     _player_thread -> join();
-    db<Game>(INF) << "[Game] PLAYER TERMINOU O JOIN\n";
     delete _player_thread;
-    db<Game>(INF) << "[Game]PLAYER thread deletada\n";
 
     for (auto enemy_thread : _enemy_threads){
         enemy_thread -> join();
-        db<Game>(INF) << "[Game] UM DOS INIMIGOS TERMINOU O JOIN\n";
         delete enemy_thread;
-        db<Game>(INF) << "[Game] UM DOS INIMIGOS FOI DELETADO\n";
     }
     _window_thread -> join();
-    db<Game>(INF) << "[Game]PLAYER thread terminou o join\n";
     delete _window_thread;
-    db<Game>(INF) << "[Game]window thread deletada\n";
     _collision_checker_thread -> join();
-    db<Game>(INF) << "[Game] COLLISION CHECKER TERMINOU O JOIN\n";
     delete _collision_checker_thread;
-    db<Game>(INF) << "[Game] COLLISION CHECKER FOI DELETADO\n";
     _controller_thread -> join();
-    db<Game>(INF) << "[Game]controler thread liberou join\n";
     delete _controller_thread;
-    db<Game>(INF) << "[Game]controller thread deletada\n";
 
     _keyboard_thread -> join();
-    db<Game>(INF) << "[Game]keybord thread treminou join\n";
     delete _keyboard_thread;
-    db<Game>(INF) << "[Game] KEYBOARD FOI DELETADO\n";
     // realizar chamada da Thread Player
 }
 
 Game::~Game() {
-    db<Game>(INF) << "[Game] SENDO DELETADOOOOOOOOOOOOOO\n";
-    db<Game>(INF) << "[Game] SENDO DELETADOOOOOOOOOOOOOO\n";
-    db<Game>(INF) << "[Game] SENDO DELETADOOOOOOOOOOOOOO\n";
-    db<Game>(INF) << "[Game] SENDO DELETADOOOOOOOOOOOOOO\n";
 }
 
 __END_API

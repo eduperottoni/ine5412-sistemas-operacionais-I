@@ -33,7 +33,6 @@ sf::RenderWindow* Window::get_sf_window(){
 }
 
 Window::~Window() {
-    // delete _player;
 }
 
 void Window::draw_texture(unsigned int texture, int length, int height, float angle)
@@ -43,7 +42,6 @@ void Window::draw_texture(unsigned int texture, int length, int height, float an
 void Window::run()
 {
     GameConfig* game_config = &GameConfig::get_instance();
-    db<Window>(TRC) << "[Window] Renderizando a janela !\n";
     
     _sf_window.setFramerateLimit(_game_config.get_frame_limit());
     //Link: https://www.sfml-dev.org/tutorials/2.5/window-events.php
@@ -51,42 +49,23 @@ void Window::run()
     _sf_window.setKeyRepeatEnabled(_game_config.is_key_repeat_enabled());
 
     while (*game_config -> get_game_state() != GameConfig::State::FINISHING) {
-        db<Window>(TRC) << "[Window] ENTREI NA WINDOW\n";
-
-
-
-        // AQUI:
-
-        // 1. Fazer a janela ler fila de eventos dela no game (criar fila de eventos para ela a ser atualizada pelo keyboard)
-        // 1.1. Caso o evento for de pause, ficar em um loop mostrando a tela de pause
-        //      Nesse caso, a thread vai ficar parada, não liberando o processador para as demais
-        //      O que está certo, visto que nada pode acontecer quando o jogo estiver pausado.
-        // 1.1.1. Dentro desse loop, quando ler o unpause, sai desse loop.
 
         _clock->set_delta_time();
-        db<Window>(TRC) << "[Window] Entrei no loop!\n";
         _sf_window.clear();
         
         _sf_window.draw(*_screen -> get_sprite());
-        // _sf_window.draw(*_ready -> get_sprite());
         _sf_window.draw(*_score -> get_sprite());
         _sf_window.draw(*_player_obj -> get_sprite());
         _text_score_value.setString(std::to_string(_player_obj -> get_score()));
         _sf_window.draw(_text_score_value);
         _sf_window.draw(_text_level);
         _text_level_value.setString(std::to_string(Game::get_level() + 1));
-        cout << "TAMANHO DA LISTA:" << std::to_string(Game::get_level()) << "\n";
         _sf_window.draw(_text_level_value);
         _text_health_value.setString(std::to_string(_player_obj -> get_health()));
         _sf_window.draw(_text_health_value);
         _sf_window.draw(_text_health);
-        // _sf_window.display();
-        // _sf_window.draw(*_enemies_sprites_list.front());
-        
-        cout << "TAMANHO DA LISTA:" << _player_bullet_list->size() << "\n";
-        cout << "TAMANHO DA LISTA:" << _enemies_bullet_list->size() << "\n";
+    
         for (auto enemy_sprite : _enemies_sprites_list){
-            // std::cout << "Type: " << typeid(*enemy_sprite).name() << std::endl;
             _sf_window.draw(*enemy_sprite);
         }
 
@@ -97,12 +76,9 @@ void Window::run()
             _sf_window.draw(*bullet->get_sprite());
         }
         _sf_window.display();
-        
-        // _sf_window.display();
-        db<Window>(TRC) << "[Window] fim do loop da window\n";
+
         Thread::yield();
     }
-    db<Window>(TRC) << "[Window] SAINDO DA WINDOW RUN\n";
 }
 
 void Window::load_and_bind_textures()

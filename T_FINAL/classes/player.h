@@ -37,9 +37,7 @@ class Player : virtual public Spaceship {
             _score = 0;
         };
 
-        ~Player(){
-            db<Player>(INF) << "[Player] Destruindo\n";
-        };
+        ~Player(){;};
 
         void run();
 

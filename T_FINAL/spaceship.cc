@@ -35,8 +35,6 @@ void Spaceship::shoot() {
     path[_current_orientation] = "src/images/space_ships/shot.png";
     Bullet* bullet = new Bullet(_sprite.getScale().x, 0, _speed*2, path, _current_orientation, _clock, bullet_x_pos, bullet_y_pos, 0);
     _bullet_list->push_back(bullet);
-    db<Spaceship>(TRC) << "[SPACESHIP] tamanho da lista" << _bullet_list->size() << "\n";
-    db<Spaceship>(TRC) << "[SPACESHIP] SHOOTING!!! \n";
 }
 
 __END_API

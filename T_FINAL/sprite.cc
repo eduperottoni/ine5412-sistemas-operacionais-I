@@ -27,7 +27,6 @@ Sprite::Sprite(float scale, int size, const map<Orientation, string>& paths, Ori
     _position = std::make_tuple(x, y);
     _sprite.scale(scale, scale);
     _current_orientation = initial_orientation;
-    cout << "Sprite construído";
 }
 
 void Sprite::reset_position() {

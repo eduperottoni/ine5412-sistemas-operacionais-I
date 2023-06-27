@@ -18,7 +18,6 @@ bool CollisionChecker::check_collision(const sf::Sprite* sprite1, const sf::Spri
 
 bool CollisionChecker::check_bullet_enemy_collision() {
     bool collision = false;
-    db<CollisionChecker>(INF) << "[CollisionChecker] ENTREI NO CHECK_BULLET_ENEMY_COLLISION!\n";
     unsigned int counter_enemy = 0;
     for (auto enemy_sprite : *_enemies_sprites) {
         unsigned int counter_bullet = 0;
@@ -37,14 +36,11 @@ bool CollisionChecker::check_bullet_enemy_collision() {
 
 bool CollisionChecker::check_bullet_bullet_collision() {
     bool collision = false;
-    db<CollisionChecker>(INF) << "[CollisionChecker] ENTREI NO CHECK_BULLET_BULLET_COLLISION!\n";
     unsigned int counter_enemy_bullet = 0;
     for (auto enemy_bullet : *_enemies_bullets_list) {
         unsigned int counter_player_bullet = 0;
         for (auto player_bullet : *_player_bullets_list) {
             if  (check_collision(player_bullet -> get_sprite(), enemy_bullet -> get_sprite())){
-                db<CollisionChecker>(INF) << "[CollisionChecker] COLISÃO BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n";
-                db<CollisionChecker>(INF) << "[CollisionChecker] COLISÃO BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n";
                 _collision_queue->push(new Collision(CollisionType::BULLET_BULLET, counter_player_bullet, counter_enemy_bullet));
                 collision = true;
                 break;
@@ -58,13 +54,10 @@ bool CollisionChecker::check_bullet_bullet_collision() {
 
 bool CollisionChecker::check_bullet_player_collision() {
     bool collision = false;
-    db<CollisionChecker>(INF) << "[CollisionChecker] ENTREI NO CHECK_BULLET_BULLET_COLLISION!\n";
     unsigned int counter_enemy_bullet = 0;
     for (auto enemy_bullet : *_enemies_bullets_list) {
         if (check_collision(_player_sprite, enemy_bullet -> get_sprite())){
             Collision* colisao = new Collision(CollisionType::BULLET_PLAYER, -1, counter_enemy_bullet);
-            db<CollisionChecker>(INF) << "[CollisionChecker] COLISÃO CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n";
-            db<CollisionChecker>(INF) << "[CollisionChecker] COLISÃO CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n";
             _collision_queue->push(colisao);
             collision = true;
             break;
@@ -75,18 +68,12 @@ bool CollisionChecker::check_bullet_player_collision() {
 }
 
 bool CollisionChecker::check_enemy_player_collision(){
-    db<CollisionChecker>(INF) << "[CollisionChecker] ENTREI NO CHECK_ENEMY_PLAYER_COLLISION!\n";
     unsigned int counter_enemy = 0;
     for (auto enemy_sprite : *_enemies_sprites) {
         if (check_collision(enemy_sprite, _player_sprite)) {
             db<CollisionChecker>(INF) << "[CollisionChecker] COLISAO PLAYER E NAVE INIMIGA!\n";
             Collision* colisao = new Collision(CollisionType::PLAYER_ENEMY, -1, counter_enemy);
-            db<CollisionChecker>(INF) << "[CollisionChecker] COLISAO CRIADA!\n";
-            if (_collision_queue == nullptr) {
-                db<CollisionChecker>(INF) << "[CollisionChecker] NULL POINTER!\n";
-            }
             _collision_queue->push(colisao);
-            
             db<CollisionChecker>(INF) << "[CollisionChecker] PUSH NA COLLISION QUEUE!\n";
             return true;
         }
@@ -95,14 +82,9 @@ bool CollisionChecker::check_enemy_player_collision(){
     return false;
 };
 
-// bool CollisionChecker::check_enemy_enemy_collision(){
-//     return false;
-// };
-
 void CollisionChecker::run(){
     GameConfig* game_config = &GameConfig::get_instance();
     while (*game_config -> get_game_state() != GameConfig::State::FINISHING) {
-        db<CollisionChecker>(INF) << "[CollisionChecker] CollisionChecker dá oi!\n";
         if (check_bullet_enemy_collision()){
             db<CollisionChecker>(INF) << "[CollisionChecker] BULLET_ENEMY_COLLISION\n";
         }
@@ -115,9 +97,6 @@ void CollisionChecker::run(){
         if (check_bullet_player_collision()){
             db<CollisionChecker>(INF) << "[CollisionChecker] BULLET_PLAYER_COLLISION\n";
         }
-        db<CollisionChecker>(INF) << "[CollisionChecker] AQUI\n";
-
-
         Thread::yield();
     }
 }

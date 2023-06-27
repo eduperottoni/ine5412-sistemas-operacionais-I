@@ -19,7 +19,6 @@ class MovingSprite : virtual public Sprite {
             _clock = clock;
             _speed = speed;
             _can_render = true;
-            cout << "MovingSprite construido";
             if (quadrante == 0) {
                 _limit_left = 0;
                 _limit_right = 1086 - 320;
@@ -47,7 +46,6 @@ class MovingSprite : virtual public Sprite {
                 _limit_down = 746;
             }
         };
-        // ~MovingSprite();
 
         // Moves the Sprite (sets the texture and the position)
         void move(Orientation orientation);

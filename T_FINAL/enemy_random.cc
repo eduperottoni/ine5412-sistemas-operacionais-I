@@ -20,9 +20,6 @@ void EnemyRandom::run() {
     int counter_shoot = 0;
     while (*game_config -> get_game_state() != GameConfig::State::FINISHING) {
         if (_can_render){
-            db<EnemyRandom>(INF) << "[EnemyRandom] GET CLOCK !" << counter << "\n";
-            // verificar se o movimento está dentro da tela, com o tamanho da tela atual: TODO --> puxar o tamanho da tela por um metodo da classe 
-            // if(this->enemy_ship_sprite.getPosition().x < _window->getsizex() && this->enemy_ship_sprite.getPosition().y < _window->getsizey()){
             counter++;
             counter_shoot++;
 
@@ -60,24 +57,13 @@ void EnemyRandom::run() {
             }
         } else {
             double timestamp = _clock->get_current_time();
-            if (timestamp - _time_off >= 2){
-                db<EnemyRandom>(INF) << "[Enemy] PASSOU OS DOIS SEGUNDOS" << "\n";
+            if (timestamp - _time_off >= 2) {
                 _sprite.setScale(_scale, _scale);
                 _can_render = true;
             }
         } 
-        
-        // Spaceship::shoot();
-        // _sprite.setPosition(50, 50);
-
-        // } // caso contrario, realiza o respaw do inimigo na posicao inicial 
-        // else{
-        //     db<Enemy>(INF) << "[Enemy] Sprite fora da tela! \n";
-        // }
-        // Chamando yield ao final da chamada
         Thread::yield();
     }
-    db<EnemyRandom>(INF) << "[Enemy] SAINDO DO RUN DO INIMIGO" << "\n";
 }
 
 __END_API

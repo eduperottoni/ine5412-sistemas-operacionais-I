@@ -11,15 +11,4 @@ int main(void)
 {
     System::init(&Game::run);
     return 0;
-
-    // Keyboard keyboard;
-
-    // keyboard.run();
-
-    //window_thread = new Thread(window.run());
-
-    //Keyboard keyboard;
-
-    //keyboard_thread = Thread(keyboard.run());
-    return 0;
 }

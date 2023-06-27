@@ -25,11 +25,8 @@ bool Bullet::out_of_screen() {
 }
 
 // Herda método de movimentação da classe pai
-void Bullet::update(){
-    
+void Bullet::update() {
     MovingSprite::move(_current_orientation);
-    // }
-    // db<Bullet>(INF) << "[Game] ORIENTAÇÃO:" << _current_orientation <<"\n";
 }
 
 __END_API

@@ -35,20 +35,6 @@ class EnemyRandom : virtual public Enemy {
         Enemy(scale, size, speed, paths, initial_orientation, clock, x, y, bullet_list, quadrante) {
             std::cout << "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" << "/n";
         };
-        // Construtor de Classe
-        // EnemyRandom(float scale, int size, int speed, const std::map<Orientation, std::string>& paths, Orientation initial_orientation, Clock* clock)
-        // : MovingSprite(scale, size, speed, paths, initial_orientation, clock), 
-        // Spaceship(scale, size, speed, paths, initial_orientation, clock), 
-        // Enemy(scale, size, speed, paths, initial_orientation, clock){
-        //     _speed = speed;
-        // };
-        
-        // Instancia de tiro
-
-        // getter da posição do sprite do inimigo
-        // int getter(int x, int y);
-        // Destrutor da classe
-        // ~Enemy();
 
         // Método para movimentar o personagem
         void run() override;

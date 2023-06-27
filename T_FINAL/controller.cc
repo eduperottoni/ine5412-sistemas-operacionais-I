@@ -38,8 +38,6 @@ void Controller::_update_bullet_list(std::list<Bullet*>* bullet_list) {
     auto it = bullet_list->begin();
     while (it != bullet_list->end()) {
         if ((*it)->out_of_screen()) {
-            // delete *it;
-            db<Controller>(TRC) << "[CONTROLLER] DELETEI BALA" << "\n";
             it = bullet_list->erase(it);
         } else {
             (*it)->update(); 
@@ -49,12 +47,10 @@ void Controller::_update_bullet_list(std::list<Bullet*>* bullet_list) {
 }
 
 void Controller::handle_bullet_bullet_collision(int id_player_bullet, int id_enemy_bullet){
-    db<Controller>(TRC) << "COLISÃO ENTRE BALA DO JOGADOR E BALA DO INIMIGO" <<"\n";
     if (id_player_bullet >= 0 && id_player_bullet < _player_bullet_list->size()) {
         auto it = _player_bullet_list->begin();
         std::advance(it, id_player_bullet); // Avança para o índice desejado
         _player_bullet_list->erase(it); // Remove o elemento
-        db<Controller>(TRC) << "[CONTROLLER] ELEMENTO REMOVIDO" <<"\n";
     } else {
         std::cout << "Índice inválido!" << std::endl;
     }
@@ -68,14 +64,12 @@ void Controller::handle_bullet_bullet_collision(int id_player_bullet, int id_ene
 }
 
 void Controller::handle_bullet_enemy_collision(int id_bullet, int id_enemy){
-    db<Controller>(TRC) << "COLISÃO ENTRE BALA DO JOGADOR E INIMIGO" <<"\n";
     if (id_bullet >= 0 && id_bullet < _player_bullet_list->size()) {
         auto it = _player_bullet_list->begin();
         std::advance(it, id_bullet); // Avança para o índice desejado
         _player_bullet_list->erase(it); // Remove o elemento
         _player_object->increment_score(100);
         _player_object->increment_kill();
-        db<Controller>(TRC) << "[CONTROLLER] ELEMENTO REMOVIDO" <<"\n";
     } else {
         std::cout << "Índice inválido!" << std::endl;
     }
@@ -84,28 +78,24 @@ void Controller::handle_bullet_enemy_collision(int id_bullet, int id_enemy){
         std::advance(it, id_enemy); // Avança para a posição desejada
         Enemy* element = *it; // Acessa o elemento
         element->set_can_render(false);
-        db<Controller>(TRC) << "CAN RENDER DO INIMIGO SETADO COMO FALSE" <<"\n";
     } else {
         db<Controller>(TRC) << "ERRO AO TRATAR INIMIGO" <<"\n";
     }
 }
 
 void Controller::handle_bullet_player_collision(int id_player, int id_bullet) {
-    db<Controller>(TRC) << "COLISÃO ENTRE BALA DO INIMIGO E JOGADOR" <<"\n";
     if (id_bullet >= 0 && id_bullet < _enemies_bullet_list->size()) {
         auto it = _enemies_bullet_list->begin();
         std::advance(it, id_bullet); // Avança para o índice desejado
         delete *it;
         _enemies_bullet_list->erase(it);
         _player_object->decrement_health();
-        db<Controller>(TRC) << "PERDEU VIDA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SOCORRO" <<"\n";
     } else {
         std::cout << "Índice inválido!" << std::endl;
     }
 }
 
 void Controller::handle_player_enemy_collision(int id_player, int id_enemy) {
-    db<Controller>(TRC) << "COLISÃO ENTRE INIMIGO E JOGADOR" <<"\n";
     if (id_enemy >= 0 && id_enemy < _enemy_objects->size()) {
         auto it = _enemy_objects->begin();
         std::advance(it, id_enemy); // Avança para a posição desejada
@@ -127,7 +117,6 @@ void Controller::_suspend_threads(){
     _player_thread -> suspend();
     for (auto enemy : _enemy_threads) {
         enemy -> suspend();
-        db<Controller>(TRC) << "[CONTROLLER] ENEMY SUSPENSA!!!!!!" <<"\n";
     }
     _collision_thread -> suspend();
 }
@@ -139,26 +128,18 @@ void Controller::run() {
             break;
         }
         else if (*_game_config->get_game_state() == GameConfig::State::OVER) {
-            db<Controller>(TRC) << "[CONTROLLER] PLAYER SUSPENSA!!!!!!" <<"\n";
-            // _window_thread->suspend();
-            db<Controller>(TRC) << "[CONTROLLER] COLLISION CHECKER SUSPENSA!!!!!!" <<"\n";
             while (*_game_config->get_game_state() == GameConfig::State::OVER) {
-                db<Controller>(TRC) << "[CONTROLLER] LOOP DE FIM DE JOGO" <<"\n";
                 if (!_action_queue.empty()) {
                     Keyboard::Move move = _action_queue.front();
                     _action_queue.pop();
                     if (move == Keyboard::RESET) {
                         reset();
                         _game_config -> set_game_state(GameConfig::State::RUNNING);
-                        db<Controller>(TRC) << "[CONTROLLER] FAZEMOS O RESET DO JOGO" <<"\n";
                     } else if (move == Keyboard::QUIT) {
-                        db<Controller>(TRC) << "[CONTROLLER] FECHAMOS O JOGO" <<"\n";
                         _resume_threads();
                         _game_config -> set_game_state(GameConfig::State::FINISHING);
-                        db<Controller>(TRC) << "[CONTROLLER] TERMINOU OS RESUMES!!!!!!" <<"\n";
                     }
                 }
-                db<Controller>(TRC) << "[CONTROLLER] SAINDO DO CONTROLLER!!!!!!" <<"\n";
                 Thread::yield();
             }
             if (*_game_config->get_game_state() == GameConfig::State::FINISHING) {
@@ -171,12 +152,9 @@ void Controller::run() {
                 clear();
                 continue;
             }
-            db<Controller>(TRC) << "[CONTROLLER]vazia?" << !_collision_queue.empty() <<"\n";
-            db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE COLISÕES:" << _collision_queue.size() <<"\n";
             while (!_collision_queue.empty()) {
                 CollisionChecker::Collision* collision = _collision_queue.front();
                 _collision_queue.pop();
-                db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE COLISÕES:" << _collision_queue.size() <<"\n";
                 if (collision->_collision_type == CollisionChecker::BULLET_ENEMY){
                     handle_bullet_enemy_collision(collision->_obj_id1, collision->_obj_id2);   
                 } else if (collision->_collision_type == CollisionChecker::PLAYER_ENEMY){
@@ -202,10 +180,7 @@ void Controller::run() {
                 // MOVIMENTO DE CONTROLE DO JOGO
                 switch (move) {
                 case Keyboard::Move::P:
-                    db<Controller>(TRC) << "[CONTROLLER] recebemos tecla P" << _collision_queue.size() <<"\n";
                     if (*_game_config -> get_game_state() == GameConfig::State::RUNNING) {
-                        // SUPEND EM TODAS, EXCETO WINDOW E KEYBOARD
-                        db<Controller>(TRC) << "[CONTROLLER] recebemos tecla P 1" << _collision_queue.size() <<"\n";
                         for (auto thread : _enemy_threads) thread -> suspend();
                         _player_thread -> suspend();
                         _game_config -> set_game_state(GameConfig::State::PAUSED);
@@ -224,7 +199,6 @@ void Controller::run() {
         }  
         Thread::yield();
     }
-    db<Controller>(TRC) << "[CONTROLLER] SAINDO DO CONTROLLER RUN!!!!!!" <<"\n";
 }
 
 void Controller::_update_level() {
@@ -247,38 +221,29 @@ Controller::~Controller() {
 }
 
 std::queue<Keyboard::Move>* Controller::get_action_queue() {
-    //db<Controller>(TRC) << "[CONTROLLER] Entrei no getter do _action_queue! \n";
     return &_action_queue;
 }
 
 std::queue<CollisionChecker::Collision*>* Controller::get_collision_queue() {
-    // if (_collision_queue == nullptr) db<Controller>(TRC) << "[CONTROLLER] NULO CARALHO" << "\n";
     return &_collision_queue;
 }
 
 void Controller::clear() {
-    db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE de balas do inimigos" << _enemies_bullet_list->size() <<"\n";
     while (!_enemies_bullet_list->empty()) {
         Bullet* bullet = _enemies_bullet_list->front();
         _enemies_bullet_list->pop_front();
         delete bullet;
-        db<Controller>(TRC) << "[CONTROLLER] DELETANDO BULLET DA LISTA DO INIMIGO!" <<"\n";
     }
-    db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA LISTA DE de balas do player" << _player_bullet_list->size() <<"\n";
-
     while (!_player_bullet_list->empty()) {
         Bullet* bullet = _player_bullet_list->front();
         _player_bullet_list->pop_front();
         delete bullet;
-        db<Controller>(TRC) << "[CONTROLLER] DELETANDO BULLET DA LISTA DO PLAYER!" <<"\n";
     }
-    db<Controller>(TRC) << "[CONTROLLER]TAMANHO DA fila DE colisoes" << _collision_queue.size() <<"\n";
 
     while (!_collision_queue.empty()) {
         CollisionChecker::Collision* collision = _collision_queue.front();
         _collision_queue.pop();
         delete collision;
-        db<Controller>(TRC) << "[CONTROLLER] DELETANDO COLISAO!" <<"\n";
     }
     while (!_action_queue.empty()) {
         _action_queue.pop();
